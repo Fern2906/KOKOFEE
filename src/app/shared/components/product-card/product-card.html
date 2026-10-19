@@ -58,9 +58,13 @@
       (click)="handleAddToCart($event)"
       [attr.aria-label]="'Añadir ' + product().name + ' al carrito'"
     >
-      <span nbText size="md" weight="black" transform="uppercase" tracking="wide">
-        {{ added() ? '✓ Añadido' : '+ Agregar al carrito' }}
-      </span>
+      @if (added()) {
+        <lucide-icon [img]="icons.check" strokeWidth="3" class="w-5 h-5"></lucide-icon>
+        <span nbText size="md" weight="black" transform="uppercase">Añadido</span>
+      } @else {
+        <lucide-icon [img]="icons.cart" strokeWidth="3" class="w-5 h-5"></lucide-icon>
+        <span nbText size="md" weight="black" transform="uppercase">Agregar al carrito</span>
+      }
     </button>
   </div>
 

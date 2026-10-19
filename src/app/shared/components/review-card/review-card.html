@@ -1,0 +1,49 @@
+<nb-card nbSurface tone="yellow" radius="xl" shadow="hard" border="strong" clip class="flex flex-col h-full transition-all duration-200 hover:-translate-y-1">
+  <nb-card-header nbSection padding="sm" divider="bottom">
+    <div nbCluster gap="sm" class="w-full flex flex-1 items-center justify-between">
+      <div nbCluster gap="sm" align="center">
+        @if (review().avatarUrl) {
+          <nb-avatar [src]="review().avatarUrl" [alt]="review().authorName"/>
+        } @else {
+          <div >
+            {{ review().authorName.charAt(0) }}
+          </div>
+        }
+        <div>
+          <h3 class="font-display font-bold text-sm truncate">
+            {{ review().authorName }}
+          </h3>
+        </div>
+      </div>
+
+      <div nbCluster>
+        <span nbBadge tone="danger">
+          {{ review().date }}
+        </span>
+
+        @if (review().verifiedPurchase) {
+          <span nbBadge tone="success">✓ Verificada</span>
+        }
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-content nbSection padding="lg" class="flex-1 flex flex-col">
+    <div nbStack gap="md" class="h-full">
+      <nb-rating [value]="review().rating" [max]="5"/>
+      <div nbCallout tone="pink" size="xl" shadow="hard">
+        <p class="text-sm leading-relaxed italic">
+          “{{ review().comment }}”
+        </p>
+      </div>
+
+      <div class="flex-1 flex items-end">
+        <div nbCluster gap="sm" align="center" justify="between" class="w-full">
+          <span nbChip size="sm" tone="pink">
+            {{ review().productName }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </nb-card-content>
+</nb-card>

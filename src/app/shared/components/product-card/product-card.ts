@@ -1,6 +1,7 @@
 import { Component, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbBadge, NbButton, NbCard, NbCardContent, NbCardFooter, NbCardHeader, NbChip, NbIcon, NbMediaFrame, NbMediaItem, NbSticker } from '@ng-brutalism/ui';
+import { NbButton, NbChip, NbIcon, NbMediaFrame, NbSticker } from '@ng-brutalism/ui';
+import { LucideAngularModule, ShoppingCart, Star, MapPin, ArrowRight, Check} from 'lucide-angular';
 import { Product } from '../../../core/models/product.model';
 
 @Component({
@@ -12,7 +13,7 @@ import { Product } from '../../../core/models/product.model';
     NbChip,
     NbButton,
     NbSticker,
-    NbIcon
+    LucideAngularModule
 ],
   templateUrl: './product-card.html'
 })
@@ -21,6 +22,14 @@ import { Product } from '../../../core/models/product.model';
 export class ProductCardComponent {
   readonly product = input.required<Product>();
   readonly addToCart = output<Product>();
+
+  readonly icons = {
+    cart: ShoppingCart,
+    star: Star,
+    pin: MapPin,
+    arrow: ArrowRight,
+    check: Check
+  };
 
   protected readonly added = signal(false);
 
