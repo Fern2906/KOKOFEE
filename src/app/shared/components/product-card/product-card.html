@@ -1,11 +1,10 @@
-<div nbSurface clip tone="white" border="strong" shadow="hard" radius="xl" class="relative flex flex-col h-full">
+<nb-card nbSurface clip tone="cream" border="strong" shadow="hard" radius="xl" class="flex flex-col h-full transition-all duration-200 hover:-translate-y-1">
 
   <div class="relative">
     <nb-sticker
       tone="yellow"
       [rotate]="-15"
       [attr.aria-label]="'Precio: ' + product().price"
-      size="0.8"
       class="absolute -top-12 -left-15 z-50"
     >
       <span class="font-mono font-black text-black text-sm">
@@ -13,7 +12,7 @@
       </span>
     </nb-sticker>
 
-    <div nbMediaFrame ratio="4/3" radius="none" shadow="none" border="strong">
+    <div nbMediaFrame ratio="1/1" radius="none" shadow="none" clip class="m-1">
       <img
         [src]="product().imageUrl"
         [alt]="product().name"
@@ -23,20 +22,19 @@
     </div>
   </div>
 
-  <div nbSplit ratio="1:1" gap="md" padding="md" collapse="md" separator="none">
-    <div nbStack gap="lg">
-
-      <h3 nbDisplay size="sm"  class="uppercase font-black leading-tight">
+  <nb-card-header class="p-5 pb-3">
+    <div nbStack gap="md">
+      <h3 nbDisplay size="sm" class="uppercase font-black leading-tight">
         {{ product().name }}
       </h3>
 
-      <p nbText size="xs" underline="bar" underlineGap="xs" weight="medium" tone="muted" class="inline-flex flex-col items-start" >
+      <p nbText size="xs" underline="bar" underlineGap="xs" weight="medium" tone="muted" class="inline-flex flex-col items-start">
         {{ product().description }}
       </p>
     </div>
-  </div>
+  </nb-card-header>
 
-  <div nbSection divider="top" padding="md" class="mt-5 mb-5">
+  <nb-card-content class="px-5 py-2 flex-1 flex flex-col justify-between">
     <div nbStack gap="xs">
       <div nbChipGroup gap="sm" radius="sm">
         @for (note of product().tastingNotes; track note) {
@@ -46,15 +44,15 @@
         }
       </div>
     </div>
-  </div>
+  </nb-card-content>
 
-  <div nbSection divider="top" padding="md" class="mt-auto">
+  <nb-card-footer>
     <button
       nbButton
-      [tone]="added() ? 'mint' : 'lavender'"
+      [tone]="added() ? 'lavender' : 'mint'"
       size="lg"
       radius="md"
-      class="w-full"
+      class="w-full flex items-center justify-center gap-2"
       (click)="handleAddToCart($event)"
       [attr.aria-label]="'Añadir ' + product().name + ' al carrito'"
     >
@@ -66,6 +64,5 @@
         <span nbText size="md" weight="black" transform="uppercase">Agregar al carrito</span>
       }
     </button>
-  </div>
-
-</div>
+  </nb-card-footer>
+</nb-card>

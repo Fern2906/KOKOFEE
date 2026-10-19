@@ -1,6 +1,6 @@
 import { Component, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbButton, NbChip, NbIcon, NbMediaFrame, NbSticker } from '@ng-brutalism/ui';
+import { NbButton, NbChip, NbIcon, NbMediaFrame, NbSticker, NbCard, NbCardFooter, NbCardContent, NbCardHeader } from '@ng-brutalism/ui';
 import { LucideAngularModule, ShoppingCart, Star, MapPin, ArrowRight, Check} from 'lucide-angular';
 import { Product } from '../../../core/models/product.model';
 
@@ -13,7 +13,11 @@ import { Product } from '../../../core/models/product.model';
     NbChip,
     NbButton,
     NbSticker,
-    LucideAngularModule
+    LucideAngularModule,
+    NbCard,
+    NbCardFooter,
+    NbCardContent,
+    NbCardHeader
 ],
   templateUrl: './product-card.html'
 })

@@ -9,16 +9,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideNgBrutalism({
       theme: {
-        primary: '#c25e00',
-        secondary: '#3c2a21',
-        accent: '#d48b47',
-        cream: '#faf7f2',
-        radius: '8px',
-        borderWidth: '2px',
-        shadowOffsetX: '3px',
-        shadowOffsetY: '3px',
-        fontSans: "'Plus Jakarta Sans', system-ui, sans-serif",
-        fontMono: "'JetBrains Mono', monospace",
+        radius: '0px',
+        borderWidth: '3px',
       },
     }),
   ],
