@@ -85,6 +85,16 @@ import { CartService } from '../../../core/services/cart.service';
             }
           </button>
 
+          <!-- Login Link -->
+          <a
+            routerLink="/login"
+            class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-koko-espresso hover:text-koko-caramel px-2.5 py-1.5 rounded-lg border-2 border-koko-espresso bg-white shadow-[2px_2px_0px_#1A120B] active:shadow-none transition-all"
+            title="Iniciar sesión en KOKOFEE"
+          >
+            <span>👤</span>
+            <span class="hidden sm:inline">Ingresar</span>
+          </a>
+
           <!-- Admin Portal Link -->
           <a
             routerLink="/admin"
@@ -146,15 +156,20 @@ import { CartService } from '../../../core/services/cart.service';
           </a>
           <div class="pt-3 border-t border-koko-border-subtle flex items-center justify-between">
             <a
+              routerLink="/login"
+              (click)="closeMobileMenu()"
+              class="text-xs font-mono font-bold text-koko-espresso underline flex items-center gap-1"
+            >
+              <span>👤</span>
+              <span>Iniciar Sesión</span>
+            </a>
+            <a
               routerLink="/admin"
               (click)="closeMobileMenu()"
-              class="text-xs font-mono font-bold text-koko-espresso underline"
+              class="text-xs font-mono font-bold text-koko-muted hover:text-koko-espresso underline"
             >
-              ⚙ Panel de Administración
+              ⚙ Panel Admin
             </a>
-            <span class="text-xs text-koko-muted font-mono">
-              Total: \${{ cartService.subtotal().toFixed(2) }}
-            </span>
           </div>
         </div>
       }
