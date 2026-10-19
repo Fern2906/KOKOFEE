@@ -18,6 +18,16 @@ export const routes: Routes = [
     redirectTo: 'registro',
   },
   {
+    path: 'admin',
+    loadComponent: () => import('./layouts/admin-layout/admin-layout').then((m) => m.AdminLayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/admin/dashboard/dashboard').then((m) => m.AdminDashboardPage),
+      },
+    ],
+  },
+  {
     path: '**',
     redirectTo: '',
   },
