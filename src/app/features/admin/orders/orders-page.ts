@@ -330,7 +330,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
                 } @else {
                   <div class="flex flex-wrap gap-3">
                     <!-- Advance to next status -->
-                    @if (nextStatusFor(order.status); as nextSt) {
+                    @if (nextStatusFor(order.status)) {
                       <button
                         nbButton
                         [tone]="nextToneFor(order.status)"
@@ -485,8 +485,9 @@ export class AdminOrdersPage {
     const next = NEXT_STATUS[order.status];
     if (!next) return;
     this.orderService.updateOrderStatus(order.id, next);
-    const updated = this.orderService.orders().find(o => o.id === order.id) ?? null;
-    this.selectedOrder.set(updated);
+    // Patch status locally so the modal reflects the change immediately,
+    // without depending on the signal re-delivering the same object reference.
+    this.selectedOrder.set({ ...order, status: next });
   }
 
   // Cancel flow
@@ -499,8 +500,10 @@ export class AdminOrdersPage {
     const order = this.orderToCancel();
     if (order) {
       this.orderService.updateOrderStatus(order.id, 'Cancelado');
-      const updated = this.orderService.orders().find(o => o.id === order.id) ?? null;
-      this.selectedOrder.set(updated);
+      // Patch locally for immediate modal update.
+      if (this.selectedOrder()?.id === order.id) {
+        this.selectedOrder.set({ ...order, status: 'Cancelado' });
+      }
     }
     this.showConfirm.set(false);
     this.orderToCancel.set(null);

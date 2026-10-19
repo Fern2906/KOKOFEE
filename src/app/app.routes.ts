@@ -33,6 +33,10 @@ export const routes: Routes = [
         path: 'pedidos',
         loadComponent: () => import('./features/admin/orders/orders-page').then((m) => m.AdminOrdersPage),
       },
+      {
+        path: 'recetas',
+        loadComponent: () => import('./features/admin/recipes/recipes-page').then((m) => m.RecipesAdminPage),
+      },
     ],
   },
   {

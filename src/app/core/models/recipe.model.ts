@@ -11,4 +11,8 @@ export interface Recipe {
   recommendedCoffee: string;
   imageUrl: string;
   stepsCount: number;
+  steps: string[];
 }
+
+export const RECIPE_METHODS = ['V60', 'Chemex', 'Aeropress', 'Prensa Francesa', 'Espresso'] as const;
+export const RECIPE_DIFFICULTIES = ['Iniciación', 'Intermedio', 'Avanzado'] as const;
