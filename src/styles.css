@@ -1,4 +1,117 @@
 @import 'tailwindcss';
 @import '@ng-brutalism/ui/styles.css';
 
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   KOKOFEE — THEME TOKENS & ARTISANAL BRUTALISM SYSTEM
+   Brand Identity: Specialty Coffee, Craftmanship, Sophistication & Warmth
+   ========================================================================== */
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Specialty Coffee Palette */
+  --color-koko-espresso: #1a120b;
+  --color-koko-roast: #2c1d11;
+  --color-koko-mocha: #3c2a21;
+  --color-koko-coffee: #543a29;
+  --color-koko-caramel: #c25e00;
+  --color-koko-amber: #e07a5f;
+  --color-koko-gold: #d48b47;
+  --color-koko-crema: #f5ebe0;
+  --color-koko-latte: #ede0d4;
+  --color-koko-cream: #faf7f2;
+  --color-koko-sand: #e6ccb2;
+  --color-koko-border: #1a120b;
+  --color-koko-border-subtle: #d6ccc2;
+  --color-koko-sage: #2d6a4f;
+  --color-koko-forest: #1b4332;
+  --color-koko-terracotta: #b05b3b;
+  --color-koko-danger: #d90429;
+}
+
+:root {
+  /* Brand Core Tokens (CSS Custom Properties) */
+  --koko-espresso: #1a120b;
+  --koko-roast: #2c1d11;
+  --koko-mocha: #3c2a21;
+  --koko-coffee: #543a29;
+  --koko-caramel: #c25e00;
+  --koko-caramel-hover: #a34e00;
+  --koko-amber: #e07a5f;
+  --koko-gold: #d48b47;
+  --koko-crema: #f5ebe0;
+  --koko-latte: #ede0d4;
+  --koko-cream: #faf7f2;
+  --koko-surface: #ffffff;
+  --koko-border: #1a120b;
+  --koko-border-subtle: #e3dac9;
+  --koko-muted: #7f6e61;
+  --koko-sage: #2d6a4f;
+  --koko-sage-light: #e8f5e9;
+  --koko-terracotta: #b05b3b;
+  --koko-danger: #d90429;
+
+  /* Harmonized @ng-brutalism/ui tokens */
+  --nb-background: #faf7f2;
+  --nb-foreground: #1a120b;
+  --nb-border: #1a120b;
+  --nb-shadow: #1a120b;
+  --nb-surface: #ffffff;
+  --nb-surface-foreground: #1a120b;
+  --nb-secondary-background: #f5ebe0;
+  --nb-field-bg: #fffdf9;
+  --nb-cream: #faf7f2;
+
+  --nb-primary: #c25e00;
+  --nb-primary-foreground: #ffffff;
+  --nb-secondary: #3c2a21;
+  --nb-secondary-foreground: #faf7f2;
+  --nb-accent: #d48b47;
+  --nb-accent-foreground: #1a120b;
+  --nb-warning: #e07a5f;
+  --nb-warning-foreground: #ffffff;
+  --nb-success: #2d6a4f;
+  --nb-success-foreground: #ffffff;
+  --nb-danger: #d90429;
+  --nb-danger-foreground: #ffffff;
+
+  /* Modern Artisanal Geometry (Clean & Tactile) */
+  --nb-radius: 8px;
+  --nb-border-width: 2px;
+  --nb-shadow-offset-x: 3px;
+  --nb-shadow-offset-y: 3px;
+  --nb-reverse-shadow-offset-x: -3px;
+  --nb-reverse-shadow-offset-y: -3px;
+
+  /* Typography tokens for ng-brutalism primitives */
+  --nb-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --nb-font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --nb-font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+  --nb-font-accent: 'Outfit', system-ui, -apple-system, sans-serif;
+  --nb-font-mono: 'JetBrains Mono', monospace;
+
+  /* Focus and interaction */
+  --nb-focus-ring: 2px solid var(--koko-caramel);
+  --nb-focus-ring-offset: 2px;
+}
+
+/* Custom artisan coffee scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--koko-crema);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--koko-coffee);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--koko-roast);
+}
