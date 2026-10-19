@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { NbBadge, NbButton, NbProgress } from '@ng-brutalism/ui';
+import { NbBadge, NbButton } from '@ng-brutalism/ui';
 import { StatCardComponent } from '../../../shared/components/stat-card/stat-card';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table';
 import { OrderService } from '../../../core/services/order.service';
@@ -17,7 +17,6 @@ import { Product } from '../../../core/models/product.model';
     RouterLink,
     NbButton,
     NbBadge,
-    NbProgress,
     StatCardComponent,
     DataTableComponent,
   ],

@@ -8,13 +8,13 @@ export class ProductService {
   private readonly productsSignal = signal<Product[]>([
     {
       id: 'koko-01',
-      name: 'Geisha Finca El Paraíso',
+      name: 'Geisha Finca El Paraiso',
       variety: 'Geisha de Altura',
       origin: 'Huila, Colombia',
       altitude: '1,950 msnm',
       process: 'Lavado',
       roastLevel: 'Tueste Claro',
-      tastingNotes: ['Jazmín', 'Bergamota', 'Melocotón'],
+      tastingNotes: ['Jazmin', 'Bergamota', 'Melocoton'],
       scaScore: 89.5,
       price: 24.5,
       originalPrice: 28.0,
@@ -23,13 +23,13 @@ export class ProductService {
       stock: 14,
       isFeatured: true,
       badge: 'Microlote Exclusivo',
-      description: 'Cosecha seleccionada a mano. Acidez vivaz con postgusto dulce y persistente que evoca té blanco y flores silvestres.',
+      description: 'Cosecha seleccionada a mano. Acidez vivaz con postgusto dulce y persistente.',
     },
     {
       id: 'koko-02',
-      name: 'Bourbon Rosado Anaeróbico',
+      name: 'Bourbon Rosado Anaerobico',
       variety: 'Bourbon Rosado',
-      origin: 'San Agustín, Colombia',
+      origin: 'San Agustin, Colombia',
       altitude: '1,800 msnm',
       process: 'Maceración Carbónica',
       roastLevel: 'Tueste Medio',
@@ -41,35 +41,35 @@ export class ProductService {
       stock: 22,
       isFeatured: true,
       badge: 'Favorito Baristas',
-      description: 'Fermentación en cereza durante 72 horas bajo atmósfera controlada. Notas intensas a frutas rojas maduras.',
+      description: 'Fermentacion en cereza durante 72 horas bajo atmosfera controlada.',
     },
     {
       id: 'koko-03',
       name: 'Yirgacheffe Heirloom Natural',
-      variety: 'Variedades Autóctonas',
-      origin: 'Gedeo, Etiopía',
+      variety: 'Variedades Autoctonas',
+      origin: 'Gedeo, Etiopia',
       altitude: '2,100 msnm',
       process: 'Natural',
       roastLevel: 'Tueste Claro',
-      tastingNotes: ['Arándano Silvestre', 'Chocolate Negro', 'Cardamomo'],
+      tastingNotes: ['Arandano Silvestre', 'Chocolate Negro', 'Cardamomo'],
       scaScore: 88.75,
       price: 22.5,
       weight: '250g',
       imageUrl: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?q=80&w=800&auto=format&fit=crop',
       stock: 9,
       isFeatured: true,
-      badge: 'Cuna del Café',
-      description: 'Secado en camas africanas elevadas durante 24 días. Cuerpo envolvente con explosión frutal inconfundible.',
+      badge: 'Cuna del Cafe',
+      description: 'Secado en camas africanas elevadas durante 24 dias.',
     },
     {
       id: 'koko-04',
-      name: 'Pacamara Honey Volcán Barú',
+      name: 'Pacamara Honey Volcan Baru',
       variety: 'Pacamara Gigante',
-      origin: 'Boquete, Panamá',
+      origin: 'Boquete, Panama',
       altitude: '1,750 msnm',
       process: 'Honey',
       roastLevel: 'Tueste Medio',
-      tastingNotes: ['Papaya', 'Azúcar Mascabado', 'Nuez de Macadamia'],
+      tastingNotes: ['Papaya', 'Azucar Mascabado', 'Nuez de Macadamia'],
       scaScore: 87.5,
       price: 19.5,
       originalPrice: 23.0,
@@ -77,8 +77,8 @@ export class ProductService {
       imageUrl: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?q=80&w=800&auto=format&fit=crop',
       stock: 18,
       isFeatured: true,
-      badge: 'Suelo Volcánico',
-      description: 'Suelos ricos en ceniza volcánica que otorgan una dulzura acaramelada natural y un cuerpo cremoso irrepetible.',
+      badge: 'Suelo Volcanico',
+      description: 'Suelos ricos en ceniza volcanica que otorgan una dulzura acaramelada natural.',
     },
   ]);
 
@@ -90,5 +90,23 @@ export class ProductService {
 
   getProductById(id: string): Product | undefined {
     return this.productsSignal().find((p) => p.id === id);
+  }
+
+  addProduct(product: Omit<Product, 'id'>): void {
+    const newProduct: Product = {
+      ...product,
+      id: 'koko-' + Date.now(),
+    };
+    this.productsSignal.update((list) => [...list, newProduct]);
+  }
+
+  updateProduct(id: string, changes: Partial<Omit<Product, 'id'>>): void {
+    this.productsSignal.update((list) =>
+      list.map((p) => (p.id === id ? { ...p, ...changes } : p))
+    );
+  }
+
+  deleteProduct(id: string): void {
+    this.productsSignal.update((list) => list.filter((p) => p.id !== id));
   }
 }
