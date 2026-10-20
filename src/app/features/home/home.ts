@@ -15,7 +15,12 @@ import { Product } from '../../core/models/product.model';
 import { Recipe } from '../../core/models/recipe.model';
 import {
   LucideAngularModule,
-  ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package, Heart, Quote, FlaskConical, PackageCheck, BookOpen
+  ArrowRight, Coffee, Award,
+  Route, Handshake, Flame,
+  Mountain, Sprout, BellRing,
+  Package, Heart, Quote,
+  FlaskConical, PackageCheck, BookOpen,
+  Star, MessageSquareQuote
 } from 'lucide-angular';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state';
@@ -57,7 +62,14 @@ export class HomePage {
   readonly recipeService = inject(RecipeService);
   readonly reviewService = inject(ReviewService);
   readonly cartService = inject(CartService);
-  readonly icons = { ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package, Heart, Quote, FlaskConical, PackageCheck, BookOpen };
+  readonly icons = {
+    ArrowRight, Coffee, Award,
+    Route, Handshake, Flame,
+    Mountain, Sprout, BellRing,
+    Package, Heart, Quote,
+    FlaskConical, PackageCheck, BookOpen,
+    Star, MessageSquareQuote
+  };
 
 
   onAddToCart(product: Product): void {

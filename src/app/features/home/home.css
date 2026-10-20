@@ -117,3 +117,26 @@
         transition: none;
     }
 }
+
+.reviews-score__star {
+    fill: currentColor;
+    animation: kk-twinkle 2.8s ease-in-out infinite;
+}
+
+@keyframes kk-twinkle {
+
+    0%,
+    100% {
+        transform: rotate(0) scale(1);
+    }
+
+    50% {
+        transform: rotate(14deg) scale(1.2);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reviews-score__star {
+        animation: none;
+    }
+}

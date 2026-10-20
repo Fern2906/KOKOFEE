@@ -278,9 +278,8 @@
                 </div>
             </div>
         </section>
-
+        <!-- Recetas -->
         <section id="recetas" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
-
             <app-section-header tone="lavender" eyebrow="Barismo en casa" title="Guías de extracción recomendadas"
                 description="Aprende los ratios, moliendas y temperaturas exactas para despertar las notas de cata ocultas en tu grano."
                 [count]="recipeService.recipes().length">
@@ -303,35 +302,28 @@
             }
         </section>
 
-        <section id="resenas" class="py-16 md:py-24 bg-koko-cream/70 border-t-2 border-koko-espresso/15">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-2xl mx-auto mb-12">
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-koko-espresso text-xs font-mono font-bold text-koko-caramel mb-3">
-                        ★ 4.9/5 Promedio de Satisfacción
-                    </div>
-                    <h2 class="font-display font-black text-3xl sm:text-4xl text-koko-espresso">
-                        Lo que dicen Baristas y Clientes
-                    </h2>
-                    <p class="text-sm text-koko-coffee/80 mt-2">
-                        Reseñas verificadas de apasionados del café de especialidad que confían en nuestras cosechas.
-                    </p>
-                </div>
+        <section id="resenas" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
 
-                <!-- Reviews Grid or Empty State -->
-                @if (reviewService.reviews().length > 0) {
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    @for (review of reviewService.reviews(); track review.id) {
-                    <app-review-card [review]="review" />
-                    }
-                </div>
-                } @else {
-                <div
-                    class="bg-white border-2 border-dashed border-koko-espresso rounded-xl p-8 text-center max-w-md mx-auto">
-                    <p class="text-xs text-koko-coffee/70">Aún no hay reseñas publicadas para este lote.</p>
-                </div>
+            <app-section-header tone="pink" eyebrow="Comunidad" title="Lo que dicen baristas y clientes"
+                description="Reseñas verificadas de apasionados del café de especialidad que confían en nuestras cosechas.">
+
+                <span headerActions nbChip tone="yellow" radius="md"
+                    class="reviews-score font-mono font-bold uppercase">
+                    <lucide-icon [img]="icons.Star" [size]="16" [strokeWidth]="3" class="reviews-score__star" />
+                    4.9/5 promedio de satisfacción
+                </span>
+            </app-section-header>
+
+            @if (reviewService.reviews().length > 0) {
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                @for (review of reviewService.reviews(); track review.id) {
+                <app-review-card [review]="review" />
                 }
             </div>
+            } @else {
+            <app-empty-state tone="yellow" [icon]="icons.MessageSquareQuote" title="Aún no hay reseñas"
+                description="Aún no hay reseñas publicadas para este lote. Sé el primero en contarnos tu experiencia." />
+            }
         </section>
 
         <!-- ============================================================== -->
