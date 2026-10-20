@@ -1,0 +1,111 @@
+<div class="space-y-8 animate-in fade-in duration-200">
+  <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b-2 border-koko-espresso/20">
+    <h1 class="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-koko-espresso tracking-tight">
+      Dashboard
+    </h1>
+    <div class="flex flex-wrap items-center gap-3">
+      <button nbButton tone="cream" size="sm" (click)="triggerExportNotice()">Exportar Reporte</button>
+      <button nbButton tone="primary" size="sm" (click)="triggerNewRoastNotice()">Programar Tueste</button>
+    </div>
+  </header>
+
+  @if (actionNotice(); as notice) {
+    <app-alert [message]="notice" tone="warning" size="md" (closed)="actionNotice.set(null)" />
+  }
+
+  <section aria-label="Indicadores principales de la tostaduría">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <app-stat-card title="Ventas de la Semana" [value]="'$' + orderService.totalRevenue().toFixed(2)" icon="DollarSign" tone="accent" />
+      <app-stat-card title="Pedidos en Cola" [value]="orderService.pendingOrdersCount() + ' activos'" icon="Clock" />
+      <app-stat-card title="Alertas de Stock" [value]="lowStockProducts().length + ' microlotes'" icon="AlertTriangle" tone="danger" />
+      <app-stat-card title="Calidad SCA Promedio" value="88.4 / 100" icon="Star" tone="warning" />
+    </div>
+  </section>
+
+  <section aria-label="Acciones rápidas de gestión">
+    <div nbSurface>
+      <h2 class="mb-3 text-xs font-mono font-bold uppercase tracking-wider text-koko-muted">
+        <span aria-hidden="true">⚡</span> Accesos rápidos
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        @for (link of quickLinks; track link.path) {
+          <a
+            [routerLink]="link.path"
+            class="group flex flex-col gap-0.5 p-3 bg-koko-cream/60 hover:bg-white rounded-lg
+                   border-2 border-koko-espresso/30 hover:border-koko-espresso transition-all"
+          >
+            <span class="text-xl mb-1 transition-transform group-hover:scale-110" aria-hidden="true">{{ link.emoji }}</span>
+            <span class="font-display font-bold text-sm text-koko-espresso">{{ link.title }}</span>
+            <span class="text-xs font-mono text-koko-muted">{{ link.hint }}</span>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+
+  <app-data-table
+  heading="Pedidos Recientes de la Tostaduría"
+  subtitle="Últimas compras registradas en la tienda pública"
+  [columns]="orderColumns"
+  [rows]="orderService.recentOrders()"
+>
+  <span table-actions class="text-xs font-mono text-koko-muted">
+    {{ orderService.orders().length }} pedidos totales
+  </span>
+
+  <ng-template appCell="order" let-order>
+    <div class="font-mono font-bold text-xs text-koko-espresso">{{ order.orderNumber }}</div>
+    <div class="text-xs text-koko-muted truncate max-w-35">{{ order.customerName }}</div>
+  </ng-template>
+
+  <ng-template appCell="items" let-order>
+    <div class="text-xs font-semibold text-koko-roast truncate max-w-45">
+      {{ order.items[0]?.productName }}
+    </div>
+    <div class="text-xs font-mono text-koko-muted">
+      {{ order.items[0]?.quantity }}x {{ order.items[0]?.weight }}
+      @if (order.items.length > 1) { <span>(+{{ order.items.length - 1 }} más)</span> }
+    </div>
+  </ng-template>
+
+  <ng-template appCell="total" let-order>{{ order.total | currency }}</ng-template>
+
+  <ng-template appCell="status" let-order>
+    <span nbBadge [tone]="getStatusBadgeTone(order.status)"
+          class="text-xs font-bold uppercase tracking-wider font-mono py-0.5 px-2">
+      {{ order.status }}
+    </span>
+  </ng-template>
+
+  <ng-template appCell="actions" let-order>
+    @switch (order.status) {
+      @case ('Pendiente') {
+        <button nbButton tone="warning" size="sm" class="text-xs font-bold"
+                (click)="advanceOrderStatus(order, 'Tostando')">
+          <span aria-hidden="true">🔥</span> Tostar
+        </button>
+      }
+      @case ('Tostando') {
+        <button nbButton tone="accent" size="sm" class="text-xs font-bold"
+                (click)="advanceOrderStatus(order, 'Enviado')">
+          <span aria-hidden="true">📦</span> Enviar
+        </button>
+      }
+      @case ('Enviado') {
+        <button nbButton tone="success" size="sm" class="text-xs font-bold"
+                (click)="advanceOrderStatus(order, 'Entregado')">
+          <span aria-hidden="true">✓</span> Entregar
+        </button>
+      }
+      @default {
+        <span class="text-xs font-mono text-koko-sage font-bold">Completado</span>
+      }
+    }
+  </ng-template>
+
+  <div table-footer class="p-3 border-t-2 flex items-center justify-between text-xs font-mono">
+    <span>Mostrando últimos {{ orderService.recentOrders().length }} pedidos</span>
+    <a routerLink="/admin/pedidos" class="font-bold hover:underline">Ver listado completo →</a>
+  </div>
+</app-data-table>
+</div>

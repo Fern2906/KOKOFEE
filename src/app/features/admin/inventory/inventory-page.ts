@@ -54,10 +54,10 @@ type RoastType   = Product['roastLevel'];
       </div>
       <!-- STATS -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <app-stat-card title="Total Microlotes"    [value]="totalProducts()"                     icon="&#x1F4E6;" />
-        <app-stat-card title="Stock Total"         [value]="totalStock()"                        icon="&#x1F3EA;" />
-        <app-stat-card title="Stock Bajo"          [value]="lowStockCount() + ' alertas'"        icon="&#x26A0;&#xFE0F;" changeType="negative" />
-        <app-stat-card title="Sin Existencias"     [value]="outOfStockCount() + ' agotados'"     icon="&#x1F6A8;" changeType="negative" />
+        <app-stat-card title="Total Microlotes" [value]="totalProducts().toString()" icon="Package" />
+        <app-stat-card title="Stock Total" [value]="totalStock().toString()" icon="Package" />
+        <app-stat-card title="Stock Bajo" [value]="lowStockCount().toString() + ' alertas'" icon="Package" />
+        <app-stat-card title="Sin Existencias" [value]="outOfStockCount().toString() + ' agotados'" icon="Package" />
       </div>
       <!-- SEARCH & FILTERS -->
       <div class="flex flex-col sm:flex-row gap-3">
@@ -102,7 +102,7 @@ type RoastType   = Product['roastLevel'];
                   <img [src]="product.imageUrl" [alt]="product.name"
                     class="w-10 h-10 rounded-lg object-cover border-2 border-koko-espresso/20 shrink-0 hidden sm:block" loading="lazy" />
                   <div>
-                    <div class="font-display font-bold text-xs text-koko-espresso leading-tight max-w-[180px] truncate">{{ product.name }}</div>
+                    <div class="font-display font-bold text-xs text-koko-espresso leading-tight max-w-45 truncate">{{ product.name }}</div>
                     <div class="text-[10px] font-mono text-koko-muted">{{ product.variety }}</div>
                   </div>
                 </div>
@@ -160,7 +160,7 @@ type RoastType   = Product['roastLevel'];
       </app-data-table>
       <!-- TOAST -->
       @if (toast()) {
-        <div class="fixed bottom-5 right-5 z-[70] px-4 py-3 bg-koko-espresso text-koko-cream border-2 border-koko-gold rounded-xl shadow-[3px_3px_0px_#C25E00] text-xs font-mono font-bold flex items-center gap-3 animate-in slide-in-from-bottom-3 duration-200" role="status" aria-live="polite">
+        <div class="fixed bottom-5 right-5 z-70 px-4 py-3 bg-koko-espresso text-koko-cream border-2 border-koko-gold rounded-xl shadow-[3px_3px_0px_#C25E00] text-xs font-mono font-bold flex items-center gap-3 animate-in slide-in-from-bottom-3 duration-200" role="status" aria-live="polite">
           <span>{{ toast() }}</span>
           <button (click)="toast.set(null)" class="text-koko-cream/60 hover:text-white">x</button>
         </div>

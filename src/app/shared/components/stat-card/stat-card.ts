@@ -1,59 +1,22 @@
 import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import { LucideAngularModule } from 'lucide-angular';
+import { NbStat, NbTone, NbSurface } from '@ng-brutalism/ui';
 @Component({
   selector: 'app-stat-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [LucideAngularModule, NbStat, NbSurface],
   template: `
-    <div
-      class="p-5 bg-white border-2 border-koko-espresso rounded-xl shadow-[3px_3px_0px_#1A120B] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#1A120B] transition-all flex flex-col justify-between"
-    >
-      <!-- Top Row: Title and Icon -->
-      <div class="flex items-center justify-between gap-3 mb-2">
-        <span class="text-xs font-mono font-bold text-koko-muted uppercase tracking-wider">
-          {{ title() }}
-        </span>
-        <div class="w-9 h-9 rounded-lg bg-koko-cream border-2 border-koko-espresso flex items-center justify-center text-lg shrink-0 shadow-[1px_1px_0px_#1A120B]">
-          {{ icon() }}
-        </div>
-      </div>
-
-      <!-- Main Value Display -->
-      <div class="font-display font-black text-2xl sm:text-3xl text-koko-espresso tracking-tight my-1">
-        {{ value() }}
-      </div>
-
-      <!-- Bottom Trend Indicator or Subtitle -->
-      <div class="mt-2 pt-2 border-t border-koko-border-subtle flex items-center justify-between text-xs font-mono">
-        @if (change()) {
-          <div
-            class="flex items-center gap-1 font-bold"
-            [class.text-koko-sage]="changeType() === 'positive'"
-            [class.text-koko-danger]="changeType() === 'negative'"
-            [class.text-koko-muted]="changeType() === 'neutral'"
-          >
-            <span>
-              {{ changeType() === 'positive' ? '↑' : changeType() === 'negative' ? '↓' : '•' }}
-            </span>
-            <span>{{ change() }}</span>
-          </div>
-        }
-
-        @if (subtitle()) {
-          <span class="text-koko-muted text-[11px] truncate">
-            {{ subtitle() }}
-          </span>
-        }
-      </div>
+    <div nbSurface [tone]="tone()" class="relative h-full">
+      @if (icon()) {
+        <lucide-icon [name]="icon()!" class="absolute top-3 right-3 w-5 h-5 stroke-[2.5] text-black"/>
+      }
+      <nb-stat label="{{title()}}" value="{{value()}}" class="font-display"/>
     </div>
   `,
 })
 export class StatCardComponent {
   readonly title = input.required<string>();
-  readonly value = input.required<string | number>();
-  readonly icon = input<string>('📊');
-  readonly change = input<string>('');
-  readonly changeType = input<'positive' | 'negative' | 'neutral'>('positive');
-  readonly subtitle = input<string>('');
+  readonly value = input.required<string>();
+  readonly icon = input<string>();
+  readonly tone = input<NbTone>('primary');
 }

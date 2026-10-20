@@ -10,7 +10,10 @@ import type { NbToneToken } from '@ng-brutalism/ui';
 
 import { OrderService } from '../../../core/services/order.service';
 import { Order, OrderStatus } from '../../../core/models/order.model';
-import { DataTableComponent } from '../../../shared/components/data-table/data-table';
+import {
+  DataTableComponent,
+  DataTableCellDirective
+} from '../../../shared/components/data-table/data-table';
 import { StatCardComponent } from '../../../shared/components/stat-card/stat-card';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -52,6 +55,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
     ModalComponent,
     ConfirmDialogComponent,
     OrderStatusBadgeComponent,
+    DataTableCellDirective
   ],
   template: `
     <div class="space-y-8 animate-in fade-in duration-200">
@@ -70,15 +74,15 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
 
       <!-- STATS -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <app-stat-card title="Total Pedidos"    [value]="totalOrders()"                     icon="📋" />
-        <app-stat-card title="Pedidos Activos"  [value]="activeOrdersCount()"               icon="⏳" />
-        <app-stat-card title="Ingresos Totales" [value]="formattedRevenue()"                icon="💰" />
+        <app-stat-card title="Total Pedidos" [value]="totalOrders().toString()" icon="Package" />
+        <app-stat-card title="Pedidos Activos" [value]="activeOrdersCount().toString()" icon="Package" />
+        <app-stat-card title="Ingresos Totales" [value]="formattedRevenue()" icon="Package" />
       </div>
 
       <!-- SEARCH & FILTERS -->
       <div class="flex flex-col sm:flex-row gap-3 flex-wrap">
         <!-- Search input -->
-        <div class="relative flex-1 min-w-[200px]">
+        <div class="relative flex-1 min-w-50">
           <span class="absolute left-3 top-1/2 -translate-y-1/2 text-koko-muted text-sm pointer-events-none">🔍</span>
           <input
             type="search"
@@ -123,99 +127,60 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
       </div>
 
       <!-- TABLE -->
-      <app-data-table
-        title="Pedidos de Clientes"
-        [subtitle]="tableSubtitle()"
-        [headers]="tableHeaders"
-        [isLoading]="false"
-        [isEmpty]="filteredOrders().length === 0"
-        emptyMessage="No se encontraron pedidos con los filtros aplicados."
-      >
-        <div table-actions class="flex items-center gap-2">
-          <span class="text-xs font-mono text-koko-muted">{{ filteredOrders().length }} resultado(s)</span>
-        </div>
+      <app-data-table heading="Ultimos pedidos" subtitle="Ulitmas compras registradas en la tienda" columns="orderColumns" [rows]="orderService.recentOrders()">
+         <ng-template appCell="order" let-order>
+          <div class="font-mono font-bold text-xs text-koko-espresso">{{ order.orderNumber }}</div>
+          <div class="text-xs text-koko-muted truncate max-w-35">{{ order.customerName }}</div>
+        </ng-template>
 
-        <ng-container table-rows>
-          @for (order of pagedOrders(); track order.id) {
-            <tr class="hover:bg-koko-cream/40 transition-colors">
-
-              <!-- Order number -->
-              <td class="py-3 px-4 font-mono text-xs font-bold text-koko-espresso whitespace-nowrap">
-                {{ order.orderNumber }}
-              </td>
-
-              <!-- Customer -->
-              <td class="py-3 px-4">
-                <div class="font-display font-bold text-xs text-koko-espresso">{{ order.customerName }}</div>
-                <div class="text-[10px] font-mono text-koko-muted">{{ order.customerEmail }}</div>
-              </td>
-
-              <!-- Date -->
-              <td class="py-3 px-4 font-mono text-xs text-koko-muted whitespace-nowrap">
-                {{ order.createdAt }}
-              </td>
-
-              <!-- Items count -->
-              <td class="py-3 px-4 font-mono text-xs text-koko-espresso text-center whitespace-nowrap">
-                {{ order.items.length }}
-              </td>
-
-              <!-- Total -->
-              <td class="py-3 px-4 font-mono font-bold text-xs text-koko-espresso whitespace-nowrap">
-                {{ '$' + order.total.toFixed(2) }}
-              </td>
-
-              <!-- Payment status -->
-              <td class="py-3 px-4 whitespace-nowrap">
-                <span
-                  nbBadge
-                  [tone]="order.paymentStatus === 'Pagado' ? 'success' : 'warning'"
-                  class="text-[10px] font-bold font-mono py-0.5 px-2"
-                >
-                  {{ order.paymentStatus }}
-                </span>
-              </td>
-
-              <!-- Order status -->
-              <td class="py-3 px-4 whitespace-nowrap">
-                <app-order-status-badge [status]="order.status" />
-              </td>
-
-              <!-- Actions -->
-              <td class="py-3 px-4 whitespace-nowrap">
-                <button
-                  nbButton
-                  tone="cream"
-                  size="sm"
-                  type="button"
-                  (click)="openDetail(order)"
-                  class="text-[11px] py-1 px-2.5 font-bold"
-                  [attr.aria-label]="'Ver detalle de ' + order.orderNumber"
-                >
-                  Ver detalle
-                </button>
-              </td>
-            </tr>
-          }
-        </ng-container>
-
-        <!-- Pagination footer -->
-        <div table-footer class="p-3 border-t-2 border-koko-espresso/15 bg-koko-cream/30 flex items-center justify-between gap-3 flex-wrap text-xs font-mono">
-          <span class="text-koko-muted">Página {{ currentPage() + 1 }} de {{ totalPages() }}</span>
-          <div class="flex items-center gap-2">
-            <button
-              nbButton tone="cream" size="sm" type="button"
-              [disabled]="currentPage() === 0"
-              (click)="prevPage()"
-              class="text-[11px] py-1 px-2 font-bold disabled:opacity-40 disabled:cursor-not-allowed"
-            >Anterior</button>
-            <button
-              nbButton tone="cream" size="sm" type="button"
-              [disabled]="currentPage() >= totalPages() - 1"
-              (click)="nextPage()"
-              class="text-[11px] py-1 px-2 font-bold disabled:opacity-40 disabled:cursor-not-allowed"
-            >Siguiente</button>
+        <ng-template appCell="items" let-order>
+          <div class="text-xs font-semibold text-koko-roast truncate max-w-45">
+            {{ order.items[0]?.productName }}
           </div>
+          <div class="text-xs font-mono text-koko-muted">
+            {{ order.items[0]?.quantity }}x {{ order.items[0]?.weight }}
+            @if (order.items.length > 1) { <span>(+{{ order.items.length - 1 }} más)</span> }
+          </div>
+        </ng-template>
+
+        <ng-template appCell="total" let-order>{{ order.total | currency }}</ng-template>
+
+        <ng-template appCell="status" let-order>
+          <span nbBadge [tone]="getStatusBadgeTone(order.status)"
+                class="text-xs font-bold uppercase tracking-wider font-mono py-0.5 px-2">
+            {{ order.status }}
+          </span>
+        </ng-template>
+
+        <ng-template appCell="actions" let-order>
+          @switch (order.status) {
+            @case ('Pendiente') {
+              <button nbButton tone="warning" size="sm" class="text-xs font-bold"
+                      (click)="advanceOrderStatus(order, 'Tostando')">
+                <span aria-hidden="true">🔥</span> Tostar
+              </button>
+            }
+            @case ('Tostando') {
+              <button nbButton tone="accent" size="sm" class="text-xs font-bold"
+                      (click)="advanceOrderStatus(order, 'Enviado')">
+                <span aria-hidden="true">📦</span> Enviar
+              </button>
+            }
+            @case ('Enviado') {
+              <button nbButton tone="success" size="sm" class="text-xs font-bold"
+                      (click)="advanceOrderStatus(order, 'Entregado')">
+                <span aria-hidden="true">✓</span> Entregar
+              </button>
+            }
+            @default {
+              <span class="text-xs font-mono text-koko-sage font-bold">Completado</span>
+            }
+          }
+        </ng-template>
+
+        <div table-footer class="p-3 border-t-2 flex items-center justify-between text-xs font-mono">
+          <span>Mostrando últimos {{ orderService.recentOrders().length }} pedidos</span>
+          <a routerLink="/admin/pedidos" class="font-bold hover:underline">Ver listado completo →</a>
         </div>
       </app-data-table>
 
@@ -299,7 +264,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
                     <tbody class="divide-y divide-koko-espresso/10 bg-white">
                       @for (item of order.items; track item.productName) {
                         <tr class="hover:bg-koko-cream/30 transition-colors">
-                          <td class="py-3 px-4 font-bold text-koko-espresso leading-tight max-w-[160px]">{{ item.productName }}</td>
+                          <td class="py-3 px-4 font-bold text-koko-espresso leading-tight max-w-40">{{ item.productName }}</td>
                           <td class="py-3 px-4 text-koko-muted font-mono">{{ item.variety }}</td>
                           <td class="py-3 px-4 font-mono text-koko-muted whitespace-nowrap">{{ item.weight }}</td>
                           <td class="py-3 px-4 font-mono font-bold text-center text-koko-espresso">{{ item.quantity }}</td>
@@ -386,6 +351,12 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
   `,
 })
 export class AdminOrdersPage {
+getStatusBadgeTone(arg0: any): NbToneToken|undefined {
+throw new Error('Method not implemented.');
+}
+advanceOrderStatus(_t58: any,arg1: string) {
+throw new Error('Method not implemented.');
+}
   private readonly orderService = inject(OrderService);
 
   readonly allStatuses = ALL_STATUSES;
