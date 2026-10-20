@@ -141,48 +141,15 @@
 
         <!-- Featured Products -->
         <section id="productos" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+            <app-section-header tone="mint" eyebrow="Cosechas exclusivas" title="Granos destacados de la semana"
+                description="Selección de microlotes calificados por encima de 87 puntos SCA. Disponibles hasta agotar existencias de cosecha."
+                [count]="productService.featuredProducts().length">
+                <span headerActions nbChip tone="white" radius="md" class="font-mono font-bold uppercase">
+                    <lucide-icon [img]="icons.Package" [size]="16" [strokeWidth]="3" />
+                    {{ productService.featuredProducts().length }} microlotes disponibles
+                </span>
+            </app-section-header>
 
-            <!-- Encabezado -->
-            <header nbSurface tone="mint" padding="xl" radius="xl" shadow="hard" border="strong"
-                class="products-head relative mb-12">
-
-                <!-- Sticker contador -->
-                <nb-sticker shape="star" tone="pink" [rotate]="10" class="absolute -top-7 -right-3 z-20"
-                    [attr.aria-label]="productService.featuredProducts().length + ' microlotes disponibles'">
-                    <nb-sticker-face>
-                        <span nbText size="lg" weight="black">
-                            {{ productService.featuredProducts().length }}
-                        </span>
-                    </nb-sticker-face>
-                </nb-sticker>
-
-                <div nbSplit ratio="2:1" gap="lg" collapse="md" align="end">
-                    <div nbStack gap="md" align="start">
-                        <span nbChip tone="yellow" radius="md" class="font-bold uppercase">
-                            <span nbStatusDot state="online"></span>
-                            Cosechas exclusivas
-                        </span>
-
-                        <h2 nbDisplay size="md" class="uppercase">
-                            Granos destacados de la semana
-                        </h2>
-
-                        <p nbText size="md" weight="medium" measure="md">
-                            Selección de microlotes calificados por encima de 87 puntos SCA.
-                            Disponibles hasta agotar existencias de cosecha.
-                        </p>
-                    </div>
-
-                    <div class="flex md:justify-end">
-                        <span nbChip tone="white" radius="md" class="font-mono font-bold uppercase">
-                            <lucide-icon [img]="icons.Package" [size]="16" [strokeWidth]="3" />
-                            {{ productService.featuredProducts().length }} microlotes disponibles
-                        </span>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Productos -->
             @if (productService.featuredProducts().length > 0) {
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 @for (product of productService.featuredProducts(); track product.id) {
@@ -190,29 +157,13 @@
                 }
             </div>
             } @else {
-            <!-- Estado vacío -->
-            <div nbSurface tone="lavender" padding="xl" radius="xl" shadow="hard" border="strong"
-                class="mx-auto max-w-md">
-                <div nbStack gap="md" align="center" class="text-center">
-                    <span class="products-empty__icon">
-                        <lucide-icon [img]="icons.Coffee" [size]="32" [strokeWidth]="3" />
-                    </span>
-
-                    <h3 nbDisplay size="sm" class="uppercase">
-                        Cosechas en periodo de reposo
-                    </h3>
-
-                    <p nbText size="sm" weight="medium">
-                        Estamos tostando el siguiente lote fresco este lunes. Suscríbete para
-                        recibir notificación de reapertura.
-                    </p>
-
-                    <button nbButton tone="black" size="md" type="button">
-                        <lucide-icon [img]="icons.BellRing" [size]="18" [strokeWidth]="3" />
-                        <span>Avisarme</span>
-                    </button>
-                </div>
-            </div>
+            <app-empty-state [icon]="icons.Coffee" title="Cosechas en periodo de reposo"
+                description="Estamos tostando el siguiente lote fresco este lunes. Suscríbete para recibir notificación de reapertura.">
+                <button nbButton tone="black" size="md" type="button">
+                    <lucide-icon [img]="icons.BellRing" [size]="18" [strokeWidth]="3" />
+                    <span>Avisarme</span>
+                </button>
+            </app-empty-state>
             }
         </section>
 
@@ -328,55 +279,30 @@
             </div>
         </section>
 
-        <!-- ============================================================== -->
-        <!-- 5. BREWING GUIDES & RECIPES SECTION                            -->
-        <!-- ============================================================== -->
-        <section id="recetas" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-                class="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b-2 border-koko-espresso/20 gap-4">
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="w-3 h-3 rounded-full bg-koko-caramel"></span>
-                        <span class="text-xs font-mono uppercase tracking-widest font-bold text-koko-caramel">
-                            Barismo en Casa
-                        </span>
-                    </div>
-                    <h2 class="font-display font-black text-3xl sm:text-4xl text-koko-espresso">
-                        Guías de Extracción Recomendadas
-                    </h2>
-                    <p class="text-sm text-koko-coffee/80 mt-1 max-w-xl">
-                        Aprende los ratios, moliendas y temperaturas exactas para despertar las notas de cata ocultas en
-                        tu grano.
-                    </p>
-                </div>
+        <section id="recetas" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
 
-                <div>
-                    <button nbButton tone="cream" size="sm"
-                        class="font-bold flex items-center gap-1.5 font-mono text-xs">
-                        <span>Ver Todas las Guías</span>
-                        <span>→</span>
-                    </button>
-                </div>
-            </div>
+            <app-section-header tone="lavender" eyebrow="Barismo en casa" title="Guías de extracción recomendadas"
+                description="Aprende los ratios, moliendas y temperaturas exactas para despertar las notas de cata ocultas en tu grano."
+                [count]="recipeService.recipes().length">
 
-            <!-- Recipe Cards Grid or Empty State -->
+                <button headerActions nbButton tone="black" size="md" type="button">
+                    <span>Ver todas las guías</span>
+                    <lucide-icon [img]="icons.ArrowRight" [size]="18" [strokeWidth]="3" />
+                </button>
+            </app-section-header>
+
             @if (recipeService.recipes().length > 0) {
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
                 @for (recipe of recipeService.recipes(); track recipe.id) {
                 <app-recipe-card [recipe]="recipe" (viewRecipe)="onViewRecipe($event)" />
                 }
             </div>
             } @else {
-            <div
-                class="bg-white border-2 border-dashed border-koko-espresso rounded-xl p-8 text-center max-w-md mx-auto">
-                <p class="text-xs text-koko-coffee/70">No hay recetas disponibles temporalmente.</p>
-            </div>
+            <app-empty-state tone="mint" [icon]="icons.BookOpen" title="Guías en preparación"
+                description="No hay recetas disponibles temporalmente. Vuelve pronto." />
             }
         </section>
 
-        <!-- ============================================================== -->
-        <!-- 6. COMMUNITY & RECENT REVIEWS SECTION                           -->
-        <!-- ============================================================== -->
         <section id="resenas" class="py-16 md:py-24 bg-koko-cream/70 border-t-2 border-koko-espresso/15">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-2xl mx-auto mb-12">

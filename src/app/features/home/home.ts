@@ -15,8 +15,10 @@ import { Product } from '../../core/models/product.model';
 import { Recipe } from '../../core/models/recipe.model';
 import {
   LucideAngularModule,
-  ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package, Heart, Quote, FlaskConical, PackageCheck
+  ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package, Heart, Quote, FlaskConical, PackageCheck, BookOpen
 } from 'lucide-angular';
+import { SectionHeaderComponent } from '../../shared/components/section-header/section-header';
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state';
 @Component({
   selector: 'app-home-page',
   standalone: true,
@@ -43,7 +45,9 @@ import {
     NbStatusDot,
     NbText,
     NbMarqueeItem,
-    LucideAngularModule
+    LucideAngularModule,
+    SectionHeaderComponent,
+    EmptyStateComponent
   ],
   templateUrl: 'home.html',
   styleUrls: ['./home.css']
@@ -53,7 +57,7 @@ export class HomePage {
   readonly recipeService = inject(RecipeService);
   readonly reviewService = inject(ReviewService);
   readonly cartService = inject(CartService);
-  readonly icons = { ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package, Heart, Quote, FlaskConical, PackageCheck };
+  readonly icons = { ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package, Heart, Quote, FlaskConical, PackageCheck, BookOpen };
 
 
   onAddToCart(product: Product): void {
@@ -61,7 +65,6 @@ export class HomePage {
   }
 
   onViewRecipe(recipe: Recipe): void {
-    // Smooth scroll to recipe detail or future modal
     console.log('Selected recipe:', recipe.title);
   }
 }
