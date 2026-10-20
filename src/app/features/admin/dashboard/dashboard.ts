@@ -8,6 +8,7 @@ import { OrderService } from '../../../core/services/order.service';
 import { ProductService } from '../../../core/services/product.service';
 import { Order, OrderStatus } from '../../../core/models/order.model';
 import { Product } from '../../../core/models/product.model';
+import { Alert } from '../../../shared/components/alert/alert';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -19,66 +20,27 @@ import { Product } from '../../../core/models/product.model';
     NbBadge,
     StatCardComponent,
     DataTableComponent,
-  ],
+    Alert
+],
   template: `
     <div class="space-y-8 animate-in fade-in duration-200">
-
-      <!-- ============================================================== -->
-      <!-- 1. PAGE HEADER: Title, Description & Main Action Buttons       -->
-      <!-- ============================================================== -->
       <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b-2 border-koko-espresso/20 gap-4">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2.5 h-2.5 rounded-full bg-koko-caramel"></span>
-            <span class="text-xs font-mono uppercase tracking-widest font-bold text-koko-caramel">
-              Operaciones de Tostaduría
-            </span>
-          </div>
           <h1 class="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-koko-espresso tracking-tight">
-            Dashboard de Control
+            Dashboard
           </h1>
-          <p class="text-xs sm:text-sm text-koko-coffee/80 mt-1 max-w-2xl font-sans">
-            Supervisión integral de pedidos recibidos, ciclos de tueste artesanal y existencias de microlotes en tiempo real.
-          </p>
         </div>
 
-        <!-- Header Actions -->
         <div class="flex flex-wrap items-center gap-3">
-          <button
-            nbButton
-            tone="cream"
-            size="sm"
-            (click)="triggerExportNotice()"
-            class="font-mono text-xs font-bold"
-          >
-            📥 Exportar Reporte
-          </button>
+          <button nbButton tone="cream" size="sm" (click)="triggerExportNotice()">Exportar Reporte</button>
 
-          <button
-            nbButton
-            tone="primary"
-            size="sm"
-            (click)="triggerNewRoastNotice()"
-            class="font-bold text-xs flex items-center gap-1.5 shadow-[2px_2px_0px_#1A120B]"
-          >
-            <span>+ Programar Tueste</span>
-          </button>
+          <button nbButton tone="primary" size="sm" (click)="triggerNewRoastNotice()">Programar Tueste</button>
         </div>
       </div>
 
-      <!-- Action Toast Notice -->
       @if (actionNotice()) {
-        <div
-          class="p-3 bg-koko-espresso text-koko-cream border-2 border-koko-gold rounded-xl shadow-[3px_3px_0px_#C25E00] text-xs font-mono font-bold flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-200"
-        >
-          <div class="flex items-center gap-2">
-            <span class="text-koko-gold">ℹ</span>
-            <span>{{ actionNotice() }}</span>
-          </div>
-          <button (click)="actionNotice.set(null)" class="text-koko-cream/60 hover:text-white p-1">
-            ✕
-          </button>
-        </div>
+        <app-alert [message]="actionNotice()" tone="danger" size="md" (closed)="actionNotice.set(null)">
+      </app-alert>
       }
 
       <!-- ============================================================== -->
@@ -396,7 +358,6 @@ export class AdminDashboardPage {
 
   protected readonly actionNotice = signal<string | null>(null);
 
-  // Products with low stock (15 bags or less)
   readonly lowStockProducts = computed(() =>
     this.productService.products().filter((p) => p.stock <= 15)
   );

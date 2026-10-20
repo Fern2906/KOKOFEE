@@ -1,0 +1,7 @@
+<div nbCallout [tone]="tone()" [size]="size()" class="w-full max-w-lg m-2 animate-in fade-in slide-in-from-top-2 duration-200 fill-mode-forwards">
+  <span>{{ message() }}</span>
+  <hr nbSeparator orientation="vertical" />
+  <button nbButton size="sm" tone="danger" (click)="close()">
+    X
+  </button>
+</div>
