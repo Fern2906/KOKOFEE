@@ -302,7 +302,7 @@
                 description="No hay recetas disponibles temporalmente. Vuelve pronto." />
             }
         </section>
-
+        <!-- Reseñas -->
         <section id="resenas" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
 
             <app-section-header tone="pink" eyebrow="Comunidad" title="Lo que dicen baristas y clientes"
@@ -327,39 +327,21 @@
             }
         </section>
 
-        <section
-            class="bg-koko-roast text-koko-cream border-t-2 border-koko-espresso py-16 md:py-20 relative overflow-hidden">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
-                <span
-                    class="inline-block px-3 py-1 bg-koko-caramel text-white font-mono text-xs font-black uppercase tracking-widest rounded shadow-[2px_2px_0px_#1A120B]">
-                    Tu Ritual Merece el Mejor Café
-                </span>
-
-                <h2 class="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
-                    ¿Listo para dar el salto al café de especialidad?
-                </h2>
-
-                <p class="text-sm sm:text-base text-koko-cream/80 max-w-2xl mx-auto leading-relaxed">
-                    Elige tu método favorito (espresso, filtro o prensa) y te recomendamos el grano con el perfil de
-                    tueste y molienda ideal para ti.
-                </p>
-
-                <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
-                    <a href="#productos" nbButton tone="primary" size="lg"
-                        class="font-bold text-base px-8 shadow-[4px_4px_0px_#1A120B] hover:shadow-[2px_2px_0px_#1A120B]">
-                        Comprar Café Fresco Ahora
-                    </a>
-
-                    <a routerLink="/admin" nbButton tone="cream" size="lg"
-                        class="font-bold text-base px-6 shadow-[3px_3px_0px_#1A120B]">
-                        Ir al Panel Administrativo ⚙
-                    </a>
-                </div>
-
-                <p class="text-xs text-koko-cream/60 font-mono pt-4">
-                    🛡 Garantía KOKOFEE: Si no notas la diferencia frente al café comercial, te devolvemos tu dinero.
-                </p>
-            </div>
+        <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+            <app-section-header tone="warning" eyebrow="Tu Ritual Merece el Mejor Café"
+                title="¿Listo para dar el salto al café de especialidad?"
+                description="Elige tu método favorito (espresso, filtro o prensa) y te recomendamos el grano con el perfil de tueste y molienda ideal para ti.">
+                <a headerActions href="#productos" nbButton tone="black" size="xs"
+                    class="w-full sm:w-auto justify-center">
+                    <span>Comprar Café Fresco Ahora</span>
+                    <lucide-icon [img]="icons.Coffee" [size]="18" [strokeWidth]="3" />
+                </a>
+                <a headerActions routerLink="/admin" nbButton tone="white" size="xs"
+                    class="w-full sm:w-auto justify-center">
+                    <span>Ir al Panel Administrativo ⚙</span>
+                    <lucide-icon [img]="icons.ArrowRight" [size]="18" [strokeWidth]="3" />
+                </a>
+            </app-section-header>
         </section>
     </main>
 

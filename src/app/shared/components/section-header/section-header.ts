@@ -2,6 +2,7 @@ import { Component, input } from '@angular/core';
 import {
   NbChip, NbDisplay, NbSplit, NbStack, NbStatusDot,
   NbSticker, NbStickerFace, NbSurface, NbText,
+  NbToneToken,
 } from '@ng-brutalism/ui';
 
 @Component({
@@ -12,7 +13,7 @@ import {
     NbSticker, NbStickerFace, NbSurface, NbText,
   ],
   template: `
-    <header nbSurface [attr.tone]="tone()" padding="xl" radius="xl" shadow="hard" border="strong"
+    <header nbSurface [tone]="tone()" padding="xl" radius="xl" shadow="hard" border="strong"
             class="relative mb-12 transition-transform duration-200 hover:-translate-y-1">
 
       @if (count() !== null) {
@@ -48,6 +49,6 @@ export class SectionHeaderComponent {
   readonly eyebrow = input.required<string>();
   readonly title = input.required<string>();
   readonly description = input.required<string>();
-  readonly tone = input<string>('mint');
+  readonly tone = input<NbToneToken>('mint');
   readonly count = input<number | null>(null);
 }
