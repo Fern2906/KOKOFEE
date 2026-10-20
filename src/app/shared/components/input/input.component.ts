@@ -1,12 +1,12 @@
 import { Component, computed, forwardRef, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { NbInput, NbLabel } from '@ng-brutalism/ui';
+import { NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix } from '@ng-brutalism/ui';
 
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NbInput, NbLabel],
+  imports: [CommonModule, ReactiveFormsModule, NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -17,19 +17,19 @@ import { NbInput, NbLabel } from '@ng-brutalism/ui';
   template: `
     <div class="flex flex-col gap-1.5 w-full">
       @if (label()) {
-        <label
-          nbLabel
-          [attr.for]="id()"
-          class="font-display text-xs font-bold uppercase tracking-wider text-koko-espresso flex items-center justify-between"
-        >
+        <label nbLabel [attr.for]="id()" class="flex items-center justify-between text-xs font-bold uppercase tracking-wider">
           <span>{{ label() }}</span>
           @if (required()) {
-            <span class="text-koko-caramel text-xs">*</span>
+            <span class="text-red-500 text-xs">*</span>
           }
         </label>
       }
 
-      <div class="relative">
+      <nb-input-group class="w-full" [class.!border-red-500]="hasError()">
+        @if (prefix()) {
+          <span nbInputPrefix class="font-mono font-bold">{{ prefix() }}</span>
+        }
+
         <input
           nbInput
           [id]="id()"
@@ -40,20 +40,17 @@ import { NbInput, NbLabel } from '@ng-brutalism/ui';
           [value]="value()"
           (input)="handleInput($event)"
           (blur)="handleBlur()"
-          class="w-full text-sm font-medium transition-all px-3.5 py-2.5 rounded-lg border-2 bg-white disabled:bg-koko-cream/60 disabled:cursor-not-allowed"
-          [class.border-koko-danger]="hasError()"
-          [class.border-koko-espresso]="!hasError()"
-          [class.shadow-[2px_2px_0px_#D90429]]="hasError()"
-          [class.shadow-[2px_2px_0px_#1A120B]]="!hasError()"
-          [class.focus:shadow-[3px_3px_0px_#C25E00]]="!hasError()"
           [attr.aria-invalid]="hasError()"
           [attr.aria-describedby]="hasError() ? id() + '-error' : hint() ? id() + '-hint' : null"
         />
-      </div>
 
-      <!-- Hint or Validation Error Message -->
+        @if (suffix()) {
+          <span nbInputSuffix class="font-mono font-bold">{{ suffix() }}</span>
+        }
+      </nb-input-group>
+
       @if (hasError()) {
-        <p [id]="id() + '-error'" class="text-xs font-bold text-koko-danger flex items-center gap-1 mt-0.5 animate-in fade-in duration-150" role="alert">
+        <p [id]="id() + '-error'" class="text-xs font-bold text-red-500 flex items-center gap-1 mt-0.5 animate-in fade-in duration-150" role="alert">
           <span>⚠</span>
           <span>{{ errorMessage() }}</span>
         </p>
@@ -76,6 +73,8 @@ export class InputComponent implements ControlValueAccessor {
   readonly required = input<boolean>(false);
   readonly isInvalid = input<boolean>(false);
   readonly isTouched = input<boolean>(false);
+  readonly prefix = input<string>('');
+  readonly suffix = input<string>('');
 
   protected readonly value = signal<string>('');
   protected readonly disabled = signal<boolean>(false);

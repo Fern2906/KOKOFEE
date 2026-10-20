@@ -8,6 +8,7 @@ import { PasswordInputComponent } from '../../../shared/components/password-inpu
 import { AuthService } from '../../../core/services/auth.service';
 import { NavbarComponent } from '../../../layouts/public-layout/navbar/navbar';
 import { FooterComponent } from '../../../layouts/public-layout/footer/footer';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-login-page',
@@ -21,7 +22,8 @@ import { FooterComponent } from '../../../layouts/public-layout/footer/footer';
     PasswordInputComponent,
     NavbarComponent,
     FooterComponent,
-  ],
+    LucideAngularModule
+],
   templateUrl: './login.html',
 })
 export class LoginPage {

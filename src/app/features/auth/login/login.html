@@ -5,65 +5,28 @@
       <main class="flex-1 flex items-center justify-center p-4 pt-28 pb-12 sm:p-6 sm:pt-32 lg:p-12 lg:pt-36">
         <div class="w-full max-w-5xl bg-white rounded-2xl border-3 border-koko-espresso shadow-[8px_8px_0px_#1A120B] overflow-hidden grid grid-cols-1 lg:grid-cols-12">
 
-          <!-- Left Column: Editorial Coffee Imagery & Brand Manifesto (Visible on lg) -->
           <div class="hidden lg:flex lg:col-span-5 bg-koko-roast text-koko-cream p-8 flex-col justify-between relative overflow-hidden border-r-3 border-koko-espresso">
-            <!-- Background Image with Dark Roast Overlay -->
             <div class="absolute inset-0 z-0">
               <img
-                src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=800&auto=format&fit=crop"
+                src="https://64.media.tumblr.com/acc7a0a2660a590d03170758527dfa38/a2773d54cbba82d4-28/s1280x1920/53b735a15a2b1a4070711db2b9cd1fdf4f1d3e6a.gif"
                 alt="Café de especialidad servido en taza artesanal"
                 class="w-full h-full object-cover">
               <div class="absolute inset-0 bg-gradient-to-t from-koko-espresso via-koko-roast/80 to-transparent"></div>
             </div>
-
-            <!-- Top Tagline -->
-            <div class="relative z-10 space-y-2">
-              <span class="inline-block px-2.5 py-1 rounded bg-koko-caramel text-white font-mono text-[11px] font-black uppercase tracking-wider shadow-[2px_2px_0px_#1A120B]">
-                Comunidad Barista
-              </span>
-              <h2 class="font-display font-black text-2xl text-white leading-tight">
-                El ritual del café de altura comienza aquí.
-              </h2>
-            </div>
-
-            <!-- Bottom Testimonial / Perks Quote -->
-            <div class="relative z-10 space-y-4 pt-12">
-              <div class="p-4 bg-koko-espresso/80 backdrop-blur-md rounded-xl border border-white/20">
-                <p class="text-xs italic text-koko-cream/90 leading-relaxed">
-                  “Accede a tus suscripciones de granos frescos, guarda tus notas de cata y gestiona tus pedidos con trazabilidad de origen garantizada.”
-                </p>
-                <div class="mt-2 flex items-center justify-between text-[11px] font-mono text-koko-gold font-bold">
-                  <span>★ Tostado Semanal</span>
-                  <span>100% Arábica</span>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-2 text-xs font-mono text-koko-cream/70">
-                <span class="w-2 h-2 rounded-full bg-koko-caramel"></span>
-                <span>Plataforma segura de clientes KOKOFEE</span>
-              </div>
-            </div>
           </div>
 
-          <!-- Right Column: Authentication Form -->
           <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-center bg-white">
             <div class="max-w-md w-full mx-auto space-y-6">
 
-              <!-- Form Header -->
               <div class="space-y-1.5">
                 <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-koko-caramel uppercase tracking-wider">
-                  <span>☕</span>
                   <span>Acceso a tu cuenta</span>
                 </div>
                 <h1 class="font-display font-black text-2xl sm:text-3xl text-koko-espresso tracking-tight">
                   Bienvenido de vuelta
                 </h1>
-                <p class="text-xs sm:text-sm text-koko-coffee/80 font-sans">
-                  Ingresa tus credenciales para administrar tus órdenes o acceder al panel.
-                </p>
               </div>
 
-              <!-- General Error Alert Message -->
               @if (generalError()) {
                 <div
                   class="p-3.5 rounded-lg border-2 border-koko-danger bg-red-50 text-koko-danger flex items-start gap-3 shadow-[2px_2px_0px_#D90429] animate-in fade-in slide-in-from-top-1 duration-200"
@@ -76,9 +39,7 @@
                 </div>
               }
 
-              <!-- Reactive Login Form -->
               <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4" novalidate>
-                <!-- Email Field -->
                 <div>
                   <app-input
                     label="Correo Electrónico"
@@ -90,10 +51,10 @@
                     [isInvalid]="isFieldInvalid('email')"
                     [isTouched]="isFieldTouched('email')"
                     [errorMessage]="getEmailErrorMessage()"
+                    prefix="@"
                   />
                 </div>
 
-                <!-- Password Field -->
                 <div>
                   <app-password-input
                     label="Contraseña"
