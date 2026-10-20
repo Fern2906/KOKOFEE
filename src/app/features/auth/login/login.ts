@@ -8,7 +8,7 @@ import { PasswordInputComponent } from '../../../shared/components/password-inpu
 import { AuthService } from '../../../core/services/auth.service';
 import { NavbarComponent } from '../../../layouts/public-layout/navbar/navbar';
 import { FooterComponent } from '../../../layouts/public-layout/footer/footer';
-import { LucideAngularModule } from 'lucide-angular';
+import { LucideAngularModule, Mail, Lock } from 'lucide-angular';
 
 @Component({
   selector: 'app-login-page',
@@ -23,10 +23,12 @@ import { LucideAngularModule } from 'lucide-angular';
     NavbarComponent,
     FooterComponent,
     LucideAngularModule
-],
+  ],
   templateUrl: './login.html',
 })
 export class LoginPage {
+  readonly icons = { Mail, Lock };
+
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);

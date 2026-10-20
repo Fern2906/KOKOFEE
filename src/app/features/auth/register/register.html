@@ -1,0 +1,159 @@
+<div class="min-h-screen bg-koko-cream flex flex-col justify-between selection:bg-koko-caramel selection:text-white">
+      <app-navbar />
+
+      <main class="flex-1 flex items-center justify-center p-4 pt-28 pb-12 sm:p-6 sm:pt-32 lg:p-12 lg:pt-36">
+        <div class="w-full max-w-5xl bg-white rounded-2xl border-3 border-koko-espresso shadow-[8px_8px_0px_#1A120B] overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+          <div class="hidden lg:flex lg:col-span-5 bg-koko-roast text-koko-cream p-8 flex-col justify-between relative overflow-hidden border-r-3 border-koko-espresso">
+            <div class="absolute inset-0 z-0">
+              <img
+                src="https://www.heist.co/cdn/shop/files/LNC_2.jpg?v=1786692624&width=832s"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-koko-espresso via-koko-roast/80 to-transparent"></div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-center bg-white">
+            <div class="max-w-md w-full mx-auto space-y-6">
+
+              @if (isSuccess()) {
+                <div class="text-center space-y-6 py-4 animate-in fade-in duration-300">
+                  <div class="w-16 h-16 bg-koko-sage text-white rounded-2xl mx-auto flex items-center justify-center text-3xl border-3 border-koko-espresso shadow-[4px_4px_0px_#1A120B]">
+                    ✓
+                  </div>
+
+                  <div class="space-y-2">
+                    <h2 class="font-display font-black text-2xl sm:text-3xl text-koko-espresso">
+                      ¡Bienvenido a KOKOFEE!
+                    </h2>
+                    <p class="text-xs sm:text-sm text-koko-coffee/80 leading-relaxed max-w-sm mx-auto">
+                      Tu cuenta ha sido creada exitosamente. Ya puedes explorar el catálogo y disfrutar de café de especialidad recién tostado.
+                    </p>
+                  </div>
+
+                  <div class="p-3 bg-koko-cream/70 rounded-xl border border-koko-border-subtle text-xs font-mono text-koko-espresso text-left space-y-1">
+                    <span class="text-[10px] uppercase font-bold text-koko-muted block">Cuenta creada para:</span>
+                    <span class="font-bold text-sm text-koko-roast block">{{ emailControl.value }}</span>
+                  </div>
+
+                  <div class="space-y-3 pt-2">
+                    <a
+                      routerLink="/"
+                      nbButton
+                      tone="primary"
+                      size="lg"
+                      class="w-full font-bold text-sm shadow-[4px_4px_0px_#1A120B]"
+                    >
+                      Ir a la Tienda de Granos →
+                    </a>
+
+                    <a
+                      routerLink="/login"
+                      class="block text-xs font-mono font-bold text-koko-muted hover:text-koko-espresso hover:underline"
+                    >
+                      Iniciar sesión con tus credenciales
+                    </a>
+                  </div>
+                </div>
+              } @else {
+
+                <div class="space-y-1.5">
+                  <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-koko-caramel uppercase tracking-wider">
+                    <span>Registro de nuevo cliente</span>
+                  </div>
+                  <h1 class="font-display font-black text-2xl sm:text-3xl text-koko-espresso tracking-tight">
+                    Crea tu cuenta
+                  </h1>
+                </div>
+
+                @if (generalError()) {
+                  <div
+                    class="p-3.5 rounded-lg border-2 border-koko-danger bg-red-50 text-koko-danger flex items-start gap-3 shadow-[2px_2px_0px_#D90429] animate-in fade-in slide-in-from-top-1 duration-200"
+                    role="alert"
+                  >
+                    <span class="text-base leading-none">⚠</span>
+                    <div class="text-xs font-bold leading-relaxed">
+                      {{ generalError() }}
+                    </div>
+                  </div>
+                }
+
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4" novalidate>
+
+                  <div>
+                    <app-input
+                      label="Correo Electrónico"
+                      type="email"
+                      placeholder="tu@correo.com"
+                      autocomplete="email"
+                      [required]="true"
+                      [formControl]="emailControl"
+                      [isInvalid]="isFieldInvalid('email')"
+                      [isTouched]="isFieldTouched('email')"
+                      [errorMessage]="getEmailErrorMessage()"
+                      [prefixIcon]="icons.Mail"
+                    />
+                  </div>
+
+                  <div>
+                    <app-password-input
+                      label="Contraseña"
+                      placeholder="Mínimo 12 caracteres seguros"
+                      autocomplete="new-password"
+                      [required]="true"
+                      [formControl]="passwordControl"
+                      [isInvalid]="isFieldInvalid('password')"
+                      [isTouched]="isFieldTouched('password')"
+                      [errorMessage]="getPasswordErrorMessage()"
+                    />
+                  </div>
+
+                  <div>
+                    <app-password-input
+                      label="Confirmar Contraseña"
+                      placeholder="Repite tu contraseña exactamente"
+                      autocomplete="new-password"
+                      [required]="true"
+                      [formControl]="confirmPasswordControl"
+                      [isInvalid]="isFieldInvalid('confirmPassword')"
+                      [isTouched]="isFieldTouched('confirmPassword')"
+                      [errorMessage]="getConfirmPasswordErrorMessage()"
+                    />
+                  </div>
+
+                  <div class="pt-2">
+                    <button
+                      nbButton
+                      tone="primary"
+                      size="lg"
+                      type="submit"
+                      [disabled]="isLoading()"
+                      class="w-full font-bold text-sm tracking-wide flex items-center justify-center gap-2 shadow-[4px_4px_0px_#1A120B] active:shadow-[1px_1px_0px_#1A120B] disabled:opacity-75 disabled:cursor-not-allowed"
+                    >
+                      @if (isLoading()) {
+                        <span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        <span>Creando cuenta...</span>
+                      } @else {
+                        <span>Crear Cuenta</span>
+                        <span class="text-base">→</span>
+                      }
+                    </button>
+                  </div>
+                </form>
+
+                <div class="pt-4 border-t border-koko-espresso/10 text-center text-xs text-koko-coffee/80">
+                  ¿Ya tienes una cuenta en KOKOFEE?
+                  <a
+                    routerLink="/login"
+                    class="font-bold text-koko-caramel hover:text-koko-roast hover:underline ml-1"
+                  >
+                    Inicia sesión aquí
+                  </a>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </main>
+      <app-footer />
+    </div>

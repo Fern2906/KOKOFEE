@@ -2,11 +2,12 @@ import { Component, computed, forwardRef, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix } from '@ng-brutalism/ui';
+import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix],
+  imports: [CommonModule, ReactiveFormsModule, NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix, LucideAngularModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -28,6 +29,10 @@ import { NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix } from '@n
       <nb-input-group class="w-full" [class.!border-red-500]="hasError()">
         @if (prefix()) {
           <span nbInputPrefix class="font-mono font-bold">{{ prefix() }}</span>
+        } @else if (prefixIcon()) {
+          <span nbInputPrefix class="inline-flex items-center justify-center text-koko-espresso/70 select-none">
+            <lucide-icon [img]="prefixIcon()!" [size]="16" [strokeWidth]="2.5" />
+          </span>
         }
 
         <input
@@ -46,6 +51,10 @@ import { NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix } from '@n
 
         @if (suffix()) {
           <span nbInputSuffix class="font-mono font-bold">{{ suffix() }}</span>
+        } @else if (suffixIcon()) {
+          <span nbInputSuffix class="inline-flex items-center justify-center text-koko-espresso/70 select-none">
+            <lucide-icon [img]="suffixIcon()!" [size]="16" [strokeWidth]="2.5" />
+          </span>
         }
       </nb-input-group>
 
@@ -75,6 +84,8 @@ export class InputComponent implements ControlValueAccessor {
   readonly isTouched = input<boolean>(false);
   readonly prefix = input<string>('');
   readonly suffix = input<string>('');
+  readonly prefixIcon = input<LucideIconData | null>(null);
+  readonly suffixIcon = input<LucideIconData | null>(null);
 
   protected readonly value = signal<string>('');
   protected readonly disabled = signal<boolean>(false);

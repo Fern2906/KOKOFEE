@@ -1,12 +1,13 @@
 import { Component, computed, forwardRef, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { NbInput, NbLabel } from '@ng-brutalism/ui';
+import { NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix } from '@ng-brutalism/ui';
+import { LucideAngularModule, Lock, Eye, EyeOff, LucideIconData } from 'lucide-angular';
 
 @Component({
   selector: 'app-password-input',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NbInput, NbLabel],
+  imports: [CommonModule, ReactiveFormsModule, NbInput, NbLabel, NbInputGroup, NbInputPrefix, NbInputSuffix, LucideAngularModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -17,21 +18,23 @@ import { NbInput, NbLabel } from '@ng-brutalism/ui';
   template: `
     <div class="flex flex-col gap-1.5 w-full">
       @if (label()) {
-        <div class="flex items-center justify-between">
-          <label
-            nbLabel
-            [attr.for]="id()"
-            class="font-display text-xs font-bold uppercase tracking-wider text-koko-espresso"
-          >
-            {{ label() }}
-            @if (required()) {
-              <span class="text-koko-caramel text-xs">*</span>
-            }
-          </label>
-        </div>
+        <label nbLabel [attr.for]="id()" class="flex items-center justify-between text-xs font-bold uppercase tracking-wider">
+          <span>{{ label() }}</span>
+          @if (required()) {
+            <span class="text-red-500 text-xs">*</span>
+          }
+        </label>
       }
 
-      <div class="relative flex items-center">
+      <nb-input-group class="w-full" [class.!border-red-500]="hasError()">
+        @if (prefix()) {
+          <span nbInputPrefix class="select-none font-mono font-bold text-sm">{{ prefix() }}</span>
+        } @else if (prefixIcon()) {
+          <span nbInputPrefix class="inline-flex items-center justify-center text-koko-espresso/70 select-none">
+            <lucide-icon [img]="prefixIcon()!" [size]="16" [strokeWidth]="2.5" />
+          </span>
+        }
+
         <input
           nbInput
           [id]="id()"
@@ -42,37 +45,25 @@ import { NbInput, NbLabel } from '@ng-brutalism/ui';
           [value]="value()"
           (input)="handleInput($event)"
           (blur)="handleBlur()"
-          class="w-full text-sm font-medium transition-all pl-3.5 pr-11 py-2.5 rounded-lg border-2 bg-white disabled:bg-koko-cream/60 disabled:cursor-not-allowed"
-          [class.border-koko-danger]="hasError()"
-          [class.border-koko-espresso]="!hasError()"
-          [class.shadow-[2px_2px_0px_#D90429]]="hasError()"
-          [class.shadow-[2px_2px_0px_#1A120B]]="!hasError()"
-          [class.focus:shadow-[3px_3px_0px_#C25E00]]="!hasError()"
           [attr.aria-invalid]="hasError()"
           [attr.aria-describedby]="hasError() ? id() + '-error' : null"
         />
 
-        <!-- Show / Hide Password Toggle Action -->
         <button
           type="button"
+          nbInputSuffix
           (click)="togglePasswordVisibility()"
           [disabled]="disabled()"
-          class="absolute right-2.5 p-1 text-koko-muted hover:text-koko-espresso focus:outline-none focus:ring-1 focus:ring-koko-caramel rounded transition-colors text-base select-none"
+          class="inline-flex items-center justify-center p-1 m-0 cursor-pointer text-koko-espresso/70 hover:text-koko-espresso transition-colors select-none focus:outline-none"
           [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Ver contraseña'"
           [attr.aria-pressed]="showPassword()"
-          tabindex="0"
         >
-          @if (showPassword()) {
-            <span title="Ocultar">👁️</span>
-          } @else {
-            <span title="Mostrar">👁️‍🗨️</span>
-          }
+          <lucide-icon [img]="showPassword() ? icons.EyeOff : icons.Eye" [size]="16" [strokeWidth]="2.5" />
         </button>
-      </div>
+      </nb-input-group>
 
-      <!-- Error Message -->
       @if (hasError()) {
-        <p [id]="id() + '-error'" class="text-xs font-bold text-koko-danger flex items-center gap-1 mt-0.5 animate-in fade-in duration-150" role="alert">
+        <p [id]="id() + '-error'" class="text-xs font-bold text-red-500 flex items-center gap-1 mt-0.5 animate-in fade-in duration-150" role="alert">
           <span>⚠</span>
           <span>{{ errorMessage() }}</span>
         </p>
@@ -89,6 +80,10 @@ export class PasswordInputComponent implements ControlValueAccessor {
   readonly required = input<boolean>(false);
   readonly isInvalid = input<boolean>(false);
   readonly isTouched = input<boolean>(false);
+  readonly prefix = input<string>('');
+  readonly prefixIcon = input<LucideIconData | null>(Lock);
+
+  readonly icons = { Lock, Eye, EyeOff };
 
   protected readonly showPassword = signal(false);
   protected readonly value = signal<string>('');

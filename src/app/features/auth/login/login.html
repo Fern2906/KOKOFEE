@@ -7,10 +7,16 @@
 
           <div class="hidden lg:flex lg:col-span-5 bg-koko-roast text-koko-cream p-8 flex-col justify-between relative overflow-hidden border-r-3 border-koko-espresso">
             <div class="absolute inset-0 z-0">
-              <img
-                src="https://64.media.tumblr.com/acc7a0a2660a590d03170758527dfa38/a2773d54cbba82d4-28/s1280x1920/53b735a15a2b1a4070711db2b9cd1fdf4f1d3e6a.gif"
+              <video
+                src="https://www.heist.co/cdn/shop/videos/c/vp/b1308aedc7c542f99faef7e9d871e743/b1308aedc7c542f99faef7e9d871e743.m3u8?v=0"
                 alt="Café de especialidad servido en taza artesanal"
-                class="w-full h-full object-cover">
+                class="w-full h-full object-cover"
+                autoplay
+                muted
+                loop
+                playsinline
+                >
+              </video>
               <div class="absolute inset-0 bg-gradient-to-t from-koko-espresso via-koko-roast/80 to-transparent"></div>
             </div>
           </div>
@@ -51,7 +57,7 @@
                     [isInvalid]="isFieldInvalid('email')"
                     [isTouched]="isFieldTouched('email')"
                     [errorMessage]="getEmailErrorMessage()"
-                    prefix="@"
+                    [prefixIcon]="icons.Mail"
                   />
                 </div>
 
@@ -68,7 +74,6 @@
                   />
                 </div>
 
-                <!-- Secondary Actions: Remember Me & Forgot Password -->
                 <div class="flex items-center justify-between text-xs pt-1">
                   <label class="flex items-center gap-2 cursor-pointer select-none text-koko-espresso font-medium">
                     <input
