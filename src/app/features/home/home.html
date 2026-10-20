@@ -1,0 +1,401 @@
+<div class="min-h-screen flex flex-col bg-koko-cream text-koko-espresso">
+    <app-navbar />
+
+    <main class="flex-1">
+
+        <section class="mx-auto max-w-7xl px-4 pt-28 pb-12 sm:px-6 lg:px-8 lg:pb-20">
+            <div nbSplit ratio="2:1" gap="lg" collapse="md" align="stretch">
+                <article nbSurface tone="yellow" padding="xl" radius="xl" shadow="hard" border="strong">
+                    <div nbStack gap="lg" align="start">
+
+                        <span nbChip tone="success" radius="md" class="font-bold uppercase">
+                            <span nbStatusDot state="live"></span>
+                            Lote #08 · Tostado hace 48h
+                        </span>
+
+                        <h1 nbDisplay size="lg">
+                            Café de especialidad con alma de origen y
+                            <span class="hero-mark">tueste maestro.</span>
+                        </h1>
+
+                        <p nbText size="lg" measure="md">
+                            Curamos cosechas de microfincas a más de 1,700 metros de altura.
+                            Revelamos la acidez viva, el dulzor natural y los aromas florales
+                            únicos de cada variedad sin enmascarar su terroir.
+                        </p>
+
+                        <div nbCluster gap="sm">
+                            <a href="#productos" nbButton tone="black" size="lg">
+                                <span>Explorar granos</span>
+                                <lucide-icon [img]="icons.ArrowRight" [size]="18" [strokeWidth]="3" />
+                            </a>
+                            <a href="#recetas" nbButton tone="white" size="lg">
+                                <lucide-icon [img]="icons.Coffee" [size]="18" [strokeWidth]="3" />
+                                <span>Guías de extracción</span>
+                            </a>
+                        </div>
+
+                        <div class="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
+                            <div nbSurface tone="warning" padding="md" radius="lg" shadow="hard" border="strong">
+                                <div nbStack gap="xs" align="start">
+                                    <lucide-icon [img]="icons.Award" [size]="22" [strokeWidth]="3" />
+                                    <span nbText size="2xl" weight="black">88.5+</span>
+                                    <span nbText size="xs" weight="bold" transform="uppercase" tracking="wide">Puntos
+                                        SCA</span>
+                                </div>
+                            </div>
+
+                            <div nbSurface tone="danger" padding="md" radius="lg" shadow="hard" border="strong">
+                                <div nbStack gap="xs" align="start">
+                                    <lucide-icon [img]="icons.Route" [size]="22" [strokeWidth]="3" />
+                                    <span nbText size="2xl" weight="black">100%</span>
+                                    <span nbText size="xs" weight="bold" transform="uppercase"
+                                        tracking="wide">Trazabilidad</span>
+                                </div>
+                            </div>
+
+                            <div nbSurface tone="accent" padding="md" radius="lg" shadow="hard" border="strong">
+                                <div nbStack gap="xs" align="start">
+                                    <lucide-icon [img]="icons.Handshake" [size]="22" [strokeWidth]="3" />
+                                    <span nbText size="2xl" weight="black">0</span>
+                                    <span nbText size="xs" weight="bold" transform="uppercase"
+                                        tracking="wide">Intermediarios</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <aside nbStack gap="md">
+
+                    <div nbSurface tone="cream" padding="sm" radius="xl" shadow="hard" border="strong"
+                        class="relative transition-transform duration-200 hover:-translate-y-1">
+                        <nb-sticker shape="star" tone="pink" [rotate]="10" class="absolute -top-6 -right-3 z-20"
+                            aria-label="Cosecha 2026">
+                            <nb-sticker-face>
+                                <lucide-icon [img]="icons.Sprout" [size]="22" [strokeWidth]="3" />
+                            </nb-sticker-face>
+                        </nb-sticker>
+
+                        <div nbMediaFrame ratio="4/3" tone="pink" border="strong" radius="lg" shadow="none">
+                            <img src="https://static.zara.net/assets/public/2a68/9819/15d249c28812/ca292071b651/44677052999-e1/44677052999-e1.jpg?ts=1732177773674&w=904"
+                                alt="Tueste y preparación artesanal de café en KOKOFEE"
+                                class="h-full w-full object-cover" loading="eager" />
+                        </div>
+                    </div>
+
+                    <div nbSurface tone="pink" padding="lg" radius="lg" shadow="hard" border="strong" class="hero-card">
+                        <div class="flex items-center gap-3">
+                            <span class="hero-card__icon"><lucide-icon [img]="icons.Flame" [size]="20"
+                                    [strokeWidth]="3" /></span>
+                            <div>
+                                <p nbText weight="black" transform="uppercase">Tostaduría urbana</p>
+                                <p nbText size="xs" weight="medium">Curvas de tueste por micro-lote</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div nbSurface tone="mint" padding="lg" radius="lg" shadow="hard" border="strong" class="hero-card">
+                        <div class="flex items-center gap-3">
+                            <span class="hero-card__icon"><lucide-icon [img]="icons.Mountain" [size]="20"
+                                    [strokeWidth]="3" /></span>
+                            <div>
+                                <p nbText weight="black" transform="uppercase">+1,700 msnm</p>
+                                <p nbText size="xs" weight="medium">Microfincas de altura</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div nbSurface tone="lavender" padding="lg" radius="lg" shadow="hard" border="strong"
+                        class="hero-card">
+                        <div class="flex items-center gap-3">
+                            <span class="hero-card__icon"><lucide-icon [img]="icons.Sprout" [size]="20"
+                                    [strokeWidth]="3" /></span>
+                            <div>
+                                <p nbText weight="black" transform="uppercase">Cosecha 2026</p>
+                                <p nbText size="xs" weight="medium">Direct trade, sin intermediarios</p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 2. ARTISANAL MARQUEE TICKER                                   -->
+        <!-- ============================================================== -->
+        <div class="bg-koko-roast text-koko-cream border-b-2 border-koko-espresso py-3 overflow-hidden select-none">
+            <nb-marquee duration="28s" [pauseOnHover]="true">
+                <nb-marquee-item class="flex items-center gap-8 text-xs font-mono font-bold tracking-widest uppercase">
+                    <span>★ Tueste Semanal Garantizado</span>
+                    <span>•</span>
+                    <span>100% Granos Arábica de Altura</span>
+                    <span>•</span>
+                    <span>Envíos Gratis a partir de $45</span>
+                    <span>•</span>
+                    <span>Perfilado de Cata por Q-Graders</span>
+                    <span>•</span>
+                    <span>Molienda a Medida o Grano Entero</span>
+                    <span>•</span>
+                    <span>Empaque con Válvula Desgasificadora</span>
+                    <span>•</span>
+                </nb-marquee-item>
+            </nb-marquee>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- 3. FEATURED PRODUCTS SECTION                                   -->
+        <!-- ============================================================== -->
+        <section id="productos" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div
+                class="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b-2 border-koko-espresso/20 gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-3 h-3 rounded-full bg-koko-caramel"></span>
+                        <span class="text-xs font-mono uppercase tracking-widest font-bold text-koko-caramel">
+                            Cosechas Exclusivas
+                        </span>
+                    </div>
+                    <h2 class="font-display font-black text-3xl sm:text-4xl text-koko-espresso">
+                        Granos Destacados de la Semana
+                    </h2>
+                    <p class="text-sm text-koko-coffee/80 mt-1 max-w-xl">
+                        Selección de microlotes calificados por encima de 87 puntos SCA. Disponibles hasta agotar
+                        existencias de cosecha.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono text-koko-muted">
+                        {{ productService.featuredProducts().length }} microlotes disponibles
+                    </span>
+                </div>
+            </div>
+
+            <!-- Products Grid or Empty State -->
+            @if (productService.featuredProducts().length > 0) {
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                @for (product of productService.featuredProducts(); track product.id) {
+                <app-product-card [product]="product" (addToCart)="onAddToCart($event)" />
+                }
+            </div>
+            } @else {
+            <!-- Accessible Empty State -->
+            <div
+                class="bg-white border-2 border-dashed border-koko-espresso rounded-xl p-12 text-center max-w-md mx-auto space-y-4">
+                <div class="text-4xl">☕</div>
+                <h3 class="font-display font-bold text-lg text-koko-espresso">
+                    Cosechas en periodo de reposo
+                </h3>
+                <p class="text-xs text-koko-coffee/70">
+                    Estamos tostando el siguiente lote fresco este lunes. Suscríbete para recibir notificación de
+                    reapertura.
+                </p>
+            </div>
+            }
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 4. BRAND STORY & CRAFT MANIFESTO (Non-card asymmetrical layout) -->
+        <!-- ============================================================== -->
+        <section id="manifiesto" class="bg-koko-espresso text-koko-cream py-16 md:py-24 border-y-2 border-koko-roast">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <!-- Left: Craft Imagery with Overlaid Elements -->
+                    <div class="lg:col-span-5 relative">
+                        <div
+                            class="border-3 border-koko-cream/30 rounded-2xl overflow-hidden shadow-[8px_8px_0px_#C25E00]">
+                            <div nbMediaFrame ratio="4/3">
+                                <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=800&auto=format&fit=crop"
+                                    alt="Manos seleccionando granos de café verde en beneficio húmedo"
+                                    class="w-full h-full object-cover" loading="lazy" />
+                            </div>
+                        </div>
+
+                        <!-- Floating Roaster Quote -->
+                        <div class="mt-4 p-4 bg-koko-roast border-2 border-koko-cream/20 rounded-xl">
+                            <p class="text-xs italic text-koko-cream/90 leading-relaxed">
+                                “El buen café no necesita azúcar ni disfraces. Solo necesita respeto por la altitud, el
+                                suelo y la mano que lo cosechó.”
+                            </p>
+                            <div class="mt-2 text-[11px] font-mono text-koko-gold font-bold">
+                                — Fernando Alarcón, Maestro Tostador en KOKOFEE
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Craft Pillars -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div
+                            class="inline-block px-3 py-1 rounded bg-white/10 text-koko-gold font-mono text-xs font-bold uppercase tracking-widest border border-white/15">
+                            Nuestro Manifiesto
+                        </div>
+
+                        <h2 class="font-display font-black text-3xl sm:text-4xl text-white leading-tight">
+                            No vendemos café genérico.
+                            <span class="text-koko-caramel block">Honramos el trabajo del caficultor.</span>
+                        </h2>
+
+                        <p class="text-sm text-koko-cream/80 leading-relaxed">
+                            En la industria tradicional, el café se tuesta de forma oscura para homogeneizar granos
+                            viejos o defectuosos. En KOKOFEE hacemos exactamente lo opuesto: desarrollamos curvas de
+                            tueste por perfil térmico para preservar los azúcares naturales del mucílago y la acidez
+                            viva del grano de altura.
+                        </p>
+
+                        <!-- 3 Pillars Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                            <div class="p-4 bg-white/5 border border-white/15 rounded-xl space-y-2">
+                                <div class="text-2xl">🌱</div>
+                                <h3 class="font-display font-bold text-sm text-white">Comercio Directo</h3>
+                                <p class="text-xs text-koko-cream/70 leading-normal">
+                                    Pagamos hasta un 65% por encima del precio bursátil a los caficultores de origen.
+                                </p>
+                            </div>
+
+                            <div class="p-4 bg-white/5 border border-white/15 rounded-xl space-y-2">
+                                <div class="text-2xl">🔬</div>
+                                <h3 class="font-display font-bold text-sm text-white">Curva de Tueste</h3>
+                                <p class="text-xs text-koko-cream/70 leading-normal">
+                                    Monitoreamos temperatura de grano y RoR segundo a segundo en cada microlote.
+                                </p>
+                            </div>
+
+                            <div class="p-4 bg-white/5 border border-white/15 rounded-xl space-y-2">
+                                <div class="text-2xl">📦</div>
+                                <h3 class="font-display font-bold text-sm text-white">Frescura Absoluta</h3>
+                                <p class="text-xs text-koko-cream/70 leading-normal">
+                                    Empacado dentro de las 24 horas posteriores al reposo de tostado con válvula
+                                    unidireccional.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 5. BREWING GUIDES & RECIPES SECTION                            -->
+        <!-- ============================================================== -->
+        <section id="recetas" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+                class="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b-2 border-koko-espresso/20 gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-3 h-3 rounded-full bg-koko-caramel"></span>
+                        <span class="text-xs font-mono uppercase tracking-widest font-bold text-koko-caramel">
+                            Barismo en Casa
+                        </span>
+                    </div>
+                    <h2 class="font-display font-black text-3xl sm:text-4xl text-koko-espresso">
+                        Guías de Extracción Recomendadas
+                    </h2>
+                    <p class="text-sm text-koko-coffee/80 mt-1 max-w-xl">
+                        Aprende los ratios, moliendas y temperaturas exactas para despertar las notas de cata ocultas en
+                        tu grano.
+                    </p>
+                </div>
+
+                <div>
+                    <button nbButton tone="cream" size="sm"
+                        class="font-bold flex items-center gap-1.5 font-mono text-xs">
+                        <span>Ver Todas las Guías</span>
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recipe Cards Grid or Empty State -->
+            @if (recipeService.recipes().length > 0) {
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @for (recipe of recipeService.recipes(); track recipe.id) {
+                <app-recipe-card [recipe]="recipe" (viewRecipe)="onViewRecipe($event)" />
+                }
+            </div>
+            } @else {
+            <div
+                class="bg-white border-2 border-dashed border-koko-espresso rounded-xl p-8 text-center max-w-md mx-auto">
+                <p class="text-xs text-koko-coffee/70">No hay recetas disponibles temporalmente.</p>
+            </div>
+            }
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 6. COMMUNITY & RECENT REVIEWS SECTION                           -->
+        <!-- ============================================================== -->
+        <section id="resenas" class="py-16 md:py-24 bg-koko-cream/70 border-t-2 border-koko-espresso/15">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-koko-espresso text-xs font-mono font-bold text-koko-caramel mb-3">
+                        ★ 4.9/5 Promedio de Satisfacción
+                    </div>
+                    <h2 class="font-display font-black text-3xl sm:text-4xl text-koko-espresso">
+                        Lo que dicen Baristas y Clientes
+                    </h2>
+                    <p class="text-sm text-koko-coffee/80 mt-2">
+                        Reseñas verificadas de apasionados del café de especialidad que confían en nuestras cosechas.
+                    </p>
+                </div>
+
+                <!-- Reviews Grid or Empty State -->
+                @if (reviewService.reviews().length > 0) {
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @for (review of reviewService.reviews(); track review.id) {
+                    <app-review-card [review]="review" />
+                    }
+                </div>
+                } @else {
+                <div
+                    class="bg-white border-2 border-dashed border-koko-espresso rounded-xl p-8 text-center max-w-md mx-auto">
+                    <p class="text-xs text-koko-coffee/70">Aún no hay reseñas publicadas para este lote.</p>
+                </div>
+                }
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 7. FINAL STORE CTA BANNER                                      -->
+        <!-- ============================================================== -->
+        <section
+            class="bg-koko-roast text-koko-cream border-t-2 border-koko-espresso py-16 md:py-20 relative overflow-hidden">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
+                <span
+                    class="inline-block px-3 py-1 bg-koko-caramel text-white font-mono text-xs font-black uppercase tracking-widest rounded shadow-[2px_2px_0px_#1A120B]">
+                    Tu Ritual Merece el Mejor Café
+                </span>
+
+                <h2 class="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
+                    ¿Listo para dar el salto al café de especialidad?
+                </h2>
+
+                <p class="text-sm sm:text-base text-koko-cream/80 max-w-2xl mx-auto leading-relaxed">
+                    Elige tu método favorito (espresso, filtro o prensa) y te recomendamos el grano con el perfil de
+                    tueste y molienda ideal para ti.
+                </p>
+
+                <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+                    <a href="#productos" nbButton tone="primary" size="lg"
+                        class="font-bold text-base px-8 shadow-[4px_4px_0px_#1A120B] hover:shadow-[2px_2px_0px_#1A120B]">
+                        Comprar Café Fresco Ahora
+                    </a>
+
+                    <a routerLink="/admin" nbButton tone="cream" size="lg"
+                        class="font-bold text-base px-6 shadow-[3px_3px_0px_#1A120B]">
+                        Ir al Panel Administrativo ⚙
+                    </a>
+                </div>
+
+                <!-- Guarantee Note -->
+                <p class="text-xs text-koko-cream/60 font-mono pt-4">
+                    🛡 Garantía KOKOFEE: Si no notas la diferencia frente al café comercial, te devolvemos tu dinero.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Reusable Footer -->
+    <app-footer />
+</div>
