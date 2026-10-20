@@ -45,7 +45,6 @@
     box-shadow: 0 0 0 0 var(--nb-shadow);
 }
 
-/* Cuadro del icono */
 .kk-action__icon {
     display: grid;
     width: 2rem;
@@ -65,7 +64,6 @@
     color: var(--nb-paper);
 }
 
-/* Carrito: el icono se agita al hover */
 .kk-cart:hover .kk-action__icon lucide-icon {
     animation: kk-wiggle 0.45s ease;
 }
@@ -86,7 +84,6 @@
     }
 }
 
-/* Ingresar: la flecha se desplaza */
 .kk-login__arrow {
     transition: transform 0.2s ease;
 }
@@ -95,7 +92,6 @@
     transform: translateX(4px);
 }
 
-/* Contador como sticker que sobresale (reemplaza el .kk-badge anterior) */
 .kk-badge {
     position: absolute;
     top: -0.9rem;
@@ -136,7 +132,6 @@
     }
 }
 
-/* Link de navegación */
 .nav-link {
     --kk-c: var(--nb-yellow);
     position: relative;
@@ -155,7 +150,6 @@
     transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Un color por link */
 .nav-link--yellow {
     --kk-c: var(--nb-yellow, #ffd23f);
 }
@@ -172,7 +166,6 @@
     --kk-c: var(--nb-lavender, #c4b5fd);
 }
 
-/* Relleno de color que sube desde abajo */
 .nav-link::before {
     content: "";
     position: absolute;
@@ -187,7 +180,7 @@
 .nav-link:focus-visible {
     border-color: var(--nb-border);
     transform: translate(-2px, -2px) rotate(-1deg);
-    box-shadow: 4px 4px 0 0 var(--nb-shadow);
+    /* box-shadow: 4px 4px 0 0 var(--nb-shadow); */
     outline: none;
 }
 
@@ -201,7 +194,6 @@
     box-shadow: none;
 }
 
-/* Cuadro del icono */
 .nav-link__icon {
     display: grid;
     width: 1.9rem;
@@ -213,15 +205,12 @@
         transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* En hover el cuadro se invierte (oscuro) y gira */
 .nav-link:hover .nav-link__icon,
 .nav-link:focus-visible .nav-link__icon {
-    background: var(--nb-border);
     color: var(--nb-paper);
     transform: rotate(-10deg) scale(1.12);
 }
 
-/* El icono da un saltito */
 .nav-link:hover .nav-link__icon lucide-icon {
     animation: kk-hop 0.4s ease;
 }
