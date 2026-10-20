@@ -8,6 +8,8 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { PasswordInputComponent } from '../../../shared/components/password-input/password-input.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { passwordMatchValidator, strongPasswordValidator } from '../../../core/validators/auth.validators';
+import { NavbarComponent } from '../../../layouts/public-layout/navbar/navbar';
+import { FooterComponent } from '../../../layouts/public-layout/footer/footer';
 
 @Component({
   selector: 'app-register-page',
@@ -19,33 +21,15 @@ import { passwordMatchValidator, strongPasswordValidator } from '../../../core/v
     NbButton,
     InputComponent,
     PasswordInputComponent,
+    NavbarComponent,
+    FooterComponent,
   ],
   template: `
     <div class="min-h-screen bg-koko-cream flex flex-col justify-between selection:bg-koko-caramel selection:text-white">
-      <!-- Top Minimal Header with Brand & Return Link -->
-      <header class="py-4 px-4 sm:px-8 border-b-2 border-koko-espresso/15 bg-white/80 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-          <a routerLink="/" class="flex items-center gap-2.5 group">
-            <div class="w-8 h-8 bg-koko-espresso rounded-md flex items-center justify-center text-koko-cream font-display font-black text-lg border-2 border-koko-espresso shadow-[2px_2px_0px_#C25E00]">
-              K
-            </div>
-            <span class="font-display font-black text-xl tracking-tight text-koko-espresso">
-              KOKOFEE
-            </span>
-          </a>
-
-          <a
-            routerLink="/"
-            class="text-xs font-mono font-bold text-koko-muted hover:text-koko-espresso flex items-center gap-1.5 transition-colors"
-          >
-            <span>←</span>
-            <span>Volver a la tienda</span>
-          </a>
-        </div>
-      </header>
+      <app-navbar />
 
       <!-- Main Register Container (Editorial Two-Column Composition) -->
-      <main class="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12">
+      <main class="flex-1 flex items-center justify-center p-4 pt-28 pb-12 sm:p-6 sm:pt-32 lg:p-12 lg:pt-36">
         <div class="w-full max-w-5xl bg-white rounded-2xl border-3 border-koko-espresso shadow-[8px_8px_0px_#1A120B] overflow-hidden grid grid-cols-1 lg:grid-cols-12">
 
           <!-- Left Column: Editorial Imagery & Coffee Perks (Visible on lg) -->
@@ -369,10 +353,7 @@ import { passwordMatchValidator, strongPasswordValidator } from '../../../core/v
         </div>
       </main>
 
-      <!-- Bottom Minimal Footer -->
-      <footer class="py-4 px-4 text-center text-[11px] font-mono text-koko-muted border-t border-koko-espresso/10">
-        © 2026 KOKOFEE Specialty Coffee Lab · Registro seguro cifrado
-      </footer>
+      <app-footer />
     </div>
   `,
 })

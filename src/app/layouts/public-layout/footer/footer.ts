@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
 import {
   NbButton, NbChip, NbDisplay, NbInput, NbSplit, NbStack, NbSurface, NbText,
 } from '@ng-brutalism/ui';
@@ -13,52 +16,78 @@ import { LucideAngularModule, Coffee, Mail, ArrowRight } from 'lucide-angular';
   ],
   template: `
     <footer class="footer w-full">
-      <div nbSurface tone="yellow"  class="w-full overflow-hidden">
-        <div nbSplit ratio="1:1" gap="xl" collapse="md" align="center" class="p-6 sm:p-10">
-          <div nbStack gap="md" align="start">
-            <div class="flex items-center gap-3">
-              <span class="footer__logo">
-                <lucide-icon [img]="icons.Coffee" [size]="24" [strokeWidth]="3" />
-              </span>
-              <span nbDisplay size="md" class="uppercase">KOKOFEE</span>
+      <div nbSurface tone="yellow" class="w-full overflow-hidden">
+        @if (!isAuthRoute()) {
+          <div nbSplit ratio="1:1" gap="xl" collapse="md" align="center" class="p-6 sm:p-10">
+            <div nbStack gap="md" align="start">
+              <div class="flex items-center gap-3">
+                <span class="footer__logo">
+                  <lucide-icon [img]="icons.Coffee" [size]="24" [strokeWidth]="3" />
+                </span>
+                <span nbDisplay size="md" class="uppercase">KOKOFEE</span>
+              </div>
+              <p nbText size="sm" weight="medium" measure="md">
+                Tostaduría de café de especialidad. Tostamos cada semana en
+                pequeños batches para preservar las notas de cata y su terroir.
+              </p>
             </div>
-            <p nbText size="sm" weight="medium" measure="md">
-              Tostaduría de café de especialidad. Tostamos cada semana en
-              pequeños batches para preservar las notas de cata y su terroir.
-            </p>
+
+            <form (submit)="$event.preventDefault()" nbStack gap="sm" align="start" class="w-full">
+              <label nbText size="xs" weight="black" transform="uppercase" tracking="wide" for="footer-email">
+                Boletín del barista
+              </label>
+              <div class="flex w-full flex-col gap-2 sm:flex-row">
+                <input nbInput id="footer-email" type="email" placeholder="tu@correo.com"
+                       class="w-full" aria-label="Correo para el boletín" />
+                <button nbButton tone="black" size="md" type="submit" class="shrink-0">
+                  <lucide-icon [img]="icons.Mail" [size]="18" [strokeWidth]="3" />
+                  <span>Suscribirme</span>
+                </button>
+              </div>
+            </form>
           </div>
 
-          <form (submit)="$event.preventDefault()" nbStack gap="sm" align="start" class="w-full">
-            <label nbText size="xs" weight="black" transform="uppercase" tracking="wide" for="footer-email">
-              Boletín del barista
-            </label>
-            <div class="flex w-full flex-col gap-2 sm:flex-row">
-              <input nbInput id="footer-email" type="email" placeholder="tu@correo.com"
-                     class="w-full" aria-label="Correo para el boletín" />
-              <button nbButton tone="black" size="md" type="submit" class="shrink-0">
-                <lucide-icon [img]="icons.Mail" [size]="18" [strokeWidth]="3" />
-                <span>Suscribirme</span>
-              </button>
+          <nav aria-label="Pie de página"
+               class="flex flex-wrap gap-3 border-t-4 border-(--nb-border) bg-(--nb-pink) px-6 py-5 sm:px-10">
+            <a class="footer__link" href="#productos">Granos</a>
+            <a class="footer__link" href="#recetas">Guías</a>
+            <a class="footer__link" href="#manifiesto">Historia</a>
+            <a class="footer__link" href="#resenas">Reseñas</a>
+          </nav>
+
+          <div class="flex flex-col items-center justify-between gap-3 border-t-4 border-(--nb-border)
+                      bg-(--nb-hot) px-6 py-4 font-mono text-xs font-bold uppercase sm:flex-row sm:px-10">
+            <p class="m-0">© 2026 KOKOFEE Specialty Coffee Lab</p>
+            <div class="flex gap-5">
+              <a class="footer__legal" href="#">Privacidad</a>
+              <a class="footer__legal" href="#">Envíos</a>
             </div>
-          </form>
-        </div>
-
-        <nav aria-label="Pie de página"
-             class="flex flex-wrap gap-3 border-t-4 border-(--nb-border) bg-(--nb-pink) px-6 py-5 sm:px-10">
-          <a class="footer__link" href="#productos">Granos</a>
-          <a class="footer__link" href="#recetas">Guías</a>
-          <a class="footer__link" href="#manifiesto">Historia</a>
-          <a class="footer__link" href="#resenas">Reseñas</a>
-        </nav>
-
-        <div class="flex flex-col items-center justify-between gap-3 border-t-4 border-(--nb-border)
-                    bg-(--nb-hot) px-6 py-4 font-mono text-xs font-bold uppercase sm:flex-row sm:px-10">
-          <p class="m-0">© 2026 KOKOFEE Specialty Coffee Lab</p>
-          <div class="flex gap-5">
-            <a class="footer__legal" href="#">Privacidad</a>
-            <a class="footer__legal" href="#">Envíos</a>
           </div>
-        </div>
+        } @else {
+          <div nbSplit ratio="auto:fill" gap="xl" collapse="md" align="center" class="p-6 sm:p-10">
+            <div nbStack gap="md" align="start">
+              <div class="flex items-center gap-3">
+                <span class="footer__logo">
+                  <lucide-icon [img]="icons.Coffee" [size]="24" [strokeWidth]="3" />
+                </span>
+                <span nbDisplay size="md" class="uppercase">KOKOFEE</span>
+              </div>
+              <p nbText size="sm" weight="medium" measure="md">
+                Tostaduría de café de especialidad. Tostamos cada semana en
+                pequeños batches para preservar las notas de cata y su terroir.
+              </p>
+            </div>
+
+          </div>
+          <div class="flex flex-col items-center justify-between gap-3 border-t-4 border-(--nb-border)
+                      bg-(--nb-hot) px-6 py-4 font-mono text-xs font-bold uppercase sm:flex-row sm:px-10">
+            <p class="m-0">© 2026 KOKOFEE Specialty Coffee Lab</p>
+            <div class="flex gap-5">
+              <a class="footer__legal" href="#">Privacidad</a>
+              <a class="footer__legal" href="#">Envíos</a>
+            </div>
+          </div>
+        }
       </div>
     </footer>
   `,
@@ -104,13 +133,34 @@ import { LucideAngularModule, Coffee, Mail, ArrowRight } from 'lucide-angular';
     }
 
     .footer {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
   `,
 })
 export class FooterComponent {
+  private readonly router = inject(Router);
+
+  /** Permite forzar el modo autenticación manualmente si se desea */
+  readonly isAuth = input<boolean | undefined>(undefined);
+
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map(e => e.urlAfterRedirects || e.url)
+    ),
+    { initialValue: this.router.url }
+  );
+
+  readonly isAuthRoute = computed(() => {
+    if (this.isAuth() !== undefined) {
+      return this.isAuth()!;
+    }
+    const cleanUrl = (this.currentUrl() || '').split('?')[0].split('#')[0];
+    return cleanUrl === '/login' || cleanUrl === '/registro' || cleanUrl === '/register';
+  });
+
   readonly icons = { Coffee, Mail, ArrowRight };
 }
