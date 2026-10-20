@@ -64,3 +64,56 @@
         animation: none;
     }
 }
+
+/* Fondo oscuro de la sección: da contraste a los bloques de color */
+.manifesto {
+    background: var(--nb-border, #1a120b);
+    color: var(--nb-paper, #fff8ec);
+    border-block: 4px solid var(--nb-border, #1a120b);
+}
+
+/* Los textos sueltos van sobre fondo oscuro; los de dentro de las superficies, no */
+.manifesto-title,
+.manifesto-text {
+    color: var(--nb-paper, #fff8ec);
+}
+
+.manifesto-mark {
+    display: block;
+    color: var(--nb-hot, #ff8fb8);
+}
+
+/* Cuadro de icono (mismo patrón que navbar y hero) */
+.manifesto-icon {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 3px solid var(--nb-border);
+    color: var(--nb-paper);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Interacción de pilares y cita */
+.manifesto-pillar,
+.manifesto-quote {
+    transition: transform 0.15s ease;
+}
+
+.manifesto-pillar:hover,
+.manifesto-quote:hover {
+    transform: translate(-3px, -3px) rotate(-1deg);
+}
+
+.manifesto-pillar:hover .manifesto-icon {
+    transform: rotate(-10deg) scale(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .manifesto-pillar,
+    .manifesto-quote,
+    .manifesto-icon {
+        transition: none;
+    }
+}

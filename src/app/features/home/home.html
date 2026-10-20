@@ -217,76 +217,110 @@
         </section>
 
         <!-- Brand Story -->
-        <section id="manifiesto" class="bg-koko-espresso text-koko-cream py-16 md:py-24 border-y-2 border-koko-roast">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                    <!-- Left: Craft Imagery with Overlaid Elements -->
-                    <div class="lg:col-span-5 relative">
-                        <div
-                            class="border-3 border-koko-cream/30 rounded-2xl overflow-hidden shadow-[8px_8px_0px_#C25E00]">
-                            <div nbMediaFrame ratio="4/3">
-                                <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=800&auto=format&fit=crop"
+        <section id="manifiesto" class="manifesto py-16 md:py-24">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div nbSplit ratio="1:1" gap="xl" collapse="md" align="center">
+
+                    <div nbStack gap="lg">
+                        <div nbSurface tone="cream" padding="sm" radius="xl" shadow="hard" border="strong"
+                            class="relative transition-transform duration-200 hover:-translate-y-1">
+
+                            <nb-sticker shape="star" tone="pink" [rotate]="-10" class="absolute -top-6 -left-4 z-20"
+                                aria-label="Hecho con respeto">
+                                <nb-sticker-face>
+                                    <lucide-icon [img]="icons.Heart" [size]="22" [strokeWidth]="3" />
+                                </nb-sticker-face>
+                            </nb-sticker>
+
+                            <div nbMediaFrame ratio="4/3" tone="yellow" border="strong" radius="lg" shadow="none">
+                                <img src="https://i.pinimg.com/originals/35/a5/4a/35a54aac8bbc0be5d3c609c88f010b79.gif"
                                     alt="Manos seleccionando granos de café verde en beneficio húmedo"
-                                    class="w-full h-full object-cover" loading="lazy" />
+                                    class="h-full w-full object-cover" loading="lazy" />
                             </div>
                         </div>
 
-                        <!-- Floating Roaster Quote -->
-                        <div class="mt-4 p-4 bg-koko-roast border-2 border-koko-cream/20 rounded-xl">
-                            <p class="text-xs italic text-koko-cream/90 leading-relaxed">
-                                “El buen café no necesita azúcar ni disfraces. Solo necesita respeto por la altitud, el
-                                suelo y la mano que lo cosechó.”
-                            </p>
-                            <div class="mt-2 text-[11px] font-mono text-koko-gold font-bold">
-                                — Fernando Alarcón, Maestro Tostador en KOKOFEE
+                        <figure nbSurface tone="yellow" padding="lg" radius="xl" shadow="hard" border="strong"
+                            class="manifesto-quote">
+                            <div nbStack gap="sm" align="start">
+                                <span class="manifesto-icon">
+                                    <lucide-icon [img]="icons.Quote" [size]="20" [strokeWidth]="3" />
+                                </span>
+                                <blockquote nbText size="md" weight="bold" class="m-0">
+                                    “El buen café no necesita azúcar ni disfraces. Solo necesita respeto
+                                    por la altitud, el suelo y la mano que lo cosechó.”
+                                </blockquote>
+                                <figcaption nbText size="xs" weight="black" transform="uppercase" tracking="wide">
+                                    — Fernando Alarcón, Maestro Tostador en KOKOFEE
+                                </figcaption>
                             </div>
-                        </div>
+                        </figure>
                     </div>
 
-                    <!-- Right: Craft Pillars -->
-                    <div class="lg:col-span-7 space-y-6">
-                        <div
-                            class="inline-block px-3 py-1 rounded bg-white/10 text-koko-gold font-mono text-xs font-bold uppercase tracking-widest border border-white/15">
-                            Nuestro Manifiesto
-                        </div>
+                    <!-- Columna derecha: contenido -->
+                    <div nbStack gap="lg" align="start">
+                        <span nbChip tone="mint" radius="md" class="font-bold uppercase">
+                            <span nbStatusDot state="online"></span>
+                            Nuestro manifiesto
+                        </span>
 
-                        <h2 class="font-display font-black text-3xl sm:text-4xl text-white leading-tight">
+                        <h2 nbDisplay size="lg" class="manifesto-title uppercase">
                             No vendemos café genérico.
-                            <span class="text-koko-caramel block">Honramos el trabajo del caficultor.</span>
+                            <span class="manifesto-mark">Honramos el trabajo del caficultor.</span>
                         </h2>
 
-                        <p class="text-sm text-koko-cream/80 leading-relaxed">
-                            En la industria tradicional, el café se tuesta de forma oscura para homogeneizar granos
-                            viejos o defectuosos. En KOKOFEE hacemos exactamente lo opuesto: desarrollamos curvas de
-                            tueste por perfil térmico para preservar los azúcares naturales del mucílago y la acidez
-                            viva del grano de altura.
+                        <p nbText size="md" weight="medium" measure="md" class="manifesto-text">
+                            En la industria tradicional, el café se tuesta de forma oscura para
+                            homogeneizar granos viejos o defectuosos. En KOKOFEE hacemos exactamente
+                            lo opuesto: desarrollamos curvas de tueste por perfil térmico para
+                            preservar los azúcares naturales del mucílago y la acidez viva del
+                            grano de altura.
                         </p>
 
-                        <!-- 3 Pillars Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-                            <div class="p-4 bg-white/5 border border-white/15 rounded-xl space-y-2">
-                                <div class="text-2xl">🌱</div>
-                                <h3 class="font-display font-bold text-sm text-white">Comercio Directo</h3>
-                                <p class="text-xs text-koko-cream/70 leading-normal">
-                                    Pagamos hasta un 65% por encima del precio bursátil a los caficultores de origen.
-                                </p>
+                        <!-- Pilares -->
+                        <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
+
+                            <div nbSurface tone="mint" padding="md" radius="lg" shadow="hard" border="strong"
+                                class="manifesto-pillar">
+                                <div nbStack gap="sm" align="start">
+                                    <span class="manifesto-icon">
+                                        <lucide-icon [img]="icons.Sprout" [size]="20" [strokeWidth]="3" />
+                                    </span>
+                                    <h3 nbText size="md" weight="black" transform="uppercase" class="m-0">Comercio
+                                        directo</h3>
+                                    <p nbText size="xs" weight="medium" class="m-0">
+                                        Pagamos hasta un 65% por encima del precio bursátil a los caficultores de
+                                        origen.
+                                    </p>
+                                </div>
                             </div>
 
-                            <div class="p-4 bg-white/5 border border-white/15 rounded-xl space-y-2">
-                                <div class="text-2xl">🔬</div>
-                                <h3 class="font-display font-bold text-sm text-white">Curva de Tueste</h3>
-                                <p class="text-xs text-koko-cream/70 leading-normal">
-                                    Monitoreamos temperatura de grano y RoR segundo a segundo en cada microlote.
-                                </p>
+                            <div nbSurface tone="pink" padding="md" radius="lg" shadow="hard" border="strong"
+                                class="manifesto-pillar">
+                                <div nbStack gap="sm" align="start">
+                                    <span class="manifesto-icon">
+                                        <lucide-icon [img]="icons.FlaskConical" [size]="20" [strokeWidth]="3" />
+                                    </span>
+                                    <h3 nbText size="md" weight="black" transform="uppercase" class="m-0">Curva de
+                                        tueste</h3>
+                                    <p nbText size="xs" weight="medium" class="m-0">
+                                        Monitoreamos temperatura de grano y RoR segundo a segundo en cada microlote.
+                                    </p>
+                                </div>
                             </div>
 
-                            <div class="p-4 bg-white/5 border border-white/15 rounded-xl space-y-2">
-                                <div class="text-2xl">📦</div>
-                                <h3 class="font-display font-bold text-sm text-white">Frescura Absoluta</h3>
-                                <p class="text-xs text-koko-cream/70 leading-normal">
-                                    Empacado dentro de las 24 horas posteriores al reposo de tostado con válvula
-                                    unidireccional.
-                                </p>
+                            <div nbSurface tone="lavender" padding="md" radius="lg" shadow="hard" border="strong"
+                                class="manifesto-pillar">
+                                <div nbStack gap="sm" align="start">
+                                    <span class="manifesto-icon">
+                                        <lucide-icon [img]="icons.PackageCheck" [size]="20" [strokeWidth]="3" />
+                                    </span>
+                                    <h3 nbText size="md" weight="black" transform="uppercase" class="m-0">Frescura
+                                        absoluta</h3>
+                                    <p nbText size="xs" weight="medium" class="m-0">
+                                        Empacado dentro de las 24 horas posteriores al reposo de tostado con válvula
+                                        unidireccional.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

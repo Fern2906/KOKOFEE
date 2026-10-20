@@ -15,7 +15,7 @@ import { Product } from '../../core/models/product.model';
 import { Recipe } from '../../core/models/recipe.model';
 import {
   LucideAngularModule,
-  ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package
+  ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package, Heart, Quote, FlaskConical, PackageCheck
 } from 'lucide-angular';
 @Component({
   selector: 'app-home-page',
@@ -53,7 +53,7 @@ export class HomePage {
   readonly recipeService = inject(RecipeService);
   readonly reviewService = inject(ReviewService);
   readonly cartService = inject(CartService);
-  readonly icons = { ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package };
+  readonly icons = { ArrowRight, Coffee, Award, Route, Handshake, Flame, Mountain, Sprout, BellRing, Package, Heart, Quote, FlaskConical, PackageCheck };
 
 
   onAddToCart(product: Product): void {
