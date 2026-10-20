@@ -13,7 +13,7 @@ import {
   ],
   template: `
     <header nbSurface [attr.tone]="tone()" padding="xl" radius="xl" shadow="hard" border="strong"
-            class="relative mb-12">
+            class="relative mb-12 transition-transform duration-200 hover:-translate-y-1">
 
       @if (count() !== null) {
         <nb-sticker shape="star" tone="pink" [rotate]="10"
