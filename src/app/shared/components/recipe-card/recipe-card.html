@@ -1,68 +1,55 @@
-<nb-card nbSurface clip tone="warning" border="strong" shadow="hard" radius="xl" class="flex flex-col h-full transition-all duration-200 hover:-translate-y-1">
-      <div class="relative overflow-hidden m-1">
-        <div nbMediaFrame ratio="16/9">
-          <img
-            [src]="recipe().imageUrl"
-            class="w-full max-w-sm"
-            loading="lazy"
-          />
-        </div>
-      </div>
+<nb-card nbSurface clip tone="pink" border="strong" shadow="hard" radius="xl"
+  class="recipe-card relative flex flex-col h-full max-w-[420px] transition-all duration-200 hover:-translate-y-1">
+  <nb-sticker shape="star" tone="mint" [rotate]="10" class="absolute -top-5 -right-3 z-20"
+    [attr.aria-label]="'Dificultad: ' + recipe().difficulty">
+    <nb-sticker-face>
+      <span nbText size="xs" weight="black" transform="uppercase">
+        {{ recipe().difficulty }}
+      </span>
+    </nb-sticker-face>
+  </nb-sticker>
 
-      <nb-card-content class="p-4 pt-0 flex-1 flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-display text-lg font-bold text-koko-espresso group-hover:text-koko-caramel transition-colors">
-            {{ recipe().title }}
-          </h3>
-          <span nbBadge tone="primary" size="md" class="font-bold text-xs">
-            {{ recipe().difficulty }}
-          </span>
-        </div>
+  <nb-card-header
+    class="recipe-card__header flex items-center justify-between gap-2 px-4 py-3 border-b-4 border-black]">
+    <span nbChip tone="warning" radius="md">
+      <span nbStatusDot state="online"></span>
+      {{ recipe().method }}
+    </span>
 
-        <div class="flex items-center justify-between mb-4">
-          <span nbBadge tone="secondary" class="font-bold text-xs">
-            ☕ {{ recipe().method }}
-          </span>
-          <span nbBadge tone="cream" class="font-medium text-xs">
-            ⏱ {{ recipe().timeDisplay }}
-          </span>
-        </div>
+    <span nbChip tone="ink" radius="md">
+      {{ recipe().timeDisplay }}
+    </span>
+  </nb-card-header>
 
-        <p class="text-xs text-koko-coffee/80 line-clamp-2 mb-3">
-          {{ recipe().description }}
-        </p>
+  <div class="p-4 pb-0">
+    <div nbMediaFrame ratio="16/9" tone="pink" border="strong" radius="lg" shadow="none">
+      <img [src]="recipe().imageUrl" [alt]="'Foto de ' + recipe().title" class="w-full h-full object-cover"
+        loading="lazy" />
+    </div>
+  </div>
 
-        <!-- Brewing Recipe Specs -->
-        <div class="grid grid-cols-2 gap-2 p-2.5 bg-koko-cream/60 rounded-md border border-koko-border-subtle text-xs mb-3 font-mono">
-          <div>
-            <span class="text-[10px] text-koko-muted block uppercase">Ratio</span>
-            <span class="font-semibold text-koko-espresso">{{ recipe().ratio }}</span>
-          </div>
-          <div>
-            <span class="text-[10px] text-koko-muted block uppercase">Molienda</span>
-            <span class="font-semibold text-koko-espresso">{{ recipe().grindSize }}</span>
-          </div>
-        </div>
+  <nb-card-content class="flex-1 flex flex-col gap-4 p-4">
 
-        <div class="text-[11px] text-koko-muted">
-          <span class="font-semibold text-koko-espresso">Grano recomendado:</span> {{ recipe().recommendedCoffee }}
-        </div>
-      </nb-card-content>
+    <div nbStack gap="xs" align="start">
+      <span nbChip size="xl" tone="accent">
+        {{ recipe().title }}
+      </span>
+    </div>
 
-      <nb-card-footer class="p-4 pt-3 border-t-2 border-koko-espresso/10 bg-koko-cream/30 flex items-center justify-between mt-auto">
-        <span class="text-xs text-koko-muted font-mono">
-          {{ recipe().stepsCount }} pasos detallados
-        </span>
+    <p nbText size="sm" weight="medium" class="line-clamp-3 m-0">
+      {{ recipe().description }}
+    </p>
+  </nb-card-content>
 
-        <button
-          nbButton
-          tone="secondary"
-          size="sm"
-          (click)="viewRecipe.emit(recipe())"
-          class="font-bold flex items-center gap-1.5"
-        >
-          <span>Ver Receta</span>
-          <span class="text-xs">→</span>
-        </button>
-      </nb-card-footer>
-    </nb-card>
+  <nb-card-footer class="mt-auto flex items-center justify-between gap-3 px-4 py-3 border-t-4 border-black">
+    <span nbChip tone="cream" radius="md" class="font-mono font-bold text-xs">
+      {{ recipe().stepsCount }} pasos
+    </span>
+    <button nbButton tone="yellow" size="md" radius="md" (click)="viewRecipe.emit(recipe())">
+      <span nbText size="md" weight="black" transform="uppercase" tracking="wide">
+        Ver Receta
+      </span>
+      <span nbButtonTrailingIcon shape="circle" tone="inverse" size="sm" icon="/open-to-work/arrow-icon.svg"></span>
+    </button>
+  </nb-card-footer>
+</nb-card>
