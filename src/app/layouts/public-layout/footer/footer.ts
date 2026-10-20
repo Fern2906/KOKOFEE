@@ -1,107 +1,116 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NbButton, NbInput } from '@ng-brutalism/ui';
+import {
+  NbButton, NbChip, NbDisplay, NbInput, NbSplit, NbStack, NbSurface, NbText,
+} from '@ng-brutalism/ui';
+import { LucideAngularModule, Coffee, Mail, ArrowRight } from 'lucide-angular';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, NbButton, NbInput],
+  imports: [
+    NbButton, NbDisplay, NbInput, NbSplit, NbStack, NbSurface, NbText,
+    LucideAngularModule
+  ],
   template: `
-    <footer class="bg-koko-espresso text-koko-cream border-t-4 border-koko-roast pt-16 pb-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
-          <!-- Brand Column -->
-          <div class="lg:col-span-2 space-y-4">
+    <footer class="footer w-full">
+      <div nbSurface tone="yellow"  class="w-full overflow-hidden">
+        <div nbSplit ratio="1:1" gap="xl" collapse="md" align="center" class="p-6 sm:p-10">
+          <div nbStack gap="md" align="start">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-koko-caramel text-white rounded-lg flex items-center justify-center font-display font-black text-xl border-2 border-white/20 shadow-[2px_2px_0px_#FAF7F2]">
-                K
-              </div>
-              <span class="font-display font-black text-2xl tracking-tight text-white">
-                KOKOFEE
+              <span class="footer__logo">
+                <lucide-icon [img]="icons.Coffee" [size]="24" [strokeWidth]="3" />
               </span>
+              <span nbDisplay size="md" class="uppercase">KOKOFEE</span>
             </div>
-            <p class="text-xs text-koko-cream/80 max-w-sm leading-relaxed">
-              Tostaduría de café de especialidad dedicada a la búsqueda de microlotes excepcionales. Tostamos cada semana en pequeños batches para preservar las notas de cata vivas y su terroir de origen.
+            <p nbText size="sm" weight="medium" measure="md">
+              Tostaduría de café de especialidad. Tostamos cada semana en
+              pequeños batches para preservar las notas de cata y su terroir.
             </p>
-            <div class="flex items-center gap-3 pt-2">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-white/10 border border-white/15">
-                ☕ 100% Arábica
-              </span>
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-white/10 border border-white/15">
-                🌱 Direct Trade
-              </span>
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-white/10 border border-white/15">
-                ★ SCA Member
-              </span>
-            </div>
           </div>
 
-          <!-- Quick Navigation -->
-          <div>
-            <h4 class="font-display font-bold text-sm text-koko-gold uppercase tracking-wider mb-4">
-              Cosechas & Tienda
-            </h4>
-            <ul class="space-y-2.5 text-xs text-koko-cream/70">
-              <li><a href="#productos" class="hover:text-white transition-colors">Granos de Altura</a></li>
-              <li><a href="#productos" class="hover:text-white transition-colors">Ediciones Limitadas</a></li>
-              <li><a href="#productos" class="hover:text-white transition-colors">Procesos Anaeróbicos</a></li>
-              <li><a href="#productos" class="hover:text-white transition-colors">Packs de Degustación</a></li>
-            </ul>
-          </div>
-
-          <!-- Brewing Guides -->
-          <div>
-            <h4 class="font-display font-bold text-sm text-koko-gold uppercase tracking-wider mb-4">
-              Extracción
-            </h4>
-            <ul class="space-y-2.5 text-xs text-koko-cream/70">
-              <li><a href="#recetas" class="hover:text-white transition-colors">Método V60 Dripper</a></li>
-              <li><a href="#recetas" class="hover:text-white transition-colors">Guía Chemex</a></li>
-              <li><a href="#recetas" class="hover:text-white transition-colors">Aeropress Invertido</a></li>
-              <li><a href="#recetas" class="hover:text-white transition-colors">Calculadora de Ratios</a></li>
-            </ul>
-          </div>
-
-          <!-- Newsletter for Baristas -->
-          <div>
-            <h4 class="font-display font-bold text-sm text-koko-gold uppercase tracking-wider mb-4">
-              Boletín del Barista
-            </h4>
-            <p class="text-xs text-koko-cream/70 mb-3">
-              Recibe avisos de nuevos microlotes tostados y guías exclusivas de cata.
-            </p>
-            <form (submit)="$event.preventDefault()" class="space-y-2">
-              <input
-                nbInput
-                type="email"
-                placeholder="tu@correo.com"
-                class="w-full text-xs text-koko-espresso bg-white placeholder:text-koko-muted"
-                aria-label="Correo para el boletín"
-              />
-              <button
-                nbButton
-                tone="primary"
-                size="sm"
-                class="w-full font-bold text-xs"
-                type="submit"
-              >
-                Suscribirme
+          <form (submit)="$event.preventDefault()" nbStack gap="sm" align="start" class="w-full">
+            <label nbText size="xs" weight="black" transform="uppercase" tracking="wide" for="footer-email">
+              Boletín del barista
+            </label>
+            <div class="flex w-full flex-col gap-2 sm:flex-row">
+              <input nbInput id="footer-email" type="email" placeholder="tu@correo.com"
+                     class="w-full" aria-label="Correo para el boletín" />
+              <button nbButton tone="black" size="md" type="submit" class="shrink-0">
+                <lucide-icon [img]="icons.Mail" [size]="18" [strokeWidth]="3" />
+                <span>Suscribirme</span>
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
 
-        <!-- Bottom Copyright -->
-        <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-koko-cream/50 gap-4 font-mono">
-          <p>© 2026 KOKOFEE Specialty Coffee Lab. Todos los derechos reservados.</p>
-          <div class="flex gap-6">
-            <span class="hover:text-white cursor-pointer transition-colors">Privacidad</span>
-            <span class="hover:text-white cursor-pointer transition-colors">Términos de Envío</span>
-            <span class="hover:text-white cursor-pointer transition-colors">Trazabilidad</span>
+        <nav aria-label="Pie de página"
+             class="flex flex-wrap gap-3 border-t-4 border-(--nb-border) bg-(--nb-pink) px-6 py-5 sm:px-10">
+          <a class="footer__link" href="#productos">Granos</a>
+          <a class="footer__link" href="#recetas">Guías</a>
+          <a class="footer__link" href="#manifiesto">Historia</a>
+          <a class="footer__link" href="#resenas">Reseñas</a>
+        </nav>
+
+        <div class="flex flex-col items-center justify-between gap-3 border-t-4 border-(--nb-border)
+                    bg-(--nb-hot) px-6 py-4 font-mono text-xs font-bold uppercase sm:flex-row sm:px-10">
+          <p class="m-0">© 2026 KOKOFEE Specialty Coffee Lab</p>
+          <div class="flex gap-5">
+            <a class="footer__legal" href="#">Privacidad</a>
+            <a class="footer__legal" href="#">Envíos</a>
           </div>
         </div>
       </div>
     </footer>
   `,
+  styles: `
+    .footer__logo {
+      display: grid;
+      width: 3rem;
+      height: 3rem;
+      place-items: center;
+      border: 4px solid var(--nb-border);
+      color: var(--nb-paper);
+      box-shadow: 4px 4px 0 0 var(--nb-shadow);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .footer__logo:hover { transform: rotate(-8deg) scale(1.08); }
+
+    .footer__link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 0.9rem;
+      border: 3px solid var(--nb-border);
+      background: var(--nb-paper);
+      font-family: var(--font-mono, monospace);
+      font-size: 0.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      box-shadow: 3px 3px 0 0 var(--nb-shadow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .footer__link:hover {
+      background: var(--nb-yellow);
+      transform: translate(-2px, -2px) rotate(-1deg);
+      box-shadow: 5px 5px 0 0 var(--nb-shadow);
+    }
+    .footer__link:active { transform: translate(2px, 2px); box-shadow: none; }
+
+    .footer__legal { text-decoration: underline; text-underline-offset: 3px; }
+    .footer__legal:hover { text-decoration-thickness: 3px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .footer__logo, .footer__link { transition: none; }
+    }
+
+    .footer {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+  `,
 })
-export class FooterComponent {}
+export class FooterComponent {
+  readonly icons = { Coffee, Mail, ArrowRight };
+}
