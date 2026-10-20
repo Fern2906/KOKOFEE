@@ -2,7 +2,7 @@
     <app-navbar />
 
     <main class="flex-1">
-
+        <!-- Hero Section -->
         <section class="mx-auto max-w-7xl px-4 pt-28 pb-12 sm:px-6 lg:px-8 lg:pb-20">
             <div nbSplit ratio="2:1" gap="lg" collapse="md" align="stretch">
                 <article nbSurface tone="yellow" padding="xl" radius="xl" shadow="hard" border="strong">
@@ -121,84 +121,102 @@
             </div>
         </section>
 
-        <!-- ============================================================== -->
-        <!-- 2. ARTISANAL MARQUEE TICKER                                   -->
-        <!-- ============================================================== -->
-        <div class="bg-koko-roast text-koko-cream border-b-2 border-koko-espresso py-3 overflow-hidden select-none">
-            <nb-marquee duration="28s" [pauseOnHover]="true">
-                <nb-marquee-item class="flex items-center gap-8 text-xs font-mono font-bold tracking-widest uppercase">
-                    <span>★ Tueste Semanal Garantizado</span>
-                    <span>•</span>
-                    <span>100% Granos Arábica de Altura</span>
-                    <span>•</span>
-                    <span>Envíos Gratis a partir de $45</span>
-                    <span>•</span>
-                    <span>Perfilado de Cata por Q-Graders</span>
-                    <span>•</span>
-                    <span>Molienda a Medida o Grano Entero</span>
-                    <span>•</span>
-                    <span>Empaque con Válvula Desgasificadora</span>
-                    <span>•</span>
-                </nb-marquee-item>
-            </nb-marquee>
-        </div>
+        <!-- Marquee -->
+        <nb-marquee duration="28s" [pauseOnHover]="false">
+            <nb-marquee-item class="flex items-center gap-8 text-xs font-mono font-bold tracking-widest uppercase">
+                <span>★ Tueste Semanal Garantizado</span>
+                <span>•</span>
+                <span>100% Granos Arábica de Altura</span>
+                <span>•</span>
+                <span>Envíos Gratis a partir de $45</span>
+                <span>•</span>
+                <span>Perfilado de Cata por Q-Graders</span>
+                <span>•</span>
+                <span>Molienda a Medida o Grano Entero</span>
+                <span>•</span>
+                <span>Empaque con Válvula Desgasificadora</span>
+                <span>•</span>
+            </nb-marquee-item>
+        </nb-marquee>
 
-        <!-- ============================================================== -->
-        <!-- 3. FEATURED PRODUCTS SECTION                                   -->
-        <!-- ============================================================== -->
-        <section id="productos" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Section Header -->
-            <div
-                class="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b-2 border-koko-espresso/20 gap-4">
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="w-3 h-3 rounded-full bg-koko-caramel"></span>
-                        <span class="text-xs font-mono uppercase tracking-widest font-bold text-koko-caramel">
-                            Cosechas Exclusivas
+        <!-- Featured Products -->
+        <section id="productos" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+
+            <!-- Encabezado -->
+            <header nbSurface tone="mint" padding="xl" radius="xl" shadow="hard" border="strong"
+                class="products-head relative mb-12">
+
+                <!-- Sticker contador -->
+                <nb-sticker shape="star" tone="pink" [rotate]="10" class="absolute -top-7 -right-3 z-20"
+                    [attr.aria-label]="productService.featuredProducts().length + ' microlotes disponibles'">
+                    <nb-sticker-face>
+                        <span nbText size="lg" weight="black">
+                            {{ productService.featuredProducts().length }}
+                        </span>
+                    </nb-sticker-face>
+                </nb-sticker>
+
+                <div nbSplit ratio="2:1" gap="lg" collapse="md" align="end">
+                    <div nbStack gap="md" align="start">
+                        <span nbChip tone="yellow" radius="md" class="font-bold uppercase">
+                            <span nbStatusDot state="online"></span>
+                            Cosechas exclusivas
+                        </span>
+
+                        <h2 nbDisplay size="md" class="uppercase">
+                            Granos destacados de la semana
+                        </h2>
+
+                        <p nbText size="md" weight="medium" measure="md">
+                            Selección de microlotes calificados por encima de 87 puntos SCA.
+                            Disponibles hasta agotar existencias de cosecha.
+                        </p>
+                    </div>
+
+                    <div class="flex md:justify-end">
+                        <span nbChip tone="white" radius="md" class="font-mono font-bold uppercase">
+                            <lucide-icon [img]="icons.Package" [size]="16" [strokeWidth]="3" />
+                            {{ productService.featuredProducts().length }} microlotes disponibles
                         </span>
                     </div>
-                    <h2 class="font-display font-black text-3xl sm:text-4xl text-koko-espresso">
-                        Granos Destacados de la Semana
-                    </h2>
-                    <p class="text-sm text-koko-coffee/80 mt-1 max-w-xl">
-                        Selección de microlotes calificados por encima de 87 puntos SCA. Disponibles hasta agotar
-                        existencias de cosecha.
-                    </p>
                 </div>
+            </header>
 
-                <div class="flex items-center gap-3">
-                    <span class="text-xs font-mono text-koko-muted">
-                        {{ productService.featuredProducts().length }} microlotes disponibles
-                    </span>
-                </div>
-            </div>
-
-            <!-- Products Grid or Empty State -->
+            <!-- Productos -->
             @if (productService.featuredProducts().length > 0) {
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 @for (product of productService.featuredProducts(); track product.id) {
                 <app-product-card [product]="product" (addToCart)="onAddToCart($event)" />
                 }
             </div>
             } @else {
-            <!-- Accessible Empty State -->
-            <div
-                class="bg-white border-2 border-dashed border-koko-espresso rounded-xl p-12 text-center max-w-md mx-auto space-y-4">
-                <div class="text-4xl">☕</div>
-                <h3 class="font-display font-bold text-lg text-koko-espresso">
-                    Cosechas en periodo de reposo
-                </h3>
-                <p class="text-xs text-koko-coffee/70">
-                    Estamos tostando el siguiente lote fresco este lunes. Suscríbete para recibir notificación de
-                    reapertura.
-                </p>
+            <!-- Estado vacío -->
+            <div nbSurface tone="lavender" padding="xl" radius="xl" shadow="hard" border="strong"
+                class="mx-auto max-w-md">
+                <div nbStack gap="md" align="center" class="text-center">
+                    <span class="products-empty__icon">
+                        <lucide-icon [img]="icons.Coffee" [size]="32" [strokeWidth]="3" />
+                    </span>
+
+                    <h3 nbDisplay size="sm" class="uppercase">
+                        Cosechas en periodo de reposo
+                    </h3>
+
+                    <p nbText size="sm" weight="medium">
+                        Estamos tostando el siguiente lote fresco este lunes. Suscríbete para
+                        recibir notificación de reapertura.
+                    </p>
+
+                    <button nbButton tone="black" size="md" type="button">
+                        <lucide-icon [img]="icons.BellRing" [size]="18" [strokeWidth]="3" />
+                        <span>Avisarme</span>
+                    </button>
+                </div>
             </div>
             }
         </section>
 
-        <!-- ============================================================== -->
-        <!-- 4. BRAND STORY & CRAFT MANIFESTO (Non-card asymmetrical layout) -->
-        <!-- ============================================================== -->
+        <!-- Brand Story -->
         <section id="manifiesto" class="bg-koko-espresso text-koko-cream py-16 md:py-24 border-y-2 border-koko-roast">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

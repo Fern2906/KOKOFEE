@@ -1,24 +1,16 @@
-<nb-card nbSurface clip tone="cream" border="strong" shadow="hard" radius="xl" class="flex flex-col h-full transition-all duration-200 hover:-translate-y-1">
+<nb-card nbSurface clip tone="warning" border="strong" shadow="hard" radius="xl"
+  class="flex flex-col h-full transition-all duration-200 hover:-translate-y-1">
 
   <div class="relative">
-    <nb-sticker
-      tone="yellow"
-      [rotate]="-15"
-      [attr.aria-label]="'Precio: ' + product().price"
-      class="absolute -top-12 -left-15 z-50"
-    >
+    <nb-sticker tone="yellow" [rotate]="-15" [attr.aria-label]="'Precio: ' + product().price"
+      class="absolute -top-12 -left-15 z-50">
       <span class="font-mono font-black text-black text-sm">
         ${{ product().price.toFixed(2) }}
       </span>
     </nb-sticker>
 
     <div nbMediaFrame ratio="1/1" radius="none" shadow="none" clip class="m-1">
-      <img
-        [src]="product().imageUrl"
-        [alt]="product().name"
-        class="w-full h-full object-cover"
-        loading="lazy"
-      />
+      <img [src]="product().imageUrl" [alt]="product().name" class="w-full h-full object-cover" loading="lazy" />
     </div>
   </div>
 
@@ -28,7 +20,8 @@
         {{ product().name }}
       </h3>
 
-      <p nbText size="xs" underline="bar" underlineGap="xs" weight="medium" tone="muted" class="inline-flex flex-col items-start">
+      <p nbText size="xs" underline="bar" underlineGap="xs" weight="medium" tone="muted"
+        class="inline-flex flex-col items-start">
         {{ product().description }}
       </p>
     </div>
@@ -38,30 +31,24 @@
     <div nbStack gap="xs">
       <div nbChipGroup gap="sm" radius="sm">
         @for (note of product().tastingNotes; track note) {
-          <span nbChip tone="pink" class="text-xs font-bold">
-            {{ note }}
-          </span>
+        <span nbChip tone="pink" class="text-xs font-bold">
+          {{ note }}
+        </span>
         }
       </div>
     </div>
   </nb-card-content>
 
   <nb-card-footer>
-    <button
-      nbButton
-      [tone]="added() ? 'lavender' : 'mint'"
-      size="lg"
-      radius="md"
-      class="w-full flex items-center justify-center gap-2"
-      (click)="handleAddToCart($event)"
-      [attr.aria-label]="'Añadir ' + product().name + ' al carrito'"
-    >
+    <button nbButton [tone]="added() ? 'lavender' : 'accent'" size="lg" radius="md"
+      class="w-full flex items-center justify-center gap-2" (click)="handleAddToCart($event)"
+      [attr.aria-label]="'Añadir ' + product().name + ' al carrito'">
       @if (added()) {
-        <lucide-icon [img]="icons.check" strokeWidth="3" class="w-5 h-5"></lucide-icon>
-        <span nbText size="md" weight="black" transform="uppercase">Añadido</span>
+      <lucide-icon [img]="icons.check" strokeWidth="3" class="w-5 h-5"></lucide-icon>
+      <span nbText size="md" weight="black" transform="uppercase">Añadido</span>
       } @else {
-        <lucide-icon [img]="icons.cart" strokeWidth="3" class="w-5 h-5"></lucide-icon>
-        <span nbText size="md" weight="black" transform="uppercase">Agregar al carrito</span>
+      <lucide-icon [img]="icons.cart" strokeWidth="3" class="w-5 h-5"></lucide-icon>
+      <span nbText size="md" weight="black" transform="uppercase">Agregar al carrito</span>
       }
     </button>
   </nb-card-footer>
