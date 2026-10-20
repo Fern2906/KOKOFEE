@@ -1,0 +1,254 @@
+.kk-mobile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0.9rem;
+    border: 4px solid var(--nb-border);
+    background: var(--nb-yellow);
+    font-weight: 900;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 0 var(--nb-shadow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kk-nav lucide-icon svg {
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+}
+
+/* Botón de acción base */
+.kk-action {
+    position: relative;
+    display: inline-flex;
+    height: 3rem;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 0.9rem 0 0.4rem;
+    border: 4px solid var(--nb-border);
+    color: #000;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    box-shadow: 5px 5px 0 0 var(--nb-shadow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kk-action:hover {
+    transform: translate(-2px, -2px) rotate(-1deg);
+    box-shadow: 8px 8px 0 0 var(--nb-shadow);
+}
+
+.kk-action:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 0 var(--nb-shadow);
+}
+
+/* Cuadro del icono */
+.kk-action__icon {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 3px solid var(--nb-border);
+    background: var(--nb-paper);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kk-action:hover .kk-action__icon {
+    transform: rotate(-8deg) scale(1.1);
+}
+
+.kk-action__icon--dark {
+    background: var(--nb-border);
+    color: var(--nb-paper);
+}
+
+/* Carrito: el icono se agita al hover */
+.kk-cart:hover .kk-action__icon lucide-icon {
+    animation: kk-wiggle 0.45s ease;
+}
+
+@keyframes kk-wiggle {
+
+    0%,
+    100% {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(-14deg);
+    }
+
+    60% {
+        transform: rotate(12deg);
+    }
+}
+
+/* Ingresar: la flecha se desplaza */
+.kk-login__arrow {
+    transition: transform 0.2s ease;
+}
+
+.kk-login:hover .kk-login__arrow {
+    transform: translateX(4px);
+}
+
+/* Contador como sticker que sobresale (reemplaza el .kk-badge anterior) */
+.kk-badge {
+    position: absolute;
+    top: -0.9rem;
+    right: -0.9rem;
+    display: grid;
+    min-width: 1.7rem;
+    height: 1.7rem;
+    place-items: center;
+    padding: 0 0.3rem;
+    border: 3px solid var(--nb-border);
+    background: var(--nb-mint);
+    box-shadow: 2px 2px 0 0 var(--nb-shadow);
+    font-size: 0.75rem;
+    font-weight: 900;
+    transform: rotate(8deg);
+    animation: kk-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes kk-pop {
+    from {
+        transform: scale(0) rotate(-30deg);
+    }
+
+    to {
+        transform: scale(1) rotate(8deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .kk-action,
+    .kk-action__icon,
+    .kk-login__arrow,
+    .kk-badge,
+    .kk-cart:hover .kk-action__icon lucide-icon {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* Link de navegación */
+.nav-link {
+    --kk-c: var(--nb-yellow);
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.8rem 0.3rem 0.3rem;
+    overflow: hidden;
+    border: 4px solid transparent;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Un color por link */
+.nav-link--yellow {
+    --kk-c: var(--nb-yellow, #ffd23f);
+}
+
+.nav-link--hot {
+    --kk-c: var(--nb-hot, #ff8fb8);
+}
+
+.nav-link--mint {
+    --kk-c: var(--nb-mint, #9be7c4);
+}
+
+.nav-link--lavender {
+    --kk-c: var(--nb-lavender, #c4b5fd);
+}
+
+/* Relleno de color que sube desde abajo */
+.nav-link::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--kk-c);
+    transform: translateY(101%);
+    transition: transform 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+    border-color: var(--nb-border);
+    transform: translate(-2px, -2px) rotate(-1deg);
+    box-shadow: 4px 4px 0 0 var(--nb-shadow);
+    outline: none;
+}
+
+.nav-link:hover::before,
+.nav-link:focus-visible::before {
+    transform: translateY(0);
+}
+
+.nav-link:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+/* Cuadro del icono */
+.nav-link__icon {
+    display: grid;
+    width: 1.9rem;
+    height: 1.9rem;
+    place-items: center;
+    border: 3px solid var(--nb-border);
+    background: var(--kk-c);
+    transition: background 0.2s ease, color 0.2s ease,
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* En hover el cuadro se invierte (oscuro) y gira */
+.nav-link:hover .nav-link__icon,
+.nav-link:focus-visible .nav-link__icon {
+    background: var(--nb-border);
+    color: var(--nb-paper);
+    transform: rotate(-10deg) scale(1.12);
+}
+
+/* El icono da un saltito */
+.nav-link:hover .nav-link__icon lucide-icon {
+    animation: kk-hop 0.4s ease;
+}
+
+@keyframes kk-hop {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-3px) rotate(8deg);
+    }
+
+    70% {
+        transform: translateY(1px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .nav-link,
+    .nav-link::before,
+    .nav-link__icon,
+    .nav-link:hover .nav-link__icon lucide-icon {
+        transition: none;
+        animation: none;
+    }
+}

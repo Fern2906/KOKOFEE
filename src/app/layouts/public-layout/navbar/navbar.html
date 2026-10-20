@@ -1,0 +1,110 @@
+<header class="fixed top-3 right-3 left-3 z-100">
+    <nav aria-label="Navegación principal"
+        class="kk-nav border-4 bg-yellow-50 border-(--nb-border) bg-(--nb-paper) shadow-[8px_8px_0_0_var(--nb-shadow)]">
+        <div class="flex min-h-18 items-center justify-between gap-3 px-3 py-3 sm:gap-5 sm:px-6">
+            <a routerLink="/" class="kk-brand group flex items-center gap-3" aria-label="KOKOFEE inicio">
+                <span class="kk-logo grid h-12 w-12 place-items-center border-4 border-(--nb-border)
+                     bg-(--nb-yellow) text-black shadow-[4px_4px_0_0_var(--nb-shadow)]
+                     transition-transform group-hover:-rotate-6">
+                    <lucide-icon [img]="icons.Coffee" [size]="24" [strokeWidth]="3" />
+                </span>
+                <span class="hidden flex-col leading-none sm:flex">
+                    <span class="font-display text-xl font-black tracking-tight">KOKOFEE</span>
+                    <span class="font-mono text-[10px] font-bold tracking-widest uppercase opacity-70">
+                        Specialty Coffee Lab
+                    </span>
+                </span>
+            </a>
+
+            <div class="hidden flex-1 items-center justify-center gap-2 md:flex">
+                <a class="nav-link nav-link--yellow" routerLink="/" fragment="productos">
+                    <span class="nav-link__icon">
+                        <lucide-icon [img]="icons.Coffee" [size]="16" [strokeWidth]="3" />
+                    </span>
+                    <span>Granos</span>
+                </a>
+
+                <a class="nav-link nav-link--hot" routerLink="/" fragment="recetas">
+                    <span class="nav-link__icon">
+                        <lucide-icon [img]="icons.BookOpen" [size]="16" [strokeWidth]="3" />
+                    </span>
+                    <span>Recetas</span>
+                </a>
+
+                <a class="nav-link nav-link--mint" routerLink="/" fragment="manifiesto">
+                    <span class="nav-link__icon">
+                        <lucide-icon [img]="icons.Sprout" [size]="16" [strokeWidth]="3" />
+                    </span>
+                    <span>Historia</span>
+                </a>
+
+                <a class="nav-link nav-link--lavender" routerLink="/" fragment="resenas">
+                    <span class="nav-link__icon">
+                        <lucide-icon [img]="icons.Star" [size]="16" [strokeWidth]="3" />
+                    </span>
+                    <span>Comunidad</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button type="button" class="kk-action kk-cart bg-(--nb-yellow)" aria-label="Ver carrito de compras">
+                    <span class="kk-action__icon">
+                        <lucide-icon [img]="icons.ShoppingCart" [size]="18" [strokeWidth]="3" />
+                    </span>
+                    <span class="hidden sm:inline">Carrito</span>
+
+                    @if (cartService.itemCount() > 0) {
+                    <!-- El @for con track fuerza a recrear el badge y repetir la animación en cada cambio -->
+                    @for (count of [cartService.itemCount()]; track count) {
+                    <span class="kk-badge" aria-live="polite">{{ count }}</span>
+                    }
+                    }
+                </button>
+                <a routerLink="/login" class="kk-action kk-login hidden bg-(--nb-hot) sm:inline-flex">
+                    <span class="kk-action__icon kk-action__icon">
+                        <lucide-icon [img]="icons.User" [size]="18" [strokeWidth]="3" />
+                    </span>
+                    <span>Ingresar</span>
+                </a>
+
+                <button type="button" (click)="toggleMobileMenu()"
+                    class="kk-btn w-11 justify-center bg-(--nb-mint) md:hidden" [attr.aria-expanded]="mobileMenuOpen()"
+                    aria-controls="kk-mobile-menu" aria-label="Abrir menú de navegación">
+                    @if (mobileMenuOpen()) {
+                    <lucide-icon [img]="icons.X" [size]="20" [strokeWidth]="3" />
+                    } @else {
+                    <lucide-icon [img]="icons.Menu" [size]="20" [strokeWidth]="3" />
+                    }
+                </button>
+            </div>
+        </div>
+
+        @if (mobileMenuOpen()) {
+        <div id="kk-mobile-menu"
+            class="kk-drawer grid gap-2 border-t-4 border-(--nb-border) bg-(--nb-mint) p-3 md:hidden">
+            <a class="kk-mobile-link" routerLink="/" fragment="productos" (click)="closeMobileMenu()">
+                <lucide-icon [img]="icons.Coffee" [size]="18" [strokeWidth]="3" /> Granos
+            </a>
+            <a class="kk-mobile-link" routerLink="/" fragment="recetas" (click)="closeMobileMenu()">
+                <lucide-icon [img]="icons.BookOpen" [size]="18" [strokeWidth]="3" /> Recetas
+            </a>
+            <a class="kk-mobile-link" routerLink="/" fragment="manifiesto" (click)="closeMobileMenu()">
+                <lucide-icon [img]="icons.Sprout" [size]="18" [strokeWidth]="3" /> Historia
+            </a>
+            <a class="kk-mobile-link" routerLink="/" fragment="resenas" (click)="closeMobileMenu()">
+                <lucide-icon [img]="icons.Star" [size]="18" [strokeWidth]="3" /> Comunidad
+            </a>
+
+            <div class="mt-1 grid grid-cols-2 gap-2">
+                <a class="kk-mobile-link justify-center bg-(--nb-hot)" routerLink="/login" (click)="closeMobileMenu()">
+                    <lucide-icon [img]="icons.User" [size]="18" [strokeWidth]="3" /> Ingresar
+                </a>
+                <a class="kk-mobile-link justify-center bg-(--nb-paper)" routerLink="/admin"
+                    (click)="closeMobileMenu()">
+                    <lucide-icon [img]="icons.Settings" [size]="18" [strokeWidth]="3" /> Admin
+                </a>
+            </div>
+        </div>
+        }
+    </nav>
+</header>
