@@ -17,7 +17,7 @@ export class RecipeService {
       temperature: '93°C',
       description: 'Extracción en 3 vertidos controlados para potenciar acidez brillante, notas florales y cuerpo limpio sin astringencia.',
       recommendedCoffee: 'Geisha Finca El Paraíso',
-      imageUrl: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=800&auto=format&fit=crop',
+      imageUrl: 'https://yourcoffeedude.com/cdn/shop/articles/vulcano_gif.gif?v=1665824212',
       stepsCount: 4,
       steps: [
         'Calienta el agua a 93°C y coloca el filtro en el V60, enjuágalo con agua caliente.',
@@ -37,7 +37,7 @@ export class RecipeService {
       temperature: '94°C',
       description: 'Su filtro de triple capa atrapa todos los aceites y sedimentos, entregando una taza aromática, limpia y extraordinariamente suave.',
       recommendedCoffee: 'Yirgacheffe Heirloom Natural',
-      imageUrl: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?q=80&w=800&auto=format&fit=crop',
+      imageUrl: 'https://i.pinimg.com/originals/2b/4b/e9/2b4be96bc38970073bbdf0f5b5ce5d5d.gif',
       stepsCount: 5,
       steps: [
         'Calienta el agua a 94°C y dobla el filtro Chemex colocando tres capas hacia el pico vertedor.',
@@ -58,7 +58,7 @@ export class RecipeService {
       temperature: '89°C',
       description: 'Inmersión total al vacío para resaltar notas melosas, chocolate denso y una textura redonda y cremosa en boca.',
       recommendedCoffee: 'Bourbon Rosado Anaeróbico',
-      imageUrl: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=800&auto=format&fit=crop',
+      imageUrl: 'https://giffiles.alphacoders.com/157/15747.gif',
       stepsCount: 4,
       steps: [
         'Invierte el Aeropress (posición invertida) y precalienta con agua a 89°C.',
