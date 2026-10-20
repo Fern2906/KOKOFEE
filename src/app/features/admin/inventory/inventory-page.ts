@@ -7,16 +7,17 @@ import {
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NbBadge, NbButton, NbInput, NbLabel } from '@ng-brutalism/ui';
-
+import { DATA_TABLE, DataTableComponent, TableColumn } from '../../../shared/components/data-table/data-table';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../core/models/product.model';
-import { DataTableComponent } from '../../../shared/components/data-table/data-table';
 import { StatCardComponent } from '../../../shared/components/stat-card/stat-card';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { Order } from '../../../core/models/order.model';
+import { LucideAngularModule } from 'lucide-angular';
 type ProcessType = Product['process'];
-type RoastType   = Product['roastLevel'];
+type RoastType = Product['roastLevel'];
 
 
 @Component({
@@ -34,6 +35,7 @@ type RoastType   = Product['roastLevel'];
     InputComponent,
     ModalComponent,
     ConfirmDialogComponent,
+    LucideAngularModule
   ],
   template: `
     <div class="space-y-8 animate-in fade-in duration-200">
@@ -83,81 +85,90 @@ type RoastType   = Product['roastLevel'];
         </select>
       </div>
       <!-- TABLE -->
-      <app-data-table title="Catalogo de Microlotes" [subtitle]="tableSubtitle()"
-        [headers]="['Producto','Origen / Proceso','Precio','Stock','SCA','Estado','Acciones']"
-        [isLoading]="isLoading()" [isEmpty]="filteredProducts().length === 0"
-        emptyMessage="No se encontraron productos con los filtros aplicados.">
-        <div table-actions class="flex items-center gap-2">
-          <span class="text-xs font-mono text-koko-muted">{{ filteredProducts().length }} resultado(s)</span>
-          @if (filterProcess() || filterStock() !== 'all' || searchQuery()) {
-            <button type="button" (click)="clearFilters()"
-              class="text-[11px] font-mono font-bold text-koko-caramel hover:underline">Limpiar filtros x</button>
-          }
-        </div>
-        <ng-container table-rows>
-          @for (product of pagedProducts(); track product.id) {
-            <tr class="hover:bg-koko-cream/40 transition-colors" [class.bg-red-50]="product.stock === 0">
-              <td class="py-3 px-4">
-                <div class="flex items-center gap-3">
-                  <img [src]="product.imageUrl" [alt]="product.name"
-                    class="w-10 h-10 rounded-lg object-cover border-2 border-koko-espresso/20 shrink-0 hidden sm:block" loading="lazy" />
-                  <div>
-                    <div class="font-display font-bold text-xs text-koko-espresso leading-tight max-w-45 truncate">{{ product.name }}</div>
-                    <div class="text-[10px] font-mono text-koko-muted">{{ product.variety }}</div>
-                  </div>
-                </div>
-              </td>
-              <td class="py-3 px-4">
-                <div class="text-xs font-semibold text-koko-roast">{{ product.origin }}</div>
-                <div class="text-[10px] font-mono text-koko-muted">{{ product.process }} · {{ product.roastLevel }}</div>
-              </td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-koko-espresso whitespace-nowrap">
-                {{ '$' + product.price.toFixed(2) }}
-                @if (product.originalPrice) {
-                  <div class="text-[10px] text-koko-muted line-through font-normal">{{ '$' + product.originalPrice!.toFixed(2) }}</div>
-                }
-              </td>
-              <td class="py-3 px-4 whitespace-nowrap">
-                <span class="font-mono font-bold text-sm"
-                  [class.text-koko-danger]="product.stock <= lowStockThreshold"
-                  [class.text-koko-espresso]="product.stock > lowStockThreshold">{{ product.stock }}</span>
-                <span class="text-[10px] text-koko-muted font-mono"> bolsas</span>
-              </td>
-              <td class="py-3 px-4 font-mono text-xs text-koko-muted whitespace-nowrap">{{ product.scaScore }}</td>
-              <td class="py-3 px-4 whitespace-nowrap">
-                @if (product.stock === 0) {
-                  <span nbBadge tone="danger"  class="text-[10px] font-bold font-mono py-0.5 px-2">Agotado</span>
-                } @else if (product.stock <= lowStockThreshold) {
-                  <span nbBadge tone="warning" class="text-[10px] font-bold font-mono py-0.5 px-2">Stock bajo</span>
-                } @else {
-                  <span nbBadge tone="success" class="text-[10px] font-bold font-mono py-0.5 px-2">Disponible</span>
-                }
-              </td>
-              <td class="py-3 px-4 whitespace-nowrap">
-                <div class="flex items-center gap-2">
-                  <button nbButton tone="cream" size="sm" type="button" (click)="openEditModal(product)"
-                    class="text-[11px] py-1 px-2.5 font-bold" [attr.aria-label]="'Editar ' + product.name">
-                    &#9998; Editar
-                  </button>
-                  <button nbButton tone="danger" size="sm" type="button" (click)="requestDelete(product)"
-                    class="text-[11px] py-1 px-2.5 font-bold" [attr.aria-label]="'Eliminar ' + product.name">
-                    &#x1F5D1;
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </ng-container>
-        <div table-footer class="p-3 border-t-2 border-koko-espresso/15 bg-koko-cream/30 flex items-center justify-between gap-3 flex-wrap text-xs font-mono">
-          <span class="text-koko-muted">Pagina {{ currentPage() + 1 }} de {{ totalPages() }}</span>
-          <div class="flex items-center gap-2">
-            <button nbButton tone="cream" size="sm" type="button" [disabled]="currentPage() === 0" (click)="prevPage()"
-              class="text-[11px] py-1 px-2 font-bold disabled:opacity-40 disabled:cursor-not-allowed">Anterior</button>
-            <button nbButton tone="cream" size="sm" type="button" [disabled]="currentPage() >= totalPages() - 1" (click)="nextPage()"
-              class="text-[11px] py-1 px-2 font-bold disabled:opacity-40 disabled:cursor-not-allowed">Siguiente</button>
-          </div>
-        </div>
-      </app-data-table>
+      <app-data-table
+  heading="Inventario de microlotes"
+  [subtitle]="tableSubtitle()"
+  [columns]="productColumns"
+  [rows]="pagedProducts()"
+  [rowClass]="rowClass">
+
+  <div table-actions class="flex items-center gap-3">
+    <span class="font-mono text-xs font-bold">{{ filteredProducts().length }} resultado(s)</span>
+    @if (filterProcess() || filterStock() !== 'all' || searchQuery()) {
+      <button type="button" (click)="clearFilters()" class="font-mono text-xs font-black underline">
+        Limpiar filtros
+      </button>
+    }
+  </div>
+
+  <ng-template appCell="product" let-p>
+    <div class="flex items-center gap-3">
+      <img [src]="p.imageUrl" [alt]="p.name" loading="lazy"
+           class="hidden h-10 w-10 shrink-0 border-2 border-(--nb-border) object-cover sm:block" />
+      <div>
+        <div class="max-w-45 truncate text-xs font-black">{{ p.name }}</div>
+        <div class="font-mono text-[10px] opacity-70">{{ p.variety }}</div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template appCell="origin" let-p>
+    <div class="text-xs font-bold">{{ p.origin }}</div>
+    <div class="font-mono text-[10px] opacity-70">{{ p.process }} · {{ p.roastLevel }}</div>
+  </ng-template>
+
+  <ng-template appCell="price" let-p>
+    <span class="font-mono text-xs font-black">{{ '$' + p.price.toFixed(2) }}</span>
+    @if (p.originalPrice) {
+      <div class="font-mono text-[10px] line-through opacity-60">{{ '$' + p.originalPrice.toFixed(2) }}</div>
+    }
+  </ng-template>
+
+  <ng-template appCell="stock" let-p>
+    <span class="font-mono text-sm font-black" [class.text-koko-danger]="p.stock <= lowStockThreshold">
+      {{ p.stock }}
+    </span>
+    <span class="font-mono text-[10px] opacity-70"> bolsas</span>
+  </ng-template>
+
+  <ng-template appCell="status" let-p>
+    @if (p.stock === 0) {
+      <span nbBadge tone="danger" class="font-mono text-[10px] font-bold">Agotado</span>
+    } @else if (p.stock <= lowStockThreshold) {
+      <span nbBadge tone="warning" class="font-mono text-[10px] font-bold">Stock bajo</span>
+    } @else {
+      <span nbBadge tone="success" class="font-mono text-[10px] font-bold">Disponible</span>
+    }
+  </ng-template>
+
+  <ng-template appCell="actions" let-p>
+    <div class="flex items-center gap-2">
+      <button nbButton tone="cream" size="sm" type="button" (click)="openEditModal(p)"
+              [attr.aria-label]="'Editar ' + p.name">
+        <lucide-icon [img]="icons.Pencil" [size]="14" [strokeWidth]="3" /> Editar
+      </button>
+      <button nbButton tone="danger" size="sm" type="button" (click)="requestDelete(p)"
+              [attr.aria-label]="'Eliminar ' + p.name">
+        <lucide-icon [img]="icons.Trash2" [size]="14" [strokeWidth]="3" />
+      </button>
+    </div>
+  </ng-template>
+
+  <div table-footer class="flex flex-wrap items-center justify-between gap-3 border-t-4
+                           border-(--nb-border) bg-(--nb-hot) p-3 font-mono text-xs font-bold">
+    <span>Página {{ currentPage() + 1 }} de {{ totalPages() }}</span>
+    <div class="flex gap-2">
+      <button nbButton tone="white" size="sm" type="button"
+              [disabled]="currentPage() === 0" (click)="prevPage()">
+        <lucide-icon [img]="icons.ChevronLeft" [size]="14" [strokeWidth]="3" /> Anterior
+      </button>
+      <button nbButton tone="white" size="sm" type="button"
+              [disabled]="currentPage() >= totalPages() - 1" (click)="nextPage()">
+        Siguiente <lucide-icon [img]="icons.ChevronRight" [size]="14" [strokeWidth]="3" />
+      </button>
+    </div>
+  </div>
+</app-data-table>
       <!-- TOAST -->
       @if (toast()) {
         <div class="fixed bottom-5 right-5 z-70 px-4 py-3 bg-koko-espresso text-koko-cream border-2 border-koko-gold rounded-xl shadow-[3px_3px_0px_#C25E00] text-xs font-mono font-bold flex items-center gap-3 animate-in slide-in-from-bottom-3 duration-200" role="status" aria-live="polite">
@@ -282,21 +293,21 @@ export class InventoryPageComponent {
   private readonly productService = inject(ProductService);
   private readonly fb = inject(FormBuilder);
 
-  readonly isLoading       = signal(false);
-  readonly isSaving        = signal(false);
-  readonly showModal       = signal(false);
-  readonly showConfirm     = signal(false);
-  readonly editingProduct  = signal<Product | null>(null);
+  readonly isLoading = signal(false);
+  readonly isSaving = signal(false);
+  readonly showModal = signal(false);
+  readonly showConfirm = signal(false);
+  readonly editingProduct = signal<Product | null>(null);
   readonly deletingProduct = signal<Product | null>(null);
-  readonly toast           = signal<string | null>(null);
-  readonly formError       = signal<string | null>(null);
-  readonly searchQuery     = signal('');
-  readonly filterProcess   = signal('');
-  readonly filterStock     = signal<'all' | 'low' | 'out'>('all');
-  readonly currentPage     = signal(0);
+  readonly toast = signal<string | null>(null);
+  readonly formError = signal<string | null>(null);
+  readonly searchQuery = signal('');
+  readonly filterProcess = signal('');
+  readonly filterStock = signal<'all' | 'low' | 'out'>('all');
+  readonly currentPage = signal(0);
 
   readonly filteredProducts = computed(() => {
-    const q   = this.searchQuery().toLowerCase();
+    const q = this.searchQuery().toLowerCase();
     const prc = this.filterProcess();
     const stk = this.filterStock();
     return this.productService.products().filter((p) => {
@@ -307,46 +318,66 @@ export class InventoryPageComponent {
     });
   });
 
-  readonly totalPages     = computed(() => Math.max(1, Math.ceil(this.filteredProducts().length / 8)));
-  readonly pagedProducts  = computed(() => { const s = this.currentPage() * 8; return this.filteredProducts().slice(s, s + 8); });
-  readonly tableSubtitle  = computed(() => `Mostrando ${this.pagedProducts().length} de ${this.filteredProducts().length} productos`);
-  readonly totalProducts  = computed(() => this.productService.products().length);
-  readonly totalStock     = computed(() => this.productService.products().reduce((s, p) => s + p.stock, 0));
-  readonly lowStockCount  = computed(() => this.productService.products().filter((p) => p.stock > 0 && p.stock <= 15).length);
+  readonly totalPages = computed(() => Math.max(1, Math.ceil(this.filteredProducts().length / 8)));
+  readonly pagedProducts = computed(() => { const s = this.currentPage() * 8; return this.filteredProducts().slice(s, s + 8); });
+  readonly tableSubtitle = computed(() => `Mostrando ${this.pagedProducts().length} de ${this.filteredProducts().length} productos`);
+  readonly totalProducts = computed(() => this.productService.products().length);
+  readonly totalStock = computed(() => this.productService.products().reduce((s, p) => s + p.stock, 0));
+  readonly lowStockCount = computed(() => this.productService.products().filter((p) => p.stock > 0 && p.stock <= 15).length);
   readonly outOfStockCount = computed(() => this.productService.products().filter((p) => p.stock === 0).length);
 
   readonly productForm = this.fb.group({
-    name:            ['', [Validators.required]],
-    variety:         ['', Validators.required],
-    origin:          ['', Validators.required],
-    altitude:        ['', Validators.required],
-    process:         ['', Validators.required],
-    roastLevel:      ['', Validators.required],
-    price:           [0,  [Validators.required, (c: AbstractControl): ValidationErrors | null => { const v = Number(c.value); return isNaN(v) || v < 0 ? {nonNeg:true} : null; }]],
-    originalPrice:   [null as number | null],
-    stock:           [0,  [Validators.required, (c: AbstractControl): ValidationErrors | null => { const v = Number(c.value); return isNaN(v) || v < 0 ? {nonNeg:true} : null; }]],
-    weight:          ['250g', Validators.required],
-    scaScore:        [85, [Validators.required]],
-    imageUrl:        ['', Validators.required],
-    badge:           [''],
+    name: ['', [Validators.required]],
+    variety: ['', Validators.required],
+    origin: ['', Validators.required],
+    altitude: ['', Validators.required],
+    process: ['', Validators.required],
+    roastLevel: ['', Validators.required],
+    price: [0, [Validators.required, (c: AbstractControl): ValidationErrors | null => { const v = Number(c.value); return isNaN(v) || v < 0 ? { nonNeg: true } : null; }]],
+    originalPrice: [null as number | null],
+    stock: [0, [Validators.required, (c: AbstractControl): ValidationErrors | null => { const v = Number(c.value); return isNaN(v) || v < 0 ? { nonNeg: true } : null; }]],
+    weight: ['250g', Validators.required],
+    scaScore: [85, [Validators.required]],
+    imageUrl: ['', Validators.required],
+    badge: [''],
     tastingNotesStr: [''],
-    description:     ['', Validators.required],
-    isFeatured:      [false],
-    isNew:           [false],
+    description: ['', Validators.required],
+    isFeatured: [false],
+    isNew: [false],
   });
+  readonly orderColumns: TableColumn<Order>[] = [
+    { key: 'order', header: 'Orden / Cliente' },
+    { key: 'items', header: 'Granos & Formato' },
+    { key: 'total', header: 'Total', class: 'font-mono font-bold text-xs whitespace-nowrap' },
+    { key: 'status', header: 'Estado', class: 'whitespace-nowrap' },
+    { key: 'createdAt', header: 'Fecha', class: 'font-mono text-xs text-koko-muted whitespace-nowrap' },
+    { key: 'actions', header: 'Acción', class: 'whitespace-nowrap' },
+  ];
 
+  readonly productColumns: TableColumn<Product>[] = [
+    { key: 'product', header: 'Producto' },
+    { key: 'origin', header: 'Origen / Proceso' },
+    { key: 'price', header: 'Precio', class: 'whitespace-nowrap' },
+    { key: 'stock', header: 'Stock', class: 'whitespace-nowrap' },
+    { key: 'scaScore', header: 'SCA', class: 'font-mono text-xs' },
+    { key: 'status', header: 'Estado', class: 'whitespace-nowrap' },
+    { key: 'actions', header: 'Acciones', class: 'whitespace-nowrap' },
+  ];
+
+  readonly rowClass = (p: Product) => (p.stock === 0 ? 'bg-red-50' : '');
+  icons: any;
   isFieldInvalid(f: string): boolean { return !!this.productForm.get(f)?.invalid; }
   isFieldTouched(f: string): boolean { return !!this.productForm.get(f)?.touched; }
 
   onSearch(e: Event): void { this.searchQuery.set((e.target as HTMLInputElement).value); this.currentPage.set(0); }
   onFilterProcess(e: Event): void { this.filterProcess.set((e.target as HTMLSelectElement).value); this.currentPage.set(0); }
-  onFilterStock(e: Event): void { this.filterStock.set((e.target as HTMLSelectElement).value as 'all'|'low'|'out'); this.currentPage.set(0); }
+  onFilterStock(e: Event): void { this.filterStock.set((e.target as HTMLSelectElement).value as 'all' | 'low' | 'out'); this.currentPage.set(0); }
   clearFilters(): void { this.searchQuery.set(''); this.filterProcess.set(''); this.filterStock.set('all'); this.currentPage.set(0); }
   prevPage(): void { if (this.currentPage() > 0) this.currentPage.update(p => p - 1); }
   nextPage(): void { if (this.currentPage() < this.totalPages() - 1) this.currentPage.update(p => p + 1); }
 
-  openAddModal(): void { this.editingProduct.set(null); this.productForm.reset({stock:0,price:0,scaScore:85,weight:'250g',isFeatured:false,isNew:false}); this.formError.set(null); this.showModal.set(true); }
-  openEditModal(p: Product): void { this.editingProduct.set(p); this.productForm.patchValue({...p, tastingNotesStr: p.tastingNotes.join(', '), originalPrice: p.originalPrice ?? null}); this.formError.set(null); this.showModal.set(true); }
+  openAddModal(): void { this.editingProduct.set(null); this.productForm.reset({ stock: 0, price: 0, scaScore: 85, weight: '250g', isFeatured: false, isNew: false }); this.formError.set(null); this.showModal.set(true); }
+  openEditModal(p: Product): void { this.editingProduct.set(p); this.productForm.patchValue({ ...p, tastingNotesStr: p.tastingNotes.join(', '), originalPrice: p.originalPrice ?? null }); this.formError.set(null); this.showModal.set(true); }
   closeModal(): void { this.showModal.set(false); this.productForm.reset(); }
 
   submitForm(): void {
@@ -354,7 +385,7 @@ export class InventoryPageComponent {
     if (this.productForm.invalid) { this.formError.set('Corrige los campos con error antes de continuar.'); return; }
     this.formError.set(null); this.isSaving.set(true);
     const raw = this.productForm.getRawValue();
-    const payload: Omit<Product,'id'> = {
+    const payload: Omit<Product, 'id'> = {
       name: raw.name as string, variety: raw.variety as string, origin: raw.origin as string, altitude: raw.altitude as string,
       process: raw.process as ProcessType, roastLevel: raw.roastLevel as RoastType,
       price: Number(raw.price), originalPrice: raw.originalPrice ? Number(raw.originalPrice) : undefined,

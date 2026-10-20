@@ -12,31 +12,33 @@ import { OrderService } from '../../../core/services/order.service';
 import { Order, OrderStatus } from '../../../core/models/order.model';
 import {
   DataTableComponent,
-  DataTableCellDirective
+  DataTableCellDirective,
+  TableColumn
 } from '../../../shared/components/data-table/data-table';
 import { StatCardComponent } from '../../../shared/components/stat-card/stat-card';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { OrderStatusBadgeComponent } from '../../../shared/components/order-status-badge/order-status-badge.component';
+import { Product } from '../../../core/models/product.model';
 
 const PAGE_SIZE = 8;
 
 const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
   'Pendiente': 'Tostando',
-  'Tostando':  'Enviado',
-  'Enviado':   'Entregado',
+  'Tostando': 'Enviado',
+  'Enviado': 'Entregado',
 };
 
 const NEXT_LABEL: Partial<Record<OrderStatus, string>> = {
   'Pendiente': '🔥 Tostar',
-  'Tostando':  '📦 Enviar',
-  'Enviado':   '✓ Entregar',
+  'Tostando': '📦 Enviar',
+  'Enviado': '✓ Entregar',
 };
 
 const NEXT_TONE: Partial<Record<OrderStatus, NbToneToken>> = {
   'Pendiente': 'accent',
-  'Tostando':  'primary',
-  'Enviado':   'success',
+  'Tostando': 'primary',
+  'Enviado': 'success',
 };
 
 const TERMINAL_STATUSES: OrderStatus[] = ['Entregado', 'Cancelado'];
@@ -127,7 +129,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
       </div>
 
       <!-- TABLE -->
-      <app-data-table heading="Ultimos pedidos" subtitle="Ulitmas compras registradas en la tienda" columns="orderColumns" [rows]="orderService.recentOrders()">
+      <app-data-table heading="Ultimos pedidos" subtitle="Ulitmas compras registradas en la tienda" [columns]="orderColumns" [rows]="orderService.recentOrders()">
          <ng-template appCell="order" let-order>
           <div class="font-mono font-bold text-xs text-koko-espresso">{{ order.orderNumber }}</div>
           <div class="text-xs text-koko-muted truncate max-w-35">{{ order.customerName }}</div>
@@ -351,35 +353,52 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
   `,
 })
 export class AdminOrdersPage {
-getStatusBadgeTone(arg0: any): NbToneToken|undefined {
-throw new Error('Method not implemented.');
-}
-advanceOrderStatus(_t58: any,arg1: string) {
-throw new Error('Method not implemented.');
-}
+  getStatusBadgeTone(arg0: any): NbToneToken | undefined {
+    throw new Error('Method not implemented.');
+  }
+  advanceOrderStatus(_t58: any, arg1: string) {
+    throw new Error('Method not implemented.');
+  }
   private readonly orderService = inject(OrderService);
 
   readonly allStatuses = ALL_STATUSES;
 
   // Filter / search signals
-  readonly searchQuery    = signal('');
+  readonly searchQuery = signal('');
   readonly selectedStatus = signal<OrderStatus | ''>('');
-  readonly currentPage    = signal(0);
+  readonly currentPage = signal(0);
 
   // Modal signals
-  readonly showModal    = signal(false);
+  readonly showModal = signal(false);
   readonly selectedOrder = signal<Order | null>(null);
 
   // Confirm dialog signals
-  readonly showConfirm  = signal(false);
+  readonly showConfirm = signal(false);
   readonly orderToCancel = signal<Order | null>(null);
 
   // CSS helpers for filter buttons
-  readonly activeFilterClass   = 'px-3 py-1.5 text-[11px] font-mono font-bold border-2 border-koko-espresso rounded-lg bg-koko-espresso text-koko-cream shadow-[2px_2px_0px_#1A120B] cursor-pointer';
+  readonly activeFilterClass = 'px-3 py-1.5 text-[11px] font-mono font-bold border-2 border-koko-espresso rounded-lg bg-koko-espresso text-koko-cream shadow-[2px_2px_0px_#1A120B] cursor-pointer';
   readonly inactiveFilterClass = 'px-3 py-1.5 text-[11px] font-mono font-bold border-2 border-koko-espresso rounded-lg bg-white text-koko-espresso hover:bg-koko-cream/60 cursor-pointer';
 
   readonly tableHeaders = ['Pedido', 'Cliente', 'Fecha', 'Items', 'Total', 'Pago', 'Estado', 'Acciones'];
+  readonly orderColumns: TableColumn<Order>[] = [
+    { key: 'order', header: 'Orden / Cliente' },
+    { key: 'items', header: 'Granos & Formato' },
+    { key: 'total', header: 'Total', class: 'font-mono font-bold text-xs whitespace-nowrap' },
+    { key: 'status', header: 'Estado', class: 'whitespace-nowrap' },
+    { key: 'createdAt', header: 'Fecha', class: 'font-mono text-xs text-koko-muted whitespace-nowrap' },
+    { key: 'actions', header: 'Acción', class: 'whitespace-nowrap' },
+  ];
 
+  readonly productColumns: TableColumn<Product>[] = [
+    { key: 'product', header: 'Producto' },
+    { key: 'origin', header: 'Origen / Proceso' },
+    { key: 'price', header: 'Precio', class: 'whitespace-nowrap' },
+    { key: 'stock', header: 'Stock', class: 'whitespace-nowrap' },
+    { key: 'scaScore', header: 'SCA', class: 'font-mono text-xs' },
+    { key: 'status', header: 'Estado', class: 'whitespace-nowrap' },
+    { key: 'actions', header: 'Acciones', class: 'whitespace-nowrap' },
+  ];
   // Stats
   readonly totalOrders = computed(() => this.orderService.orders().length);
   readonly activeOrdersCount = computed(() => this.orderService.pendingOrdersCount());
@@ -387,7 +406,7 @@ throw new Error('Method not implemented.');
 
   // Filtered list
   readonly filteredOrders = computed(() => {
-    const q  = this.searchQuery().toLowerCase();
+    const q = this.searchQuery().toLowerCase();
     const st = this.selectedStatus();
     return this.orderService.orders().filter((o) => {
       const matchesSearch = !q || o.orderNumber.toLowerCase().includes(q) || o.customerName.toLowerCase().includes(q) || o.customerEmail.toLowerCase().includes(q);
@@ -396,7 +415,7 @@ throw new Error('Method not implemented.');
     });
   });
 
-  readonly totalPages  = computed(() => Math.max(1, Math.ceil(this.filteredOrders().length / PAGE_SIZE)));
+  readonly totalPages = computed(() => Math.max(1, Math.ceil(this.filteredOrders().length / PAGE_SIZE)));
   readonly pagedOrders = computed(() => {
     const start = this.currentPage() * PAGE_SIZE;
     return this.filteredOrders().slice(start, start + PAGE_SIZE);
