@@ -11,10 +11,10 @@
 
   <section aria-label="Indicadores principales de la tostaduría">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <app-stat-card title="Ventas de la Semana" [value]="'$' + orderService.totalRevenue().toFixed(2)" icon="DollarSign" tone="accent" />
-      <app-stat-card title="Pedidos en Cola" [value]="orderService.pendingOrdersCount() + ' activos'" icon="Clock" />
-      <app-stat-card title="Alertas de Stock" [value]="lowStockProducts().length + ' microlotes'" icon="AlertTriangle" tone="danger" />
-      <app-stat-card title="Calidad SCA Promedio" value="88.4 / 100" icon="Star" tone="warning" />
+      <app-stat-card title="Ventas de la Semana" [value]="'$' + orderService.totalRevenue().toFixed(2)" [icon]="icons.DollarSign" tone="accent" />
+      <app-stat-card title="Pedidos en Cola" [value]="orderService.pendingOrdersCount() + ' activos'" [icon]="icons.Clock" />
+      <app-stat-card title="Alertas de Stock" [value]="lowStockProducts().length + ' microlotes'" [icon]="icons.AlertTriangle" tone="danger" />
+      <app-stat-card title="Calidad SCA Promedio" value="88.4 / 100" [icon]="icons.Star" tone="warning" />
     </div>
   </section>
 

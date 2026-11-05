@@ -14,7 +14,7 @@ import { StatCardComponent } from '../../../shared/components/stat-card/stat-car
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { LucideAngularModule, Pencil, Trash2, ChevronLeft, ChevronRight, Search } from 'lucide-angular';
+import { LucideAngularModule, Pencil, Trash2, ChevronLeft, ChevronRight, Search, Package } from 'lucide-angular';
 type ProcessType = Product['process'];
 type RoastType = Product['roastLevel'];
 
@@ -109,7 +109,7 @@ export class InventoryPageComponent {
   ];
 
   readonly rowClass = (p: Product) => (p.stock === 0 ? 'bg-red-50' : '');
-  protected readonly icons = { Pencil, Trash2, ChevronLeft, ChevronRight, Search };
+  protected readonly icons = { Pencil, Trash2, ChevronLeft, ChevronRight, Search, Package };
   isFieldInvalid(f: string): boolean { return !!this.productForm.get(f)?.invalid; }
   isFieldTouched(f: string): boolean { return !!this.productForm.get(f)?.touched; }
 

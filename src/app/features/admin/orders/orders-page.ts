@@ -85,9 +85,9 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
 
       <!-- STATS -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <app-stat-card title="Total Pedidos" [value]="totalOrders().toString()" icon="Package" />
-        <app-stat-card title="Pedidos Activos" [value]="activeOrdersCount().toString()" icon="Package" />
-        <app-stat-card title="Ingresos Totales" [value]="formattedRevenue()" icon="Package" />
+        <app-stat-card title="Total Pedidos" [value]="totalOrders().toString()" [icon]="icons.Package" />
+        <app-stat-card title="Pedidos Activos" [value]="activeOrdersCount().toString()" [icon]="icons.Package" />
+        <app-stat-card title="Ingresos Totales" [value]="formattedRevenue()" [icon]="icons.Package" />
       </div>
 
       <!-- SEARCH & FILTERS -->

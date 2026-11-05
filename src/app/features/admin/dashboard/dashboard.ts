@@ -2,7 +2,7 @@ import { Component, computed, inject, signal, ViewEncapsulation } from '@angular
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NbBadge, NbButton } from '@ng-brutalism/ui';
-import { LucideAngularModule, ShoppingCart, Package, BookOpen, Star, Flame, Check, Zap } from 'lucide-angular';
+import { LucideAngularModule, ShoppingCart, Package, BookOpen, Star, Flame, Check, Zap, DollarSign, Clock, AlertTriangle } from 'lucide-angular';
 import { StatCardComponent } from '../../../shared/components/stat-card/stat-card';
 import { DataTableComponent, DataTableCellDirective, TableColumn } from '../../../shared/components/data-table/data-table';
 import { OrderService } from '../../../core/services/order.service';
@@ -32,7 +32,7 @@ export class AdminDashboardPage {
 
   protected readonly actionNotice = signal<string | null>(null);
 
-  protected readonly icons = { ShoppingCart, Package, BookOpen, Star, Flame, Check, Zap };
+  protected readonly icons = { ShoppingCart, Package, BookOpen, Star, Flame, Check, Zap, DollarSign, Clock, AlertTriangle };
 
   readonly lowStockProducts = computed(() =>
     this.productService.products().filter((p) => p.stock <= 15)
