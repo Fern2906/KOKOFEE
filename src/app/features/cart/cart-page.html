@@ -24,7 +24,7 @@
                     </p>
                 </div>
 
-                <a routerLink="/" fragment="productos" nbButton tone="white" size="md"
+                <a routerLink="/productos" nbButton tone="white" size="md"
                     class="w-full justify-center md:w-auto">
                     <lucide-icon [img]="icons.ArrowLeft" [size]="18" [strokeWidth]="3" />
                     <span>Seguir comprando</span>
@@ -36,7 +36,7 @@
             <div class="py-8">
                 <app-empty-state tone="yellow" [icon]="icons.ShoppingBag" title="Tu carrito está vacío"
                     description="Todavía no has agregado ningún microlote. Explora la cosecha de la semana y encuentra tu próximo café favorito.">
-                    <a routerLink="/" fragment="productos" nbButton tone="black" size="md" class="mt-1">
+                    <a routerLink="/productos" nbButton tone="black" size="md" class="mt-1">
                         <lucide-icon [img]="icons.Sparkles" [size]="18" [strokeWidth]="3" />
                         <span>Explorar granos</span>
                     </a>
@@ -89,7 +89,7 @@
 
                     <!-- Acciones secundarias -->
                     <div class="flex flex-wrap items-center justify-between gap-3">
-                        <a routerLink="/" fragment="productos"
+                        <a routerLink="/productos"
                             class="inline-flex items-center gap-2 border-b-2 border-transparent font-mono text-[11px] font-black uppercase tracking-widest transition-colors hover:border-(--nb-border)">
                             <lucide-icon [img]="icons.ArrowLeft" [size]="14" [strokeWidth]="3" />
                             Seguir comprando

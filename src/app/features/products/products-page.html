@@ -1,0 +1,173 @@
+<div class="min-h-screen flex flex-col bg-(--nb-cream) text-(--nb-foreground)">
+    <app-navbar />
+
+    <main class="flex-1">
+        <section class="mx-auto max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8 lg:pb-24 lg:pt-36">
+
+            <!-- ENCABEZADO -->
+            <header
+                class="mb-10 grid items-end gap-6 border-b-2 border-(--nb-border)/15 pb-8 lg:grid-cols-[1fr_auto]">
+                <div class="flex flex-col items-start gap-3">
+                    <span nbChip tone="mint" radius="md" class="font-bold uppercase">
+                        <span nbStatusDot state="live"></span>
+                        Catálogo · {{ catalogStats().total }} microlotes
+                    </span>
+
+                    <h1 nbDisplay size="lg" class="uppercase">
+                        Granos de <span class="catalog-mark">especialidad</span>
+                    </h1>
+
+                    <p nbText size="md" weight="medium" measure="md">
+                        Explora nuestra cosecha completa: microlotes trazables, tueste artesanal
+                        y notas de cata seleccionadas por Q-Graders. Filtra por proceso, origen o
+                        nivel de tueste para encontrar tu próximo café.
+                    </p>
+                </div>
+
+                <div nbSurface tone="yellow" padding="md" radius="lg" shadow="hard" border="strong"
+                    class="grid w-full grid-cols-3 gap-3 lg:w-auto lg:gap-6">
+                    <div class="flex flex-col items-center px-1 text-center lg:min-w-24">
+                        <lucide-icon [img]="icons.Package" [size]="18" [strokeWidth]="3" />
+                        <span class="mt-1 font-display text-2xl font-black leading-none">
+                            {{ catalogStats().total }}
+                        </span>
+                        <span class="mt-1 font-mono text-[9px] font-black uppercase tracking-widest">
+                            Microlotes
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col items-center border-x-2 border-(--nb-border)/20 px-1 text-center lg:min-w-24">
+                        <lucide-icon [img]="icons.Mountain" [size]="18" [strokeWidth]="3" />
+                        <span class="mt-1 font-display text-2xl font-black leading-none">
+                            {{ catalogStats().origins }}
+                        </span>
+                        <span class="mt-1 font-mono text-[9px] font-black uppercase tracking-widest">
+                            Orígenes
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col items-center px-1 text-center lg:min-w-24">
+                        <lucide-icon [img]="icons.Award" [size]="18" [strokeWidth]="3" />
+                        <span class="mt-1 font-display text-2xl font-black leading-none">
+                            {{ catalogStats().topScore }}
+                        </span>
+                        <span class="mt-1 font-mono text-[9px] font-black uppercase tracking-widest">
+                            SCA máx.
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <div
+                class="grid items-start gap-8 lg:grid-cols-[17rem_minmax(0,1fr)] xl:grid-cols-[18rem_minmax(0,1fr)]">
+
+                <!-- FILTROS -->
+                <aside class="lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-1">
+                    <app-catalog-filters [search]="searchQuery()" [process]="selectedProcess()"
+                        [roast]="selectedRoast()" [origin]="selectedOrigin()"
+                        [inStockOnly]="inStockOnly()" [activeCount]="activeFilterCount()"
+                        [processOptions]="processOptions()" [roastOptions]="roastOptions()"
+                        [originOptions]="originOptions()" (searchChange)="onSearchChange($event)"
+                        (processChange)="onProcessChange($event)" (roastChange)="onRoastChange($event)"
+                        (originChange)="onOriginChange($event)" (inStockOnlyChange)="onStockOnlyChange($event)"
+                        (clear)="clearFilters()" />
+                </aside>
+
+                <!-- RESULTADOS -->
+                <div class="flex min-w-0 flex-col gap-5">
+
+                    <!-- Barra de resultados -->
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <p class="font-mono text-[11px] font-black uppercase tracking-widest">
+                            Mostrando
+                            <span nbBadge tone="yellow" radius="sm" border="strong"
+                                class="ml-1 px-1.5 py-0.5 font-mono text-[11px] font-black shadow-[2px_2px_0_0_var(--nb-shadow)]">
+                                {{ filteredProducts().length }}
+                            </span>
+                            de {{ catalogStats().total }} microlotes
+                        </p>
+
+                        <div class="flex items-center gap-2">
+                            <label id="catalog-sort-label"
+                                class="font-mono text-[10px] font-black uppercase tracking-widest">
+                                Ordenar
+                            </label>
+                            <div class="w-52">
+                                <nb-select [value]="sortBy()" aria-labelledby="catalog-sort-label"
+                                    (valueChange)="onSortChange($event)">
+                                    @for (option of sortOptions; track option.value) {
+                                    <nb-select-option [value]="option.value" [label]="option.label">
+                                        {{ option.label }}
+                                    </nb-select-option>
+                                    }
+                                </nb-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filtros activos -->
+                    @if (activeFilters().length > 0) {
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="font-mono text-[9px] font-black uppercase tracking-widest opacity-60">
+                            Filtros activos:
+                        </span>
+
+                        @for (filter of activeFilters(); track filter.key) {
+                        <button type="button" nbButton tone="lavender" size="sm" radius="sm"
+                            class="font-mono text-[10px] font-black uppercase" (click)="filter.clear()"
+                            [attr.aria-label]="'Quitar filtro ' + filter.label">
+                            {{ filter.label }}
+                            <lucide-icon [img]="icons.X" [size]="12" [strokeWidth]="3" />
+                        </button>
+                        }
+
+                        <button type="button" (click)="clearFilters()"
+                            class="border-b-2 border-transparent font-mono text-[10px] font-black uppercase tracking-widest transition-colors hover:border-(--nb-border)">
+                            Limpiar todo
+                        </button>
+                    </div>
+                    }
+
+                    <!-- Rejilla / vacío -->
+                    @if (filteredProducts().length > 0) {
+                    <app-product-grid [products]="filteredProducts()" (addToCart)="onAddToCart($event)" />
+                    } @else {
+                    <app-empty-state tone="yellow" [icon]="icons.Coffee" title="No encontramos ese café"
+                        description="Prueba con otro término de búsqueda o quita algunos filtros para ver más microlotes de la cosecha.">
+                        <button nbButton tone="black" size="md" type="button" (click)="clearFilters()">
+                            <lucide-icon [img]="icons.Coffee" [size]="18" [strokeWidth]="3" />
+                            <span>Ver todos los granos</span>
+                        </button>
+                    </app-empty-state>
+                    }
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <app-footer />
+</div>
+
+<!-- Confirmación al agregar al carrito -->
+@if (lastAdded(); as product) {
+<div class="fixed inset-x-4 bottom-4 z-50 sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-80">
+    <div nbSurface tone="mint" padding="md" radius="lg" shadow="hard" border="strong"
+        class="flex items-center gap-3">
+        <span
+            class="grid h-10 w-10 shrink-0 place-items-center border-3 border-(--nb-border) bg-(--nb-yellow) shadow-[3px_3px_0_0_var(--nb-shadow)]">
+            <lucide-icon [img]="icons.CircleCheck" [size]="18" [strokeWidth]="3" />
+        </span>
+
+        <div class="min-w-0 flex-1">
+            <p class="font-display text-xs font-black uppercase leading-tight">Agregado al carrito</p>
+            <p class="truncate font-mono text-[10px] font-bold opacity-70">{{ product.name }}</p>
+        </div>
+
+        <a routerLink="/carrito" nbButton tone="black" size="sm"
+            class="shrink-0 font-mono text-[10px] font-black uppercase">
+            Ver
+            <lucide-icon [img]="icons.ShoppingCart" [size]="14" [strokeWidth]="3" />
+        </a>
+    </div>
+</div>
+}

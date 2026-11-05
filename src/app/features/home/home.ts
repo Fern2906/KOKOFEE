@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { NbChip, NbCluster, NbDisplay, NbSplit, NbStack, NbStatusDot, NbText, NbButton, NbMarquee, NbMarqueeItem, NbMediaFrame, NbSticker, NbStickerFace, NbSurface } from '@ng-brutalism/ui';
 import { NavbarComponent } from '../../layouts/public-layout/navbar/navbar';
 import { FooterComponent } from '../../layouts/public-layout/footer/footer';
-import { ProductCardComponent } from '../../shared/components/product-card/product-card';
+import { ProductGridComponent } from '../../shared/components/product-grid/product-grid';
 import { RecipeCardComponent } from '../../shared/components/recipe-card/recipe-card';
 import { ReviewCardComponent } from '../../shared/components/review-card/review-card';
 import { ProductService } from '../../core/services/product.service';
@@ -31,7 +31,7 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
     CommonModule,RouterLink,NbButton,
     NbMarquee,NbMarqueeItem,NbMediaFrame,
     NavbarComponent,FooterComponent,
-    ProductCardComponent,RecipeCardComponent,ReviewCardComponent,
+    ProductGridComponent,RecipeCardComponent,ReviewCardComponent,
     NbSticker,NbStickerFace,NbSurface,NbChip,NbCluster,NbDisplay,
     NbSplit,NbStack,NbStatusDot,NbText,NbMarqueeItem,LucideAngularModule,
     SectionHeaderComponent,EmptyStateComponent

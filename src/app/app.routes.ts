@@ -18,6 +18,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/cart/cart-page').then((m) => m.CartPageComponent),
   },
   {
+    path: 'productos',
+    loadComponent: () => import('./features/products/products-page').then((m) => m.ProductsPageComponent),
+  },
+  {
     path: 'register',
     redirectTo: 'registro',
   },

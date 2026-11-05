@@ -145,18 +145,21 @@
             <app-section-header tone="mint" eyebrow="Cosechas exclusivas" title="Granos destacados de la semana"
                 description="Selección de microlotes calificados por encima de 87 puntos SCA. Disponibles hasta agotar existencias de cosecha."
                 [count]="productService.featuredProducts().length">
-                <span headerActions nbChip tone="white" radius="md" class="font-mono font-bold uppercase">
-                    <lucide-icon [img]="icons.Package" [size]="16" [strokeWidth]="3" />
-                    {{ productService.featuredProducts().length }} microlotes disponibles
-                </span>
+                <div headerActions class="flex flex-wrap items-center gap-2">
+                    <span nbChip tone="white" radius="md" class="font-mono font-bold uppercase">
+                        <lucide-icon [img]="icons.Package" [size]="16" [strokeWidth]="3" />
+                        {{ productService.featuredProducts().length }} microlotes disponibles
+                    </span>
+                    <a routerLink="/productos" nbButton tone="black" size="sm" class="justify-center">
+                        <span>Ver catálogo completo</span>
+                        <lucide-icon [img]="icons.ArrowRight" [size]="16" [strokeWidth]="3" />
+                    </a>
+                </div>
             </app-section-header>
 
             @if (productService.featuredProducts().length > 0) {
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                @for (product of productService.featuredProducts(); track product.id) {
-                <app-product-card [product]="product" (addToCart)="onAddToCart($event)" />
-                }
-            </div>
+            <app-product-grid [products]="productService.featuredProducts()" [columns]="4"
+                (addToCart)="onAddToCart($event)" />
             } @else {
             <app-empty-state [icon]="icons.Coffee" title="Cosechas en periodo de reposo"
                 description="Estamos tostando el siguiente lote fresco este lunes. Suscríbete para recibir notificación de reapertura.">

@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import {
   NbButton, NbChip, NbDisplay, NbInput, NbSplit, NbStack, NbSurface, NbText,
@@ -12,7 +12,7 @@ import { LucideAngularModule, Coffee, Mail, ArrowRight } from 'lucide-angular';
   standalone: true,
   imports: [
     NbButton, NbDisplay, NbInput, NbSplit, NbStack, NbSurface, NbText,
-    LucideAngularModule
+    LucideAngularModule, RouterLink
   ],
   template: `
     <footer class="footer w-full">
@@ -49,10 +49,10 @@ import { LucideAngularModule, Coffee, Mail, ArrowRight } from 'lucide-angular';
 
           <nav aria-label="Pie de página"
                class="flex flex-wrap gap-3 border-t-4 border-(--nb-border) bg-(--nb-pink) px-6 py-5 sm:px-10">
-            <a class="footer__link" href="#productos">Granos</a>
-            <a class="footer__link" href="#recetas">Guías</a>
-            <a class="footer__link" href="#manifiesto">Historia</a>
-            <a class="footer__link" href="#resenas">Reseñas</a>
+            <a class="footer__link" routerLink="/productos">Granos</a>
+            <a class="footer__link" routerLink="/" fragment="recetas">Guías</a>
+            <a class="footer__link" routerLink="/" fragment="manifiesto">Historia</a>
+            <a class="footer__link" routerLink="/" fragment="resenas">Reseñas</a>
           </nav>
 
           <div class="flex flex-col items-center justify-between gap-3 border-t-4 border-(--nb-border)
