@@ -21,6 +21,7 @@
     position: relative;
     display: inline-flex;
     height: 3rem;
+    justify-content: center;
     align-items: center;
     gap: 0.6rem;
     padding: 0 0.9rem 0 0.4rem;

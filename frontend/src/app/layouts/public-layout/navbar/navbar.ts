@@ -5,7 +5,7 @@ import { filter, map } from 'rxjs/operators';
 import {
   LucideAngularModule,
   ShoppingCart,
-  User,
+  User as UserIcon,
   Menu,
   X,
   Coffee,
@@ -45,13 +45,12 @@ export class NavbarComponent {
   readonly authService = inject(AuthService);
   readonly mobileMenuOpen = signal(false);
 
-  /** Permite forzar el modo autenticación manualmente si se desea */
   readonly isAuth = input<boolean | undefined>(undefined);
-
-  /** `admin` muestra la navegación del panel en lugar de la tienda pública */
   readonly variant = input<NavbarVariant>('public');
 
   readonly isAdminMode = computed(() => this.variant() === 'admin');
+
+  readonly isUserAdmin = computed(() => this.authService.currentUser()?.role === 'admin');
 
   readonly adminName = computed(() => this.authService.currentUser()?.name ?? 'Administrador');
 
@@ -92,7 +91,7 @@ export class NavbarComponent {
 
   readonly icons = {
     ShoppingCart,
-    User,
+    User: UserIcon,
     Menu,
     X,
     Coffee,
@@ -103,6 +102,7 @@ export class NavbarComponent {
     LogOut,
     Store,
     ShieldCheck,
+    LayoutDashboard
   };
 
   toggleMobileMenu() { this.mobileMenuOpen.update(v => !v); }
