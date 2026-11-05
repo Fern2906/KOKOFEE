@@ -87,7 +87,8 @@
                     <span>Granos</span>
                 </a>
 
-                <a class="nav-link nav-link--hot" routerLink="/" fragment="recetas">
+                <a class="nav-link nav-link--hot" routerLink="/recetas"
+                    routerLinkActive="border-(--nb-border)">
                     <span class="nav-link__icon">
                         <lucide-icon [img]="icons.BookOpen" [size]="16" [strokeWidth]="3" />
                     </span>
@@ -176,7 +177,9 @@
                 (click)="closeMobileMenu()">
                 <lucide-icon [img]="icons.Coffee" [size]="18" [strokeWidth]="3" /> Granos
             </a>
-            <a class="kk-mobile-link" routerLink="/" fragment="recetas" (click)="closeMobileMenu()">
+            <a class="kk-mobile-link" routerLink="/recetas"
+                routerLinkActive="bg-(--nb-yellow)! shadow-[6px_6px_0_0_var(--nb-shadow)] -translate-x-0.5 -translate-y-0.5"
+                (click)="closeMobileMenu()">
                 <lucide-icon [img]="icons.BookOpen" [size]="18" [strokeWidth]="3" /> Recetas
             </a>
             <a class="kk-mobile-link" routerLink="/" fragment="manifiesto" (click)="closeMobileMenu()">

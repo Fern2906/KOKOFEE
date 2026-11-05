@@ -50,7 +50,7 @@ import { LucideAngularModule, Coffee, Mail, ArrowRight } from 'lucide-angular';
           <nav aria-label="Pie de página"
                class="flex flex-wrap gap-3 border-t-4 border-(--nb-border) bg-(--nb-pink) px-6 py-5 sm:px-10">
             <a class="footer__link" routerLink="/productos">Granos</a>
-            <a class="footer__link" routerLink="/" fragment="recetas">Guías</a>
+            <a class="footer__link" routerLink="/recetas">Guías</a>
             <a class="footer__link" routerLink="/" fragment="manifiesto">Historia</a>
             <a class="footer__link" routerLink="/" fragment="resenas">Reseñas</a>
           </nav>

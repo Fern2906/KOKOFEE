@@ -22,6 +22,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/products/products-page').then((m) => m.ProductsPageComponent),
   },
   {
+    path: 'recetas',
+    loadComponent: () => import('./features/recipes/recipes-page').then((m) => m.RecipesPageComponent),
+  },
+  {
     path: 'register',
     redirectTo: 'registro',
   },

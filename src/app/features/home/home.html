@@ -288,18 +288,14 @@
                 description="Aprende los ratios, moliendas y temperaturas exactas para despertar las notas de cata ocultas en tu grano."
                 [count]="recipeService.recipes().length">
 
-                <button headerActions nbButton tone="black" size="md" type="button">
+                <a headerActions routerLink="/recetas" nbButton tone="black" size="md">
                     <span>Ver todas las guías</span>
                     <lucide-icon [img]="icons.ArrowRight" [size]="18" [strokeWidth]="3" />
-                </button>
+                </a>
             </app-section-header>
 
             @if (recipeService.recipes().length > 0) {
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                @for (recipe of recipeService.recipes(); track recipe.id) {
-                <app-recipe-card [recipe]="recipe" (viewRecipe)="onViewRecipe($event)" />
-                }
-            </div>
+            <app-recipe-grid [recipes]="recipeService.recipes()" (viewRecipe)="onViewRecipe($event)" />
             } @else {
             <app-empty-state tone="mint" [icon]="icons.BookOpen" title="Guías en preparación"
                 description="No hay recetas disponibles temporalmente. Vuelve pronto." />
@@ -350,3 +346,7 @@
 
     <app-footer />
 </div>
+
+@if (selectedRecipe(); as recipe) {
+<app-recipe-detail [recipe]="recipe" (close)="closeRecipe()" />
+}

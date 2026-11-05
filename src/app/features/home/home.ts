@@ -1,11 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NbChip, NbCluster, NbDisplay, NbSplit, NbStack, NbStatusDot, NbText, NbButton, NbMarquee, NbMarqueeItem, NbMediaFrame, NbSticker, NbStickerFace, NbSurface } from '@ng-brutalism/ui';
 import { NavbarComponent } from '../../layouts/public-layout/navbar/navbar';
 import { FooterComponent } from '../../layouts/public-layout/footer/footer';
 import { ProductGridComponent } from '../../shared/components/product-grid/product-grid';
-import { RecipeCardComponent } from '../../shared/components/recipe-card/recipe-card';
+import { RecipeGridComponent } from '../../shared/components/recipe-grid/recipe-grid';
+import { RecipeDetailComponent } from '../../shared/components/recipe-detail/recipe-detail';
 import { ReviewCardComponent } from '../../shared/components/review-card/review-card';
 import { ProductService } from '../../core/services/product.service';
 import { RecipeService } from '../../core/services/recipe.service';
@@ -31,7 +32,7 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
     CommonModule,RouterLink,NbButton,
     NbMarquee,NbMarqueeItem,NbMediaFrame,
     NavbarComponent,FooterComponent,
-    ProductGridComponent,RecipeCardComponent,ReviewCardComponent,
+    ProductGridComponent,RecipeGridComponent,RecipeDetailComponent,ReviewCardComponent,
     NbSticker,NbStickerFace,NbSurface,NbChip,NbCluster,NbDisplay,
     NbSplit,NbStack,NbStatusDot,NbText,NbMarqueeItem,LucideAngularModule,
     SectionHeaderComponent,EmptyStateComponent
@@ -58,7 +59,13 @@ export class HomePage {
     this.cartService.addItem(product, 1);
   }
 
+  readonly selectedRecipe = signal<Recipe | null>(null);
+
   onViewRecipe(recipe: Recipe): void {
-    console.log('Selected recipe:', recipe.title);
+    this.selectedRecipe.set(recipe);
+  }
+
+  closeRecipe(): void {
+    this.selectedRecipe.set(null);
   }
 }
