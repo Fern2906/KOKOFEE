@@ -13,6 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { NbButton, NbInput, NbLabel } from '@ng-brutalism/ui';
+import { LucideAngularModule, Search, Pencil, Trash2, Inbox, X } from 'lucide-angular';
 
 import { RecipeService } from '../../../core/services/recipe.service';
 import { Recipe, RECIPE_METHODS, RECIPE_DIFFICULTIES } from '../../../core/models/recipe.model';
@@ -32,6 +33,7 @@ type FormMode = 'create' | 'edit';
     NbButton,
     NbInput,
     NbLabel,
+    LucideAngularModule,
     RecipeCardComponent,
     InputComponent,
     ModalComponent,
@@ -66,7 +68,9 @@ type FormMode = 'create' | 'edit';
       <div class="flex flex-col sm:flex-row gap-3 flex-wrap">
         <!-- Search -->
         <div class="relative flex-1 min-w-[200px]">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-koko-muted text-sm pointer-events-none">🔍</span>
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-koko-muted pointer-events-none flex items-center">
+            <lucide-icon [img]="icons.Search" [size]="16" [strokeWidth]="2.5" />
+          </span>
           <input
             nbInput
             type="search"
@@ -121,7 +125,9 @@ type FormMode = 'create' | 'edit';
       <!-- RECIPE GRID -->
       @if (filteredRecipes().length === 0) {
         <div class="flex flex-col items-center justify-center py-20 gap-4 text-center">
-          <div class="text-5xl">📭</div>
+          <div class="w-14 h-14 grid place-items-center border-2 border-koko-espresso/30 bg-koko-cream rounded-xl">
+            <lucide-icon [img]="icons.Inbox" [size]="28" [strokeWidth]="2" class="text-koko-muted" />
+          </div>
           <p class="font-display font-bold text-koko-espresso text-lg">No se encontraron recetas</p>
           <p class="text-sm text-koko-muted max-w-xs">Prueba con otros filtros o agrega una nueva receta con el botón de arriba.</p>
         </div>
@@ -137,10 +143,10 @@ type FormMode = 'create' | 'edit';
                   size="sm"
                   type="button"
                   (click)="openEditModal(recipe)"
-                  class="text-[11px] py-1 px-2.5 font-bold"
+                  class="text-[11px] py-1 px-2.5 font-bold flex items-center gap-1"
                   [attr.aria-label]="'Editar ' + recipe.title"
                 >
-                  ✏️ Editar
+                  <lucide-icon [img]="icons.Pencil" [size]="13" [strokeWidth]="2.5" /> Editar
                 </button>
                 <button
                   nbButton
@@ -148,10 +154,10 @@ type FormMode = 'create' | 'edit';
                   size="sm"
                   type="button"
                   (click)="requestDelete(recipe)"
-                  class="text-[11px] py-1 px-2.5 font-bold"
+                  class="text-[11px] py-1 px-2.5 font-bold flex items-center gap-1"
                   [attr.aria-label]="'Eliminar ' + recipe.title"
                 >
-                  🗑️ Eliminar
+                  <lucide-icon [img]="icons.Trash2" [size]="13" [strokeWidth]="2.5" /> Eliminar
                 </button>
               </div>
               <app-recipe-card [recipe]="recipe" (viewRecipe)="onViewRecipe($event)" class="flex-1" />
@@ -199,7 +205,9 @@ type FormMode = 'create' | 'edit';
           aria-live="polite"
         >
           <span>{{ toast() }}</span>
-          <button (click)="toast.set(null)" class="text-koko-cream/60 hover:text-white">×</button>
+          <button (click)="toast.set(null)" class="text-koko-cream/60 hover:text-white flex items-center">
+            <lucide-icon [img]="icons.X" [size]="14" [strokeWidth]="3" />
+          </button>
         </div>
       }
 
@@ -405,10 +413,10 @@ type FormMode = 'create' | 'edit';
                     type="button"
                     (click)="removeStep($index)"
                     [disabled]="stepsControls.length <= 1"
-                    class="mt-2 w-8 h-8 rounded-lg border-2 border-koko-espresso bg-koko-cream text-koko-espresso font-bold hover:bg-koko-danger hover:text-white hover:border-koko-danger transition-colors flex items-center justify-center text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+                    class="mt-2 w-8 h-8 rounded-lg border-2 border-koko-espresso bg-koko-cream text-koko-espresso font-bold hover:bg-koko-danger hover:text-white hover:border-koko-danger transition-colors flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed"
                     aria-label="Eliminar paso"
                   >
-                    ✕
+                    <lucide-icon [img]="icons.X" [size]="13" [strokeWidth]="3" />
                   </button>
                 </div>
               }
@@ -465,6 +473,8 @@ export class RecipesAdminPage {
 
   private readonly recipeService = inject(RecipeService);
   private readonly fb = inject(FormBuilder);
+
+  protected readonly icons = { Search, Pencil, Trash2, Inbox, X };
 
   // ── UI state ──────────────────────────────────────────────────────────────
   readonly isLoading       = signal(false);
@@ -652,10 +662,10 @@ export class RecipesAdminPage {
     const editing = this.editingRecipe();
     if (editing) {
       this.recipeService.updateRecipe(editing.id, payload);
-      this.notify('Receta guardada correctamente ✓');
+      this.notify('Receta guardada correctamente.');
     } else {
       this.recipeService.addRecipe(payload);
-      this.notify('Receta guardada correctamente ✓');
+      this.notify('Receta creada correctamente.');
     }
 
     this.closeModal();

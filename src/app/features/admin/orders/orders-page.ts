@@ -7,6 +7,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { NbBadge, NbButton } from '@ng-brutalism/ui';
 import type { NbToneToken } from '@ng-brutalism/ui';
+import { LucideAngularModule, Flame, Package, Check, Search, Ban, Info } from 'lucide-angular';
 
 import { OrderService } from '../../../core/services/order.service';
 import { Order, OrderStatus } from '../../../core/models/order.model';
@@ -19,7 +20,6 @@ import { StatCardComponent } from '../../../shared/components/stat-card/stat-car
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { OrderStatusBadgeComponent } from '../../../shared/components/order-status-badge/order-status-badge.component';
-import { Product } from '../../../core/models/product.model';
 
 const PAGE_SIZE = 8;
 
@@ -30,15 +30,23 @@ const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
 };
 
 const NEXT_LABEL: Partial<Record<OrderStatus, string>> = {
-  'Pendiente': '🔥 Tostar',
-  'Tostando': '📦 Enviar',
-  'Enviado': '✓ Entregar',
+  'Pendiente': 'Tostar',
+  'Tostando': 'Enviar',
+  'Enviado': 'Entregar',
 };
 
 const NEXT_TONE: Partial<Record<OrderStatus, NbToneToken>> = {
   'Pendiente': 'accent',
   'Tostando': 'primary',
   'Enviado': 'success',
+};
+
+const STATUS_BADGE_TONE: Record<OrderStatus, NbToneToken> = {
+  'Pendiente': 'warning',
+  'Tostando': 'accent',
+  'Enviado': 'primary',
+  'Entregado': 'success',
+  'Cancelado': 'danger',
 };
 
 const TERMINAL_STATUSES: OrderStatus[] = ['Entregado', 'Cancelado'];
@@ -52,6 +60,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
     CommonModule,
     NbBadge,
     NbButton,
+    LucideAngularModule,
     DataTableComponent,
     StatCardComponent,
     ModalComponent,
@@ -85,7 +94,9 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
       <div class="flex flex-col sm:flex-row gap-3 flex-wrap">
         <!-- Search input -->
         <div class="relative flex-1 min-w-50">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-koko-muted text-sm pointer-events-none">🔍</span>
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-koko-muted pointer-events-none flex items-center">
+            <lucide-icon [img]="icons.Search" [size]="16" [strokeWidth]="2.5" />
+          </span>
           <input
             type="search"
             id="orders-search"
@@ -158,20 +169,20 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
           @switch (order.status) {
             @case ('Pendiente') {
               <button nbButton tone="warning" size="sm" class="text-xs font-bold"
-                      (click)="advanceOrderStatus(order, 'Tostando')">
-                <span aria-hidden="true">🔥</span> Tostar
+                      (click)="advanceStatus(order)">
+                <lucide-icon [img]="icons.Flame" [size]="14" [strokeWidth]="2.5" /> Tostar
               </button>
             }
             @case ('Tostando') {
               <button nbButton tone="accent" size="sm" class="text-xs font-bold"
-                      (click)="advanceOrderStatus(order, 'Enviado')">
-                <span aria-hidden="true">📦</span> Enviar
+                      (click)="advanceStatus(order)">
+                <lucide-icon [img]="icons.Package" [size]="14" [strokeWidth]="2.5" /> Enviar
               </button>
             }
             @case ('Enviado') {
               <button nbButton tone="success" size="sm" class="text-xs font-bold"
-                      (click)="advanceOrderStatus(order, 'Entregado')">
-                <span aria-hidden="true">✓</span> Entregar
+                      (click)="advanceStatus(order)">
+                <lucide-icon [img]="icons.Check" [size]="14" [strokeWidth]="2.5" /> Entregar
               </button>
             }
             @default {
@@ -291,7 +302,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
 
                 @if (isTerminalStatus(order.status)) {
                   <p class="text-sm text-koko-muted font-sans flex items-center gap-2">
-                    <span class="text-base">ℹ️</span>
+                    <lucide-icon [img]="icons.Info" [size]="18" [strokeWidth]="2" />
                     Este pedido está en estado final y no admite más acciones.
                   </p>
                 } @else {
@@ -319,7 +330,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
                       (click)="requestCancel(order)"
                       class="font-bold text-xs shadow-[2px_2px_0px_#1A120B]"
                     >
-                      🚫 Cancelar pedido
+                      <lucide-icon [img]="icons.Ban" [size]="14" [strokeWidth]="2.5" /> Cancelar pedido
                     </button>
                   </div>
                 }
@@ -353,13 +364,9 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
   `,
 })
 export class AdminOrdersPage {
-  getStatusBadgeTone(arg0: any): NbToneToken | undefined {
-    throw new Error('Method not implemented.');
-  }
-  advanceOrderStatus(_t58: any, arg1: string) {
-    throw new Error('Method not implemented.');
-  }
   private readonly orderService = inject(OrderService);
+
+  protected readonly icons = { Flame, Package, Check, Search, Ban, Info };
 
   readonly allStatuses = ALL_STATUSES;
 
@@ -380,7 +387,6 @@ export class AdminOrdersPage {
   readonly activeFilterClass = 'px-3 py-1.5 text-[11px] font-mono font-bold border-2 border-koko-espresso rounded-lg bg-koko-espresso text-koko-cream shadow-[2px_2px_0px_#1A120B] cursor-pointer';
   readonly inactiveFilterClass = 'px-3 py-1.5 text-[11px] font-mono font-bold border-2 border-koko-espresso rounded-lg bg-white text-koko-espresso hover:bg-koko-cream/60 cursor-pointer';
 
-  readonly tableHeaders = ['Pedido', 'Cliente', 'Fecha', 'Items', 'Total', 'Pago', 'Estado', 'Acciones'];
   readonly orderColumns: TableColumn<Order>[] = [
     { key: 'order', header: 'Orden / Cliente' },
     { key: 'items', header: 'Granos & Formato' },
@@ -388,16 +394,6 @@ export class AdminOrdersPage {
     { key: 'status', header: 'Estado', class: 'whitespace-nowrap' },
     { key: 'createdAt', header: 'Fecha', class: 'font-mono text-xs text-koko-muted whitespace-nowrap' },
     { key: 'actions', header: 'Acción', class: 'whitespace-nowrap' },
-  ];
-
-  readonly productColumns: TableColumn<Product>[] = [
-    { key: 'product', header: 'Producto' },
-    { key: 'origin', header: 'Origen / Proceso' },
-    { key: 'price', header: 'Precio', class: 'whitespace-nowrap' },
-    { key: 'stock', header: 'Stock', class: 'whitespace-nowrap' },
-    { key: 'scaScore', header: 'SCA', class: 'font-mono text-xs' },
-    { key: 'status', header: 'Estado', class: 'whitespace-nowrap' },
-    { key: 'actions', header: 'Acciones', class: 'whitespace-nowrap' },
   ];
   // Stats
   readonly totalOrders = computed(() => this.orderService.orders().length);
@@ -468,6 +464,10 @@ export class AdminOrdersPage {
 
   nextToneFor(status: OrderStatus): NbToneToken {
     return NEXT_TONE[status] ?? 'primary';
+  }
+
+  getStatusBadgeTone(status: OrderStatus): NbToneToken {
+    return STATUS_BADGE_TONE[status] ?? 'primary';
   }
 
   // Advance to next status
