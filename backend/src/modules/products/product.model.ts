@@ -67,16 +67,10 @@ const productSchema = new Schema<ProductDocument>(
   {
     timestamps: true,
     versionKey: false,
-    // `isNew` forma parte del contrato del frontend, aunque Mongoose lo
-    // considera una clave reservada para documentos.
     suppressReservedKeysWarning: true,
   }
 );
 
-/**
- * Expone `_id` como `id` para que el frontend consuma el mismo contrato
- * que ya usaban los modelos de Angular.
- */
 productSchema.set('toJSON', {
   transform: (_doc, ret: any) => {
     ret.id = String(ret._id);

@@ -8,8 +8,6 @@ async function bootstrap(): Promise<void> {
 
   const app = createApp();
   const server = app.listen(env.PORT, () => {
-    console.log(`[server] KOKOFEE API escuchando en http://localhost:${env.PORT}`);
-    console.log(`[server] Entorno: ${env.NODE_ENV}`);
   });
 
   const shutdown = async (signal: string): Promise<void> => {
@@ -25,6 +23,5 @@ async function bootstrap(): Promise<void> {
 }
 
 bootstrap().catch((error) => {
-  console.error('[fatal] No se pudo iniciar la API:', error);
   process.exit(1);
 });

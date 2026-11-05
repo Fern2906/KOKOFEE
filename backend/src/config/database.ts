@@ -33,10 +33,6 @@ export function getDatabaseState(): string {
   return states[mongoose.connection.readyState] ?? 'unknown';
 }
 
-/**
- * Si las colecciones están vacías, carga los datos iniciales del catálogo
- * y del recetario. Así el frontend funciona desde el primer arranque.
- */
 export async function seedDatabaseIfEmpty(): Promise<void> {
   const [productCount, recipeCount] = await Promise.all([
     ProductModel.estimatedDocumentCount(),
@@ -45,11 +41,9 @@ export async function seedDatabaseIfEmpty(): Promise<void> {
 
   if (productCount === 0) {
     await ProductModel.insertMany(productsSeed);
-    console.log(`[seed] ${productsSeed.length} productos insertados`);
   }
 
   if (recipeCount === 0) {
     await RecipeModel.insertMany(recipesSeed);
-    console.log(`[seed] ${recipesSeed.length} recetas insertadas`);
   }
 }
