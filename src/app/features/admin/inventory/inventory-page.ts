@@ -6,12 +6,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { NbBadge, NbButton, NbInput, NbLabel, NbSelect, NbSelectOption } from '@ng-brutalism/ui';
+import { NbBadge, NbButton, NbInput, NbLabel, NbSelect, NbSelectOption, NbSelectValue } from '@ng-brutalism/ui';
 import { DataTableComponent, DataTableCellDirective, TableColumn } from '../../../shared/components/data-table/data-table';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../core/models/product.model';
 import { StatCardComponent } from '../../../shared/components/stat-card/stat-card';
 import { InputComponent } from '../../../shared/components/input/input.component';
+import { SelectComponent, SelectOption } from '../../../shared/components/select/select.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { LucideAngularModule, Pencil, Trash2, ChevronLeft, ChevronRight, Search, Package } from 'lucide-angular';
@@ -33,6 +34,7 @@ type RoastType = Product['roastLevel'];
     DataTableCellDirective,
     StatCardComponent,
     InputComponent,
+    SelectComponent,
     ModalComponent,
     ConfirmDialogComponent,
     LucideAngularModule,
@@ -98,8 +100,7 @@ export class InventoryPageComponent {
     isFeatured: [false],
     isNew: [false],
   });
-  readonly productColumns: TableColumn<Product>[] = [
-    { key: 'product', header: 'Producto' },
+  readonly productColumns: TableColumn<Product>[] = [    { key: 'product', header: 'Producto' },
     { key: 'origin', header: 'Origen / Proceso' },
     { key: 'price', header: 'Precio', class: 'whitespace-nowrap' },
     { key: 'stock', header: 'Stock', class: 'whitespace-nowrap' },
@@ -109,13 +110,30 @@ export class InventoryPageComponent {
   ];
 
   readonly rowClass = (p: Product) => (p.stock === 0 ? 'bg-red-50' : '');
+
+  readonly processOptions: SelectOption[] = [
+    { value: 'Lavado', label: 'Lavado' },
+    { value: 'Natural', label: 'Natural' },
+    { value: 'Honey', label: 'Honey' },
+    { value: 'Maceracion Carbonica', label: 'Maceración Carbónica' },
+  ];
+
+  readonly roastOptions: SelectOption[] = [
+    { value: 'Tueste Claro', label: 'Tueste Claro' },
+    { value: 'Tueste Medio', label: 'Tueste Medio' },
+    { value: 'Tueste Medio-Oscuro', label: 'Tueste Medio-Oscuro' },
+  ];
+
   protected readonly icons = { Pencil, Trash2, ChevronLeft, ChevronRight, Search, Package };
   isFieldInvalid(f: string): boolean { return !!this.productForm.get(f)?.invalid; }
   isFieldTouched(f: string): boolean { return !!this.productForm.get(f)?.touched; }
 
   onSearch(e: Event): void { this.searchQuery.set((e.target as HTMLInputElement).value); this.currentPage.set(0); }
   onFilterProcess(value: string): void { this.filterProcess.set(value); this.currentPage.set(0); }
-  onFilterStock(value: 'all' | 'low' | 'out'): void { this.filterStock.set(value); this.currentPage.set(0); }
+  onFilterStock(value: NbSelectValue | null): void {
+    this.filterStock.set(value === 'low' || value === 'out' ? value : 'all');
+    this.currentPage.set(0);
+  }
   clearFilters(): void { this.searchQuery.set(''); this.filterProcess.set(''); this.filterStock.set('all'); this.currentPage.set(0); }
   prevPage(): void { if (this.currentPage() > 0) this.currentPage.update(p => p - 1); }
   nextPage(): void { if (this.currentPage() < this.totalPages() - 1) this.currentPage.update(p => p + 1); }

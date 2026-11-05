@@ -35,8 +35,8 @@
                 class="w-full pl-9 pr-4 py-2.5 text-sm border-2 border-koko-espresso rounded-lg bg-white shadow-[2px_2px_0px_#1A120B]" />
         </div>
         <div class="w-80">
-            <nb-select placeholder="Select an option" id="filter-stock" [value]="filterStock()"
-                (change)="onFilterStock($any($event))">
+            <nb-select placeholder="Filtrar por stock" aria-label="Filtrar por stock" id="filter-stock"
+                [value]="filterStock()" (valueChange)="onFilterStock($event)">
                 <nb-select-option value="all" label="Todo el stock">
                     Todo el stock
                 </nb-select-option>
@@ -160,39 +160,13 @@
                     errorMessage="La altitud es obligatoria" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="flex flex-col gap-1.5">
-                    <label nbLabel for="pf-process"
-                        class="font-display text-xs font-bold uppercase tracking-wider text-koko-espresso">Proceso
-                        *</label>
-                    <select id="pf-process" formControlName="process"
-                        class="px-3.5 py-2.5 text-sm border-2 rounded-lg bg-white border-koko-espresso shadow-[2px_2px_0px_#1A120B] text-koko-espresso font-medium">
-                        <option value="">Selecciona proceso</option>
-                        <option value="Lavado">Lavado</option>
-                        <option value="Natural">Natural</option>
-                        <option value="Honey">Honey</option>
-                        <option value="Maceracion Carbonica">Maceracion Carbonica</option>
-                    </select>
-                    @if (isFieldInvalid('process') && isFieldTouched('process')) {
-                    <p class="text-xs font-bold text-koko-danger flex items-center gap-1" role="alert">Selecciona un
-                        proceso</p>
-                    }
-                </div>
-                <div class="flex flex-col gap-1.5">
-                    <label nbLabel for="pf-roast"
-                        class="font-display text-xs font-bold uppercase tracking-wider text-koko-espresso">Nivel de
-                        tueste *</label>
-                    <select id="pf-roast" formControlName="roastLevel"
-                        class="px-3.5 py-2.5 text-sm border-2 rounded-lg bg-white border-koko-espresso shadow-[2px_2px_0px_#1A120B] text-koko-espresso font-medium">
-                        <option value="">Selecciona tueste</option>
-                        <option value="Tueste Claro">Tueste Claro</option>
-                        <option value="Tueste Medio">Tueste Medio</option>
-                        <option value="Tueste Medio-Oscuro">Tueste Medio-Oscuro</option>
-                    </select>
-                    @if (isFieldInvalid('roastLevel') && isFieldTouched('roastLevel')) {
-                    <p class="text-xs font-bold text-koko-danger flex items-center gap-1" role="alert">Selecciona el
-                        tueste</p>
-                    }
-                </div>
+                <app-select label="Proceso" id="pf-process" placeholder="Selecciona proceso" formControlName="process"
+                    [required]="true" [options]="processOptions" [isInvalid]="isFieldInvalid('process')"
+                    [isTouched]="isFieldTouched('process')" errorMessage="Selecciona un proceso" />
+                <app-select label="Nivel de tueste" id="pf-roast" placeholder="Selecciona tueste"
+                    formControlName="roastLevel" [required]="true" [options]="roastOptions"
+                    [isInvalid]="isFieldInvalid('roastLevel')" [isTouched]="isFieldTouched('roastLevel')"
+                    errorMessage="Selecciona el tueste" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <app-input label="Precio (USD)" id="pf-price" type="number" placeholder="0.00" formControlName="price"

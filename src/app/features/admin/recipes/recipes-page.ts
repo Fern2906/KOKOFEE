@@ -12,13 +12,14 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
-import { NbButton, NbInput, NbLabel } from '@ng-brutalism/ui';
+import { NbButton, NbInput, NbLabel, NbSelect, NbSelectOption, NbSelectValue } from '@ng-brutalism/ui';
 import { LucideAngularModule, Search, Pencil, Trash2, Inbox, X } from 'lucide-angular';
 
 import { RecipeService } from '../../../core/services/recipe.service';
 import { Recipe, RECIPE_METHODS, RECIPE_DIFFICULTIES } from '../../../core/models/recipe.model';
 import { RecipeCardComponent } from '../../../shared/components/recipe-card/recipe-card';
 import { InputComponent } from '../../../shared/components/input/input.component';
+import { SelectComponent, SelectOption } from '../../../shared/components/select/select.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
@@ -33,9 +34,12 @@ type FormMode = 'create' | 'edit';
     NbButton,
     NbInput,
     NbLabel,
+    NbSelect,
+    NbSelectOption,
     LucideAngularModule,
     RecipeCardComponent,
     InputComponent,
+    SelectComponent,
     ModalComponent,
     ConfirmDialogComponent,
   ],
@@ -82,29 +86,33 @@ type FormMode = 'create' | 'edit';
           />
         </div>
         <!-- Filter by method -->
-        <select
+        <nb-select
           id="filter-method"
+          placeholder="Todos los métodos"
+          aria-label="Filtrar por método"
           [value]="filterMethod()"
-          (change)="onFilterMethod($event)"
-          class="px-3 py-2.5 text-xs font-mono font-bold border-2 border-koko-espresso rounded-lg bg-white shadow-[2px_2px_0px_#1A120B] text-koko-espresso cursor-pointer"
+          (valueChange)="onFilterMethod($event)"
+          class="min-w-[190px]"
         >
-          <option value="">Todos los métodos</option>
+          <nb-select-option value="" label="Todos los métodos">Todos los métodos</nb-select-option>
           @for (m of recipeMethods; track m) {
-            <option [value]="m">{{ m }}</option>
+            <nb-select-option [value]="m" [label]="m">{{ m }}</nb-select-option>
           }
-        </select>
+        </nb-select>
         <!-- Filter by difficulty -->
-        <select
+        <nb-select
           id="filter-difficulty"
+          placeholder="Todas las dificultades"
+          aria-label="Filtrar por dificultad"
           [value]="filterDifficulty()"
-          (change)="onFilterDifficulty($event)"
-          class="px-3 py-2.5 text-xs font-mono font-bold border-2 border-koko-espresso rounded-lg bg-white shadow-[2px_2px_0px_#1A120B] text-koko-espresso cursor-pointer"
+          (valueChange)="onFilterDifficulty($event)"
+          class="min-w-[190px]"
         >
-          <option value="">Todas las dificultades</option>
+          <nb-select-option value="" label="Todas las dificultades">Todas las dificultades</nb-select-option>
           @for (d of recipeDifficulties; track d) {
-            <option [value]="d">{{ d }}</option>
+            <nb-select-option [value]="d" [label]="d">{{ d }}</nb-select-option>
           }
-        </select>
+        </nb-select>
         <!-- Clear filters -->
         @if (filterMethod() || filterDifficulty() || searchQuery()) {
           <button
@@ -233,48 +241,32 @@ type FormMode = 'create' | 'edit';
                 [isTouched]="isFieldTouched('title')"
                 errorMessage="El nombre es obligatorio"
               />
-              <div class="flex flex-col gap-1.5">
-                <label nbLabel for="rf-method" class="font-display text-xs font-bold uppercase tracking-wider text-koko-espresso">
-                  Método *
-                </label>
-                <select
-                  id="rf-method"
-                  formControlName="method"
-                  class="px-3.5 py-2.5 text-sm border-2 rounded-lg bg-white border-koko-espresso shadow-[2px_2px_0px_#1A120B] text-koko-espresso font-medium"
-                  [class.border-koko-danger]="isFieldInvalid('method') && isFieldTouched('method')"
-                >
-                  <option value="">Selecciona método</option>
-                  @for (m of recipeMethods; track m) {
-                    <option [value]="m">{{ m }}</option>
-                  }
-                </select>
-                @if (isFieldInvalid('method') && isFieldTouched('method')) {
-                  <p class="text-xs font-bold text-koko-danger flex items-center gap-1" role="alert">Selecciona un método</p>
-                }
-              </div>
+              <app-select
+                label="Método"
+                id="rf-method"
+                placeholder="Selecciona método"
+                formControlName="method"
+                [required]="true"
+                [options]="methodOptions"
+                [isInvalid]="isFieldInvalid('method')"
+                [isTouched]="isFieldTouched('method')"
+                errorMessage="Selecciona un método"
+              />
             </div>
 
             <!-- Difficulty & Time -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="flex flex-col gap-1.5">
-                <label nbLabel for="rf-difficulty" class="font-display text-xs font-bold uppercase tracking-wider text-koko-espresso">
-                  Dificultad *
-                </label>
-                <select
-                  id="rf-difficulty"
-                  formControlName="difficulty"
-                  class="px-3.5 py-2.5 text-sm border-2 rounded-lg bg-white border-koko-espresso shadow-[2px_2px_0px_#1A120B] text-koko-espresso font-medium"
-                  [class.border-koko-danger]="isFieldInvalid('difficulty') && isFieldTouched('difficulty')"
-                >
-                  <option value="">Selecciona dificultad</option>
-                  @for (d of recipeDifficulties; track d) {
-                    <option [value]="d">{{ d }}</option>
-                  }
-                </select>
-                @if (isFieldInvalid('difficulty') && isFieldTouched('difficulty')) {
-                  <p class="text-xs font-bold text-koko-danger flex items-center gap-1" role="alert">Selecciona una dificultad</p>
-                }
-              </div>
+              <app-select
+                label="Dificultad"
+                id="rf-difficulty"
+                placeholder="Selecciona dificultad"
+                formControlName="difficulty"
+                [required]="true"
+                [options]="difficultyOptions"
+                [isInvalid]="isFieldInvalid('difficulty')"
+                [isTouched]="isFieldTouched('difficulty')"
+                errorMessage="Selecciona una dificultad"
+              />
               <app-input
                 label="Tiempo de preparación"
                 id="rf-time"
@@ -470,6 +462,8 @@ export class RecipesAdminPage {
 
   readonly recipeMethods = RECIPE_METHODS;
   readonly recipeDifficulties = RECIPE_DIFFICULTIES;
+  readonly methodOptions: SelectOption[] = RECIPE_METHODS.map((m) => ({ value: m, label: m }));
+  readonly difficultyOptions: SelectOption[] = RECIPE_DIFFICULTIES.map((d) => ({ value: d, label: d }));
 
   private readonly recipeService = inject(RecipeService);
   private readonly fb = inject(FormBuilder);
@@ -548,13 +542,13 @@ export class RecipesAdminPage {
     this.currentPage.set(0);
   }
 
-  onFilterMethod(e: Event): void {
-    this.filterMethod.set((e.target as HTMLSelectElement).value);
+  onFilterMethod(value: NbSelectValue | null): void {
+    this.filterMethod.set(value != null ? String(value) : '');
     this.currentPage.set(0);
   }
 
-  onFilterDifficulty(e: Event): void {
-    this.filterDifficulty.set((e.target as HTMLSelectElement).value);
+  onFilterDifficulty(value: NbSelectValue | null): void {
+    this.filterDifficulty.set(value != null ? String(value) : '');
     this.currentPage.set(0);
   }
 
