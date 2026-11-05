@@ -1,0 +1,256 @@
+<div class="min-h-screen flex flex-col bg-(--nb-cream) text-(--nb-foreground)">
+    <app-navbar />
+
+    <main class="flex-1">
+        <section class="mx-auto max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8 lg:pb-24 lg:pt-36">
+
+            <!-- ENCABEZADO -->
+            <header
+                class="mb-10 flex flex-col gap-6 border-b-2 border-(--nb-border)/15 pb-8 md:flex-row md:items-end md:justify-between">
+                <div class="flex flex-col items-start gap-3">
+                    <span nbChip tone="mint" radius="md" class="font-bold uppercase">
+                        <span nbStatusDot state="live"></span>
+                        Carrito · {{ cartService.itemCount() }}
+                        {{ cartService.itemCount() === 1 ? 'artículo' : 'artículos' }}
+                    </span>
+
+                    <h1 nbDisplay size="lg" class="uppercase">
+                        Tu selección de <span class="cart-mark">café</span>
+                    </h1>
+
+                    <p nbText size="md" weight="medium" measure="md">
+                        Revisa cantidades, confirma tus microlotes y prepara el pedido.
+                        Cada bolsa se tuesta a pedido para llegar en su punto óptimo de frescura.
+                    </p>
+                </div>
+
+                <a routerLink="/" fragment="productos" nbButton tone="white" size="md"
+                    class="w-full justify-center md:w-auto">
+                    <lucide-icon [img]="icons.ArrowLeft" [size]="18" [strokeWidth]="3" />
+                    <span>Seguir comprando</span>
+                </a>
+            </header>
+
+            @if (cartService.isEmpty()) {
+            <!-- CARRITO VACÍO -->
+            <div class="py-8">
+                <app-empty-state tone="yellow" [icon]="icons.ShoppingBag" title="Tu carrito está vacío"
+                    description="Todavía no has agregado ningún microlote. Explora la cosecha de la semana y encuentra tu próximo café favorito.">
+                    <a routerLink="/" fragment="productos" nbButton tone="black" size="md" class="mt-1">
+                        <lucide-icon [img]="icons.Sparkles" [size]="18" [strokeWidth]="3" />
+                        <span>Explorar granos</span>
+                    </a>
+                </app-empty-state>
+            </div>
+            } @else {
+            <div class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem]">
+
+                <!-- ================= ARTÍCULOS ================= -->
+                <div class="flex min-w-0 flex-col gap-5">
+
+                    <!-- Progreso de envío gratis -->
+                    <div nbSurface tone="mint" padding="md" radius="lg" shadow="hard" border="strong">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="grid h-11 w-11 shrink-0 place-items-center border-3 border-(--nb-border) bg-(--nb-yellow) shadow-[3px_3px_0_0_var(--nb-shadow)]">
+                                    <lucide-icon [img]="icons.Truck" [size]="20" [strokeWidth]="3" />
+                                </span>
+                                <div>
+                                    <p class="font-display text-sm font-black uppercase leading-tight">
+                                        {{ freeShippingMessage() }}
+                                    </p>
+                                    <p class="font-mono text-[11px] font-bold text-(--nb-foreground)/65">
+                                        @if (cartService.freeShippingRemaining() > 0) {
+                                        Suma otro microlote y el envío corre por nuestra cuenta.
+                                        } @else {
+                                        Tu pedido supera los ${{ cartService.shippingThreshold.toFixed(2) }}.
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+
+                            <span nbChip tone="white" radius="sm"
+                                class="font-mono text-[11px] font-black uppercase">
+                                ${{ cartService.subtotal().toFixed(2) }} / ${{
+                                cartService.shippingThreshold.toFixed(2) }}
+                            </span>
+                        </div>
+
+                        <nb-progress class="mt-3 block" [value]="cartService.freeShippingProgress()" [max]="100"
+                            tone="success" label="Progreso hacia el envío gratis" />
+                    </div>
+
+                    <!-- Lista de artículos -->
+                    @for (item of cartService.items(); track item.product.id) {
+                    <app-cart-item [item]="item" (quantityChange)="updateQuantity(item.product.id, $event)"
+                        (remove)="removeItem(item.product.id)" />
+                    }
+
+                    <!-- Acciones secundarias -->
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <a routerLink="/" fragment="productos"
+                            class="inline-flex items-center gap-2 border-b-2 border-transparent font-mono text-[11px] font-black uppercase tracking-widest transition-colors hover:border-(--nb-border)">
+                            <lucide-icon [img]="icons.ArrowLeft" [size]="14" [strokeWidth]="3" />
+                            Seguir comprando
+                        </a>
+
+                        <button type="button" nbButton tone="cream" size="sm" (click)="requestClearCart()"
+                            class="font-mono text-[11px] font-black uppercase">
+                            <lucide-icon [img]="icons.Trash2" [size]="14" [strokeWidth]="3" />
+                            <span>Vaciar carrito</span>
+                        </button>
+                    </div>
+
+                    <!-- Garantías -->
+                    <div class="mt-2 grid gap-3 sm:grid-cols-3">
+                        <div nbSurface tone="cream" padding="md" radius="lg" shadow="hard" border="strong"
+                            class="group flex items-start gap-3">
+                            <span class="cart-guarantee__icon">
+                                <lucide-icon [img]="icons.Leaf" [size]="18" [strokeWidth]="3" />
+                            </span>
+                            <div>
+                                <p class="font-display text-xs font-black uppercase">Tueste fresco</p>
+                                <p class="font-mono text-[10px] font-bold text-(--nb-foreground)/65">Tostado a pedido cada
+                                    semana.</p>
+                            </div>
+                        </div>
+
+                        <div nbSurface tone="cream" padding="md" radius="lg" shadow="hard" border="strong"
+                            class="group flex items-start gap-3">
+                            <span class="cart-guarantee__icon">
+                                <lucide-icon [img]="icons.Truck" [size]="18" [strokeWidth]="3" />
+                            </span>
+                            <div>
+                                <p class="font-display text-xs font-black uppercase">Envío 48h</p>
+                                <p class="font-mono text-[10px] font-bold text-(--nb-foreground)/65">Despacho nacional
+                                    express.</p>
+                            </div>
+                        </div>
+
+                        <div nbSurface tone="cream" padding="md" radius="lg" shadow="hard" border="strong"
+                            class="group flex items-start gap-3">
+                            <span class="cart-guarantee__icon">
+                                <lucide-icon [img]="icons.ShieldCheck" [size]="18" [strokeWidth]="3" />
+                            </span>
+                            <div>
+                                <p class="font-display text-xs font-black uppercase">Compra segura</p>
+                                <p class="font-mono text-[10px] font-bold text-(--nb-foreground)/65">Pago encriptado y
+                                    protegido.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= RESUMEN ================= -->
+                <aside class="w-full lg:sticky lg:top-28">
+                    <div nbSurface tone="yellow" padding="lg" radius="xl" shadow="hard" border="strong"
+                        class="relative">
+                        <nb-sticker shape="star" tone="pink" [rotate]="10" class="absolute -right-3 -top-7 z-20"
+                            aria-label="Pago seguro">
+                            <nb-sticker-face>
+                                <lucide-icon [img]="icons.CreditCard" [size]="20" [strokeWidth]="3" />
+                            </nb-sticker-face>
+                        </nb-sticker>
+
+                        <div class="mb-5 flex items-center gap-3 border-b-2 border-(--nb-border)/20 pb-4">
+                            <span
+                                class="grid h-10 w-10 place-items-center border-3 border-(--nb-border) bg-(--nb-surface) shadow-[3px_3px_0_0_var(--nb-shadow)]">
+                                <lucide-icon [img]="icons.Receipt" [size]="18" [strokeWidth]="3" />
+                            </span>
+                            <div>
+                                <h2 class="font-display text-lg font-black uppercase leading-none">Resumen del pedido
+                                </h2>
+                                <p class="mt-1 font-mono text-[10px] font-bold uppercase tracking-widest opacity-65">
+                                    {{ cartService.itemCount() }} {{ cartService.itemCount() === 1 ? 'unidad' :
+                                    'unidades' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <dl class="flex flex-col">
+                            <div
+                                class="flex items-center justify-between border-b-2 border-dashed border-(--nb-border)/20 py-2.5">
+                                <dt class="font-mono text-[11px] font-black uppercase tracking-widest">Subtotal</dt>
+                                <dd class="font-mono text-sm font-black">${{ cartService.subtotal().toFixed(2) }}</dd>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between border-b-2 border-dashed border-(--nb-border)/20 py-2.5">
+                                <dt class="font-mono text-[11px] font-black uppercase tracking-widest">Envío</dt>
+                                <dd class="font-mono text-sm font-black">
+                                    @if (cartService.shippingCost() === 0) {
+                                    <span class="inline-flex items-center gap-1 text-(--nb-success)">
+                                        <lucide-icon [img]="icons.Truck" [size]="14" [strokeWidth]="3" />
+                                        Gratis
+                                    </span>
+                                    } @else {
+                                    ${{ cartService.shippingCost().toFixed(2) }}
+                                    }
+                                </dd>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between border-b-2 border-dashed border-(--nb-border)/20 py-2.5">
+                                <dt class="font-mono text-[11px] font-black uppercase tracking-widest">Impuestos</dt>
+                                <dd class="font-mono text-[11px] font-bold opacity-65">Incluidos</dd>
+                            </div>
+                        </dl>
+
+                        <div class="mt-4 flex items-end justify-between border-b-4 border-(--nb-border) pb-4">
+                            <span class="font-display text-sm font-black uppercase tracking-wide">Total</span>
+                            <span class="font-display text-2xl font-black leading-none">
+                                ${{ cartService.total().toFixed(2) }}
+                            </span>
+                        </div>
+
+                        <button type="button" nbButton tone="black" size="lg" fullWidth (click)="onCheckout()"
+                            class="mt-5 justify-center font-mono text-xs font-black uppercase tracking-wide">
+                            <lucide-icon [img]="icons.CreditCard" [size]="18" [strokeWidth]="3" />
+                            <span>Finalizar compra</span>
+                            <lucide-icon [img]="icons.ArrowRight" [size]="18" [strokeWidth]="3" />
+                        </button>
+
+                        @if (checkoutNotice()) {
+                        <div nbCallout tone="warning" size="sm" radius="md" class="mt-4">
+                            <p class="font-mono text-[11px] font-black uppercase">Checkout en preparación</p>
+                            <p class="mt-1 text-xs font-medium leading-snug">
+                                Estamos afinando el último detalle del pago seguro. Tu carrito sigue listo para
+                                cuando lo habilitemos.
+                            </p>
+                        </div>
+                        }
+
+                        <p
+                            class="mt-4 flex items-center justify-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest opacity-70">
+                            <lucide-icon [img]="icons.ShieldCheck" [size]="14" [strokeWidth]="3" />
+                            Pago encriptado · SSL 256-bit
+                        </p>
+
+                        <div class="mt-4 flex items-center justify-center gap-2 border-t-2 border-dashed border-(--nb-border)/20 pt-4">
+                            @for (method of ['VISA', 'MC', 'PSE', 'Nequi']; track method) {
+                            <span
+                                class="border-2 border-(--nb-border) bg-(--nb-surface) px-2 py-1 font-mono text-[9px] font-black uppercase shadow-[2px_2px_0_0_var(--nb-shadow)]">
+                                {{ method }}
+                            </span>
+                            }
+                        </div>
+                    </div>
+
+                    <p class="mt-4 px-2 text-center font-mono text-[10px] font-bold uppercase tracking-widest text-(--nb-foreground)/55">
+                        ¿Dudas con tu pedido? Escríbenos a hola@kokofee.com
+                    </p>
+                </aside>
+            </div>
+            }
+        </section>
+    </main>
+
+    <app-footer />
+</div>
+
+@if (confirmClearOpen()) {
+<app-confirm-dialog title="¿Vaciar el carrito?" message="Se quitarán todos los microlotes de tu pedido. Esta acción no se puede deshacer."
+    confirmLabel="Sí, vaciar" cancelLabel="Mantener" (confirmed)="confirmClearCart()"
+    (cancelled)="cancelClearCart()" />
+}

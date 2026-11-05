@@ -1,10 +1,14 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { Product } from '../models/product.model';
+import { CartItem } from '../models/cart-item.model';
 
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
+export type { CartItem } from '../models/cart-item.model';
+
+/** Monto mínimo (en USD) para obtener envío gratis. */
+export const FREE_SHIPPING_THRESHOLD = 45;
+
+/** Costo de envío estándar cuando no se alcanza el mínimo. */
+export const STANDARD_SHIPPING_COST = 4.9;
 
 @Injectable({
   providedIn: 'root',
@@ -44,15 +48,46 @@ export class CartService {
     this.itemsSignal().reduce((acc, item) => acc + item.product.price * item.quantity, 0)
   );
 
+  readonly isEmpty = computed(() => this.itemsSignal().length === 0);
+
+  readonly shippingThreshold = FREE_SHIPPING_THRESHOLD;
+
+  readonly shippingCost = computed(() => {
+    const subtotal = this.subtotal();
+    if (subtotal === 0 || subtotal >= FREE_SHIPPING_THRESHOLD) {
+      return 0;
+    }
+    return STANDARD_SHIPPING_COST;
+  });
+
+  readonly total = computed(() => this.subtotal() + this.shippingCost());
+
+  /** Cuánto falta para alcanzar el envío gratis (0 si ya se alcanzó). */
+  readonly freeShippingRemaining = computed(() =>
+    Math.max(0, FREE_SHIPPING_THRESHOLD - this.subtotal())
+  );
+
+  /** Progreso (0-100) hacia el envío gratis. */
+  readonly freeShippingProgress = computed(() =>
+    Math.min(100, (this.subtotal() / FREE_SHIPPING_THRESHOLD) * 100)
+  );
+
   addItem(product: Product, quantity = 1): void {
+    const maxQuantity = Math.max(0, product.stock);
+    if (maxQuantity === 0) {
+      return;
+    }
+
     this.itemsSignal.update((current) => {
       const existing = current.find((i) => i.product.id === product.id);
       if (existing) {
         return current.map((i) =>
-          i.product.id === product.id ? { ...i, quantity: i.quantity + quantity } : i
+          i.product.id === product.id
+            ? { ...i, quantity: Math.min(maxQuantity, i.quantity + quantity) }
+            : i
         );
       }
-      return [...current, { product, quantity }];
+      return [...current, { product, quantity: Math.min(maxQuantity, quantity) }];
     });
   }
 
@@ -65,9 +100,30 @@ export class CartService {
       this.removeItem(productId);
       return;
     }
+
     this.itemsSignal.update((current) =>
-      current.map((i) => (i.product.id === productId ? { ...i, quantity } : i))
+      current.map((i) =>
+        i.product.id === productId
+          ? { ...i, quantity: Math.min(quantity, Math.max(0, i.product.stock)) }
+          : i
+      )
     );
+  }
+
+  increment(productId: string): void {
+    const item = this.itemsSignal().find((i) => i.product.id === productId);
+    if (!item) {
+      return;
+    }
+    this.updateQuantity(productId, item.quantity + 1);
+  }
+
+  decrement(productId: string): void {
+    const item = this.itemsSignal().find((i) => i.product.id === productId);
+    if (!item) {
+      return;
+    }
+    this.updateQuantity(productId, item.quantity - 1);
   }
 
   clear(): void {

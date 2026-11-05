@@ -109,7 +109,8 @@
             </div>
 
             <div class="flex items-center gap-2 sm:gap-3">
-                <button type="button" class="kk-action kk-cart bg-(--nb-yellow)" aria-label="Ver carrito de compras">
+                <a routerLink="/carrito" routerLinkActive="bg-(--nb-mint)!"
+                    class="kk-action kk-cart bg-(--nb-yellow)" aria-label="Ver carrito de compras">
                     <span class="kk-action__icon">
                         <lucide-icon [img]="icons.ShoppingCart" [size]="18" [strokeWidth]="3" />
                     </span>
@@ -120,7 +121,7 @@
                     <span class="kk-badge" aria-live="polite">{{ count }}</span>
                     }
                     }
-                </button>
+                </a>
                 <a routerLink="/login" class="kk-action kk-login hidden bg-(--nb-hot) sm:inline-flex">
                     <span class="kk-action__icon kk-action__icon">
                         <lucide-icon [img]="icons.User" [size]="18" [strokeWidth]="3" />
@@ -183,6 +184,11 @@
             </a>
 
             <div class="mt-1 grid grid-cols-2 gap-2">
+                <a class="kk-mobile-link col-span-2 justify-center bg-(--nb-yellow)" routerLink="/carrito"
+                    (click)="closeMobileMenu()">
+                    <lucide-icon [img]="icons.ShoppingCart" [size]="18" [strokeWidth]="3" />
+                    Carrito ({{ cartService.itemCount() }})
+                </a>
                 <a class="kk-mobile-link justify-center bg-(--nb-hot)" routerLink="/login" (click)="closeMobileMenu()">
                     <lucide-icon [img]="icons.User" [size]="18" [strokeWidth]="3" /> Ingresar
                 </a>

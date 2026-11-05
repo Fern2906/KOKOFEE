@@ -14,6 +14,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/register/register').then((m) => m.RegisterPage),
   },
   {
+    path: 'carrito',
+    loadComponent: () => import('./features/cart/cart-page').then((m) => m.CartPageComponent),
+  },
+  {
     path: 'register',
     redirectTo: 'registro',
   },

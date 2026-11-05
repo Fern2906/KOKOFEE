@@ -1,0 +1,30 @@
+.cart-mark {
+    position: relative;
+    display: inline-block;
+    padding: 0 0.2em;
+    background: var(--nb-yellow);
+    box-shadow: 4px 4px 0 0 var(--nb-shadow);
+    transform: rotate(-1.5deg);
+}
+
+.cart-guarantee__icon {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    place-items: center;
+    border: 3px solid var(--nb-border);
+    background: var(--nb-lavender);
+    box-shadow: 3px 3px 0 0 var(--nb-shadow);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.group:hover .cart-guarantee__icon {
+    transform: rotate(-8deg) scale(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cart-guarantee__icon {
+        transition: none;
+    }
+}
