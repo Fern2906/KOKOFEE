@@ -1,9 +1,9 @@
 import { Component, input, output } from '@angular/core';
 import {
-  NbChip, NbInput, NbInputGroup, NbInputPrefix, NbLabel,
-  NbSelect, NbSelectOption, NbSelectValue, NbSurface,
+  NbChip, NbLabel, NbSelect, NbSelectOption, NbSelectValue, NbSurface,
 } from '@ng-brutalism/ui';
-import { LucideAngularModule, Search, SlidersHorizontal, X } from 'lucide-angular';
+import { LucideAngularModule, SlidersHorizontal, X } from 'lucide-angular';
+import { SearchboxComponent } from '../searchbox/searchbox';
 
 export interface RecipeFilterOption {
   value: string;
@@ -18,8 +18,7 @@ export interface RecipeFilterOption {
   selector: 'app-recipe-filters',
   standalone: true,
   imports: [
-    NbChip, NbInput, NbInputGroup, NbInputPrefix, NbLabel,
-    NbSelect, NbSelectOption, NbSurface, LucideAngularModule,
+    NbChip, NbLabel, NbSelect, NbSelectOption, NbSurface, LucideAngularModule, SearchboxComponent,
   ],
   template: `
     <div nbSurface tone="cream" padding="lg" radius="xl" shadow="hard" border="strong"
@@ -55,18 +54,14 @@ export interface RecipeFilterOption {
 
       <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_12rem_12rem] md:items-end">
         <!-- Búsqueda -->
-        <div class="flex flex-col gap-1.5">
-          <label nbLabel for="recipe-search" class="text-[10px] font-black uppercase tracking-widest">
-            Buscar
-          </label>
-          <nb-input-group class="w-full">
-            <span nbInputPrefix class="inline-flex items-center justify-center">
-              <lucide-icon [img]="icons.Search" [size]="16" [strokeWidth]="3" />
-            </span>
-            <input nbInput id="recipe-search" type="search" placeholder="Receta, café o método..."
-              [value]="search()" (input)="onSearch($event)" aria-label="Buscar recetas" />
-          </nb-input-group>
-        </div>
+        <app-searchbox
+          id="recipe-search"
+          label="Buscar"
+          placeholder="Receta, café o método..."
+          [value]="search()"
+          (searchChange)="searchChange.emit($event)"
+          ariaLabel="Buscar recetas"
+        />
 
         <!-- Método -->
         <div class="flex flex-col gap-1.5">
@@ -127,11 +122,7 @@ export class RecipeFiltersComponent {
   readonly difficultyChange = output<string>();
   readonly clear = output<void>();
 
-  protected readonly icons = { Search, SlidersHorizontal, X };
-
-  onSearch(event: Event): void {
-    this.searchChange.emit((event.target as HTMLInputElement).value);
-  }
+  protected readonly icons = { SlidersHorizontal, X };
 
   onSelect(target: { emit: (value: string) => void }, value: NbSelectValue | null): void {
     target.emit(value != null ? String(value) : 'all');

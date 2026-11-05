@@ -17,6 +17,7 @@ import {
   TableColumn
 } from '../../../shared/components/data-table/data-table';
 import { StatCardComponent } from '../../../shared/components/stat-card/stat-card';
+import { SearchboxComponent } from '../../../shared/components/searchbox/searchbox';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { OrderStatusBadgeComponent } from '../../../shared/components/order-status-badge/order-status-badge.component';
@@ -63,6 +64,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
     LucideAngularModule,
     DataTableComponent,
     StatCardComponent,
+    SearchboxComponent,
     ModalComponent,
     ConfirmDialogComponent,
     OrderStatusBadgeComponent,
@@ -74,12 +76,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
       <!-- PAGE HEADER -->
       <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b-2 border-koko-espresso/20 gap-4">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2.5 h-2.5 rounded-full bg-koko-caramel"></span>
-            <span class="text-xs font-mono uppercase tracking-widest font-bold text-koko-caramel">Panel Admin · Pedidos</span>
-          </div>
           <h1 class="font-display font-black text-2xl sm:text-3xl text-koko-espresso tracking-tight">Gestión de Pedidos</h1>
-          <p class="text-xs sm:text-sm text-koko-coffee/80 mt-1 max-w-xl">Consulta y administra los pedidos de los clientes de KOKOFEE.</p>
         </div>
       </div>
 
@@ -93,19 +90,14 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
       <!-- SEARCH & FILTERS -->
       <div class="flex flex-col sm:flex-row gap-3 flex-wrap">
         <!-- Search input -->
-        <div class="relative flex-1 min-w-50">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-koko-muted pointer-events-none flex items-center">
-            <lucide-icon [img]="icons.Search" [size]="16" [strokeWidth]="2.5" />
-          </span>
-          <input
-            type="search"
-            id="orders-search"
-            placeholder="Buscar por nº de pedido o cliente..."
-            [value]="searchQuery()"
-            (input)="onSearch($event)"
-            class="w-full pl-9 pr-4 py-2.5 text-sm border-2 border-koko-espresso rounded-lg bg-white shadow-[2px_2px_0px_#1A120B] font-sans focus:outline-none"
-          />
-        </div>
+        <app-searchbox
+          id="orders-search"
+          placeholder="Buscar por nº de pedido o cliente..."
+          [value]="searchQuery()"
+          (searchChange)="onSearch($event)"
+          ariaLabel="Buscar por nº de pedido o cliente"
+          class="flex-1 min-w-50"
+        />
 
         <!-- Status filter buttons -->
         <div class="flex flex-wrap gap-2 items-center">
@@ -127,7 +119,6 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
           }
         </div>
 
-        <!-- Clear filters -->
         @if (searchQuery() || selectedStatus()) {
           <button
             type="button"
@@ -422,8 +413,9 @@ export class AdminOrdersPage {
   readonly tableSubtitle = computed(() => `Mostrando ${this.pagedOrders().length} de ${this.filteredOrders().length} pedidos`);
 
   // Filter controls
-  onSearch(e: Event): void {
-    this.searchQuery.set((e.target as HTMLInputElement).value);
+  onSearch(e: string | Event): void {
+    const val = typeof e === 'string' ? e : (e.target as HTMLInputElement).value;
+    this.searchQuery.set(val);
     this.currentPage.set(0);
   }
 

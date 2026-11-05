@@ -2,54 +2,44 @@
     <div
         class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b-2 border-koko-espresso/20 gap-4">
         <div>
-            <div class="flex items-center gap-2 mb-1">
-                <span class="w-2.5 h-2.5 rounded-full bg-koko-caramel"></span>
-                <span class="text-xs font-mono uppercase tracking-widest font-bold text-koko-caramel">Panel Admin ·
-                    Inventario</span>
-            </div>
-            <h1 class="font-display font-black text-2xl sm:text-3xl text-koko-espresso tracking-tight">Inventario de
-                Granos</h1>
-            <p class="text-xs sm:text-sm text-koko-coffee/80 mt-1 max-w-xl">Consulta, agrega, edita y elimina los
-                microlotes disponibles en la tienda KOKOFEE.</p>
+            <h1 class="font-display font-black text-2xl sm:text-3xl text-koko-espresso tracking-tight">Inventario</h1>
         </div>
         <button nbButton tone="primary" size="sm" type="button" id="btn-add-product" (click)="openAddModal()"
             class="font-bold text-xs shadow-[2px_2px_0px_#1A120B] whitespace-nowrap">
             + Agregar Producto
         </button>
     </div>
-    <!-- STATS -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <app-stat-card title="Total Microlotes" [value]="totalProducts().toString()" [icon]="icons.Package" />
         <app-stat-card title="Stock Total" [value]="totalStock().toString()" [icon]="icons.Package" />
         <app-stat-card title="Stock Bajo" [value]="lowStockCount().toString() + ' alertas'" [icon]="icons.Package" />
         <app-stat-card title="Sin Existencias" [value]="outOfStockCount().toString() + ' agotados'" [icon]="icons.Package" />
     </div>
-    <!-- SEARCH & FILTERS -->
-    <div class="flex flex-col sm:flex-row gap-3">
-        <div class="relative flex-1">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-koko-muted pointer-events-none flex items-center">
-                <lucide-icon [img]="icons.Search" [size]="16" [strokeWidth]="2.5" />
-            </span>
-            <input nbInput type="search" id="inv-search" placeholder="Buscar por nombre, origen o variedad..."
-                [value]="searchQuery()" (input)="onSearch($event)"
-                class="w-full pl-9 pr-4 py-2.5 text-sm border-2 border-koko-espresso rounded-lg bg-white shadow-[2px_2px_0px_#1A120B]" />
-        </div>
-        <div class="w-80">
-            <nb-select placeholder="Filtrar por stock" aria-label="Filtrar por stock" id="filter-stock"
-                [value]="filterStock()" (valueChange)="onFilterStock($event)">
-                <nb-select-option value="all" label="Todo el stock">
-                    Todo el stock
-                </nb-select-option>
-                <nb-select-option value="low" label="Stock bajo">
-                    Stock bajo
-                </nb-select-option>
-                <nb-select-option value="out" label="Sin existencias">
-                    Sin existencias
-                </nb-select-option>
-            </nb-select>
-        </div>
+    <div class="flex flex-col sm:flex-row gap-3 w-full">
+      <app-searchbox
+        id="inventory-search"
+        placeholder="Buscar..."
+        [value]="searchQuery()"
+        (searchChange)="onSearch($event)"
+        ariaLabel="Buscar producto"
+        class="flex-1 w-full"
+      />
+
+      <div class="w-full sm:w-80 shrink-0">
+        <nb-select placeholder="Filtrar por stock" aria-label="Filtrar por stock" id="filter-stock"
+          [value]="filterStock()" (valueChange)="onFilterStock($event)" class="w-full">
+          <nb-select-option value="all" label="Todo el stock">
+            Todo el stock
+          </nb-select-option>
+          <nb-select-option value="low" label="Stock bajo">
+            Stock bajo
+          </nb-select-option>
+          <nb-select-option value="out" label="Sin existencias">
+            Sin existencias
+          </nb-select-option>
+        </nb-select>
+      </div>
     </div>
-    <!-- TABLE -->
     <app-data-table heading="Inventario de microlotes" [subtitle]="tableSubtitle()" [columns]="productColumns"
         [rows]="pagedProducts()" [rowClass]="rowClass">
 
@@ -130,7 +120,6 @@
             </div>
         </div>
     </app-data-table>
-    <!-- TOAST -->
     @if (toast()) {
     <div class="fixed bottom-5 right-5 z-70 px-4 py-3 bg-koko-espresso text-koko-cream border-2 border-koko-gold rounded-xl shadow-[3px_3px_0px_#C25E00] text-xs font-mono font-bold flex items-center gap-3 animate-in slide-in-from-bottom-3 duration-200"
         role="status" aria-live="polite">
@@ -138,7 +127,6 @@
         <button (click)="toast.set(null)" class="text-koko-cream/60 hover:text-white">x</button>
     </div>
     }
-    <!-- PRODUCT MODAL -->
     @if (showModal()) {
     <app-modal [title]="editingProduct() ? 'Editar Producto' : 'Agregar Producto'" tag="Formulario de Inventario"
         maxWidthClass="max-w-3xl" (close)="closeModal()">
@@ -229,7 +217,6 @@
         </div>
     </app-modal>
     }
-    <!-- CONFIRM DELETE -->
     @if (showConfirm()) {
     <app-confirm-dialog title="Eliminar producto"
         [message]="'Vas a eliminar ' + (deletingProduct()?.name ?? '') + '. Esta accion no se puede deshacer.'"

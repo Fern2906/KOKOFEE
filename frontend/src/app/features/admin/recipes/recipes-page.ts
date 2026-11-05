@@ -18,6 +18,7 @@ import { LucideAngularModule, Search, Pencil, Trash2, Inbox, X } from 'lucide-an
 import { RecipeService } from '../../../core/services/recipe.service';
 import { Recipe, RECIPE_METHODS, RECIPE_DIFFICULTIES } from '../../../core/models/recipe.model';
 import { RecipeCardComponent } from '../../../shared/components/recipe-card/recipe-card';
+import { SearchboxComponent } from '../../../shared/components/searchbox/searchbox';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { SelectComponent, SelectOption } from '../../../shared/components/select/select.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
@@ -38,6 +39,7 @@ type FormMode = 'create' | 'edit';
     NbSelectOption,
     LucideAngularModule,
     RecipeCardComponent,
+    SearchboxComponent,
     InputComponent,
     SelectComponent,
     ModalComponent,
@@ -49,12 +51,7 @@ type FormMode = 'create' | 'edit';
       <!-- PAGE HEADER -->
       <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b-2 border-koko-espresso/20 gap-4">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2.5 h-2.5 rounded-full bg-koko-caramel"></span>
-            <span class="text-xs font-mono uppercase tracking-widest font-bold text-koko-caramel">Panel Admin · Recetas</span>
-          </div>
-          <h1 class="font-display font-black text-2xl sm:text-3xl text-koko-espresso tracking-tight">Recetas de Barismo</h1>
-          <p class="text-xs sm:text-sm text-koko-coffee/80 mt-1 max-w-xl">Crea y gestiona las recetas de preparación de KOKOFEE.</p>
+          <h1 class="font-display font-black text-2xl sm:text-3xl text-koko-espresso tracking-tight">Recetas</h1>
         </div>
         <button
           nbButton
@@ -71,20 +68,14 @@ type FormMode = 'create' | 'edit';
       <!-- SEARCH & FILTERS -->
       <div class="flex flex-col sm:flex-row gap-3 flex-wrap">
         <!-- Search -->
-        <div class="relative flex-1 min-w-[200px]">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-koko-muted pointer-events-none flex items-center">
-            <lucide-icon [img]="icons.Search" [size]="16" [strokeWidth]="2.5" />
-          </span>
-          <input
-            nbInput
-            type="search"
-            id="rec-search"
-            placeholder="Buscar por nombre o descripción..."
-            [value]="searchQuery()"
-            (input)="onSearch($event)"
-            class="w-full pl-9 pr-4 py-2.5 text-sm border-2 border-koko-espresso rounded-lg bg-white shadow-[2px_2px_0px_#1A120B]"
-          />
-        </div>
+        <app-searchbox
+          id="rec-search"
+          placeholder="Buscar por nombre o descripción..."
+          [value]="searchQuery()"
+          (searchChange)="onSearch($event)"
+          ariaLabel="Buscar por nombre o descripción"
+          class="flex-1 min-w-[200px]"
+        />
         <!-- Filter by method -->
         <nb-select
           id="filter-method"
@@ -537,8 +528,9 @@ export class RecipesAdminPage {
   isFieldTouched(f: string): boolean { return !!this.recipeForm.get(f)?.touched; }
 
   // ── Filter handlers ───────────────────────────────────────────────────────
-  onSearch(e: Event): void {
-    this.searchQuery.set((e.target as HTMLInputElement).value);
+  onSearch(e: string | Event): void {
+    const val = typeof e === 'string' ? e : (e.target as HTMLInputElement).value;
+    this.searchQuery.set(val);
     this.currentPage.set(0);
   }
 

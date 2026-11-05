@@ -6,11 +6,12 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { NbBadge, NbButton, NbInput, NbLabel, NbSelect, NbSelectOption, NbSelectValue } from '@ng-brutalism/ui';
+import { NbBadge, NbButton, NbInput, NbLabel, NbSelect, NbSelectOption, NbSelectValue, NbInputGroup } from '@ng-brutalism/ui';
 import { DataTableComponent, DataTableCellDirective, TableColumn } from '../../../shared/components/data-table/data-table';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../core/models/product.model';
 import { StatCardComponent } from '../../../shared/components/stat-card/stat-card';
+import { SearchboxComponent } from '../../../shared/components/searchbox/searchbox';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { SelectComponent, SelectOption } from '../../../shared/components/select/select.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
@@ -33,14 +34,16 @@ type RoastType = Product['roastLevel'];
     DataTableComponent,
     DataTableCellDirective,
     StatCardComponent,
+    SearchboxComponent,
     InputComponent,
     SelectComponent,
     ModalComponent,
     ConfirmDialogComponent,
     LucideAngularModule,
     NbSelect,
-    NbSelectOption
-  ],
+    NbSelectOption,
+    NbInputGroup
+],
   templateUrl: './inventory-page.html',
 })
 export class InventoryPageComponent {
@@ -128,7 +131,11 @@ export class InventoryPageComponent {
   isFieldInvalid(f: string): boolean { return !!this.productForm.get(f)?.invalid; }
   isFieldTouched(f: string): boolean { return !!this.productForm.get(f)?.touched; }
 
-  onSearch(e: Event): void { this.searchQuery.set((e.target as HTMLInputElement).value); this.currentPage.set(0); }
+  onSearch(e: string | Event): void {
+    const val = typeof e === 'string' ? e : (e.target as HTMLInputElement).value;
+    this.searchQuery.set(val);
+    this.currentPage.set(0);
+  }
   onFilterProcess(value: string): void { this.filterProcess.set(value); this.currentPage.set(0); }
   onFilterStock(value: NbSelectValue | null): void {
     this.filterStock.set(value === 'low' || value === 'out' ? value : 'all');

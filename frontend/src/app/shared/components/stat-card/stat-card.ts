@@ -6,7 +6,7 @@ import { NbStat, NbTone, NbSurface } from '@ng-brutalism/ui';
   standalone: true,
   imports: [LucideAngularModule, NbStat, NbSurface],
   template: `
-    <div nbSurface [tone]="tone()" class="relative h-full">
+    <div nbSurface [tone]="tone()" class="relative h-full p-2">
       @if (icon(); as iconData) {
         <lucide-icon [img]="iconData" class="absolute top-3 right-3 w-5 h-5 stroke-[2.5] text-black"/>
       }
