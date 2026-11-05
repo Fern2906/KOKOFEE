@@ -2,21 +2,82 @@
     <nav aria-label="Navegación principal"
         class="kk-nav border-4 bg-yellow-50 border-(--nb-border) bg-(--nb-paper) shadow-[8px_8px_0_0_var(--nb-shadow)]">
         <div class="flex min-h-16 flex-wrap items-center justify-between gap-3 px-3 py-3 sm:min-h-18 sm:flex-nowrap sm:gap-5 sm:px-6 lg:px-8">
-            <a routerLink="/" class="kk-brand group flex items-center gap-3 shrink-0" aria-label="KOKOFEE inicio">
+            <a [routerLink]="isAdminMode() ? '/admin' : '/'" class="kk-brand group flex items-center gap-3 shrink-0"
+                [attr.aria-label]="isAdminMode() ? 'KOKOFEE panel de administración' : 'KOKOFEE inicio'">
                 <span class="kk-logo grid h-12 w-12 place-items-center border-4 border-(--nb-border)
                      bg-(--nb-yellow) text-black shadow-[4px_4px_0_0_var(--nb-shadow)]
                      transition-transform group-hover:-rotate-6">
+                    @if (isAdminMode()) {
+                    <lucide-icon [img]="icons.ShieldCheck" [size]="24" [strokeWidth]="3" />
+                    } @else {
                     <lucide-icon [img]="icons.Coffee" [size]="24" [strokeWidth]="3" />
+                    }
                 </span>
-                <span class="flex flex-col leading-none sm:hidden lg:block ">
+                <span class="flex flex-col leading-none sm:hidden lg:block">
                     <span class="font-display text-xl font-black tracking-tight">KOKOFEE</span>
                     <span class="font-mono text-[10px] font-bold tracking-widest uppercase opacity-70">
-                        Specialty Coffee Lab
+                        {{ isAdminMode() ? 'Panel de Control' : 'Specialty Coffee Lab' }}
                     </span>
                 </span>
             </a>
 
-            @if (!isAuthRoute()) {
+            @if (isAdminMode()) {
+            <!-- ================= ADMIN NAVIGATION ================= -->
+            <div class="hidden flex-1 flex-wrap items-center justify-end gap-2 md:gap-3 lg:flex">
+                @for (item of adminNavItems; track item.route) {
+                <a class="nav-link nav-link--yellow kk-admin-link" [routerLink]="item.route"
+                    [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+                    routerLinkActive="border-(--nb-border)! bg-(--nb-yellow) shadow-[4px_4px_0_0_var(--nb-shadow)] -translate-x-0.5 -translate-y-0.5">
+                    <span class="nav-link__icon">
+                        <lucide-icon [img]="item.icon" [size]="16" [strokeWidth]="3" />
+                    </span>
+                    <span>{{ item.label }}</span>
+                </a>
+                }
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a routerLink="/" class="kk-action hidden bg-(--nb-mint) lg:inline-flex"
+                    aria-label="Ir a la tienda pública">
+                    <span class="kk-action__icon">
+                        <lucide-icon [img]="icons.Store" [size]="18" [strokeWidth]="3" />
+                    </span>
+                    <span class="hidden xl:inline">Ver Tienda</span>
+                </a>
+
+                <div
+                    class="hidden items-center gap-2 border-4 border-(--nb-border) bg-(--nb-paper) py-1.5 pl-1.5 pr-3 shadow-[4px_4px_0_0_var(--nb-shadow)] xl:flex">
+                    <span
+                        class="grid h-9 w-9 place-items-center border-3 border-(--nb-border) bg-(--nb-yellow) font-mono text-xs font-black">
+                        {{ adminInitials() }}
+                    </span>
+                    <div class="leading-tight">
+                        <div class="font-display text-xs font-black">{{ adminName() }}</div>
+                        <div class="font-mono text-[9px] font-bold uppercase tracking-widest opacity-60">
+                            Tostador · Admin
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" (click)="handleLogout()" class="kk-action hidden bg-(--nb-hot) lg:inline-flex"
+                    title="Cerrar sesión">
+                    <span class="kk-action__icon">
+                        <lucide-icon [img]="icons.LogOut" [size]="18" [strokeWidth]="3" />
+                    </span>
+                    <span>Salir</span>
+                </button>
+
+                <button type="button" (click)="toggleMobileMenu()"
+                    class="kk-btn w-11 justify-center bg-(--nb-mint) lg:hidden" [attr.aria-expanded]="mobileMenuOpen()"
+                    aria-controls="kk-mobile-menu" aria-label="Abrir menú de navegación">
+                    @if (mobileMenuOpen()) {
+                    <lucide-icon [img]="icons.X" [size]="20" [strokeWidth]="3" />
+                    } @else {
+                    <lucide-icon [img]="icons.Menu" [size]="20" [strokeWidth]="3" />
+                    }
+                </button>
+            </div>
+            } @else if (!isAuthRoute()) {
             <div class="hidden flex-1 flex-wrap items-center justify-end gap-2 sm:gap-4">
                 <a class="nav-link nav-link--yellow" routerLink="/" fragment="productos">
                     <span class="nav-link__icon">
@@ -84,7 +145,28 @@
             }
         </div>
 
-        @if (!isAuthRoute() && mobileMenuOpen()) {
+        @if (isAdminMode() && mobileMenuOpen()) {
+        <div id="kk-mobile-menu"
+            class="kk-drawer grid gap-2 border-t-4 border-(--nb-border) bg-(--nb-mint) p-3 lg:hidden">
+            @for (item of adminNavItems; track item.route) {
+            <a class="kk-mobile-link" [routerLink]="item.route"
+                [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+                routerLinkActive="bg-(--nb-mint)! shadow-[6px_6px_0_0_var(--nb-shadow)] -translate-x-0.5 -translate-y-0.5"
+                (click)="closeMobileMenu()">
+                <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="3" /> {{ item.label }}
+            </a>
+            }
+
+            <div class="mt-1 grid grid-cols-2 gap-2">
+                <a class="kk-mobile-link justify-center bg-(--nb-paper)" routerLink="/" (click)="closeMobileMenu()">
+                    <lucide-icon [img]="icons.Store" [size]="18" [strokeWidth]="3" /> Tienda
+                </a>
+                <button type="button" class="kk-mobile-link justify-center bg-(--nb-hot)" (click)="handleLogout()">
+                    <lucide-icon [img]="icons.LogOut" [size]="18" [strokeWidth]="3" /> Salir
+                </button>
+            </div>
+        </div>
+        } @else if (!isAuthRoute() && mobileMenuOpen()) {
         <div id="kk-mobile-menu"
             class="kk-drawer grid gap-2 border-t-4 border-(--nb-border) bg-(--nb-mint) p-3 md:hidden">
             <a class="kk-mobile-link" routerLink="/" fragment="productos" (click)="closeMobileMenu()">

@@ -140,7 +140,7 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
       </div>
 
       <!-- TABLE -->
-      <app-data-table heading="Ultimos pedidos" subtitle="Ulitmas compras registradas en la tienda" [columns]="orderColumns" [rows]="orderService.recentOrders()">
+      <app-data-table heading="Pedidos" [subtitle]="tableSubtitle()" [columns]="orderColumns" [rows]="pagedOrders()">
          <ng-template appCell="order" let-order>
           <div class="font-mono font-bold text-xs text-koko-espresso">{{ order.orderNumber }}</div>
           <div class="text-xs text-koko-muted truncate max-w-35">{{ order.customerName }}</div>
@@ -191,9 +191,12 @@ const ALL_STATUSES: OrderStatus[] = ['Pendiente', 'Tostando', 'Enviado', 'Entreg
           }
         </ng-template>
 
-        <div table-footer class="p-3 border-t-2 flex items-center justify-between text-xs font-mono">
-          <span>Mostrando últimos {{ orderService.recentOrders().length }} pedidos</span>
-          <a routerLink="/admin/pedidos" class="font-bold hover:underline">Ver listado completo →</a>
+        <div table-footer class="p-3 border-t-4 border-(--nb-border) bg-(--nb-hot) flex flex-wrap items-center justify-between gap-3 text-xs font-mono font-bold">
+          <span>Página {{ currentPage() + 1 }} de {{ totalPages() }}</span>
+          <div class="flex gap-2">
+            <button nbButton tone="white" size="sm" type="button" [disabled]="currentPage() === 0" (click)="prevPage()">← Anterior</button>
+            <button nbButton tone="white" size="sm" type="button" [disabled]="currentPage() >= totalPages() - 1" (click)="nextPage()">Siguiente →</button>
+          </div>
         </div>
       </app-data-table>
 

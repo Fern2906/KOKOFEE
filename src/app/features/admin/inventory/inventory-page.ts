@@ -114,8 +114,8 @@ export class InventoryPageComponent {
   isFieldTouched(f: string): boolean { return !!this.productForm.get(f)?.touched; }
 
   onSearch(e: Event): void { this.searchQuery.set((e.target as HTMLInputElement).value); this.currentPage.set(0); }
-  onFilterProcess(e: Event): void { this.filterProcess.set((e.target as HTMLSelectElement).value); this.currentPage.set(0); }
-  onFilterStock(e: Event): void { this.filterStock.set((e.target as HTMLSelectElement).value as 'all' | 'low' | 'out'); this.currentPage.set(0); }
+  onFilterProcess(value: string): void { this.filterProcess.set(value); this.currentPage.set(0); }
+  onFilterStock(value: 'all' | 'low' | 'out'): void { this.filterStock.set(value); this.currentPage.set(0); }
   clearFilters(): void { this.searchQuery.set(''); this.filterProcess.set(''); this.filterStock.set('all'); this.currentPage.set(0); }
   prevPage(): void { if (this.currentPage() > 0) this.currentPage.update(p => p - 1); }
   nextPage(): void { if (this.currentPage() < this.totalPages() - 1) this.currentPage.update(p => p + 1); }

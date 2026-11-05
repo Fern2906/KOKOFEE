@@ -36,14 +36,14 @@
         </div>
         <div class="w-80">
             <nb-select placeholder="Select an option" id="filter-stock" [value]="filterStock()"
-                (change)="onFilterStock($event)">
-                <nb-select-option value="Todo el stock" label="Todo el stock">
+                (change)="onFilterStock($any($event))">
+                <nb-select-option value="all" label="Todo el stock">
                     Todo el stock
                 </nb-select-option>
-                <nb-select-option value="Stock bajo" label="Stock bajo">
+                <nb-select-option value="low" label="Stock bajo">
                     Stock bajo
                 </nb-select-option>
-                <nb-select-option value="Sin existencias" label="Sin existencias">
+                <nb-select-option value="out" label="Sin existencias">
                     Sin existencias
                 </nb-select-option>
             </nb-select>
