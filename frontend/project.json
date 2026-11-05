@@ -24,6 +24,12 @@
       },
       "configurations": {
         "production": {
+          "fileReplacements": [
+            {
+              "replace": "src/environments/environment.ts",
+              "with": "src/environments/environment.production.ts"
+            }
+          ],
           "budgets": [
             {
               "type": "initial",
@@ -51,6 +57,9 @@
     },
     "serve": {
       "executor": "@angular/build:dev-server",
+      "options": {
+        "proxyConfig": "proxy.conf.json"
+      },
       "configurations": {
         "production": {
           "buildTarget": "KOKOFEE:build:production"

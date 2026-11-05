@@ -1,43 +1,25 @@
 {
   "name": "kokofee",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "nx serve",
-    "build": "nx build",
-    "watch": "nx build --watch --configuration development",
-    "test": "nx test"
-  },
+  "version": "1.0.0",
+  "description": "KOKOFEE Specialty Coffee Lab — frontend Angular + API Express/MongoDB",
   "private": true,
-  "packageManager": "npm@12.2.0",
-  "dependencies": {
-    "@angular/common": "^22.2.0",
-    "@angular/compiler": "^22.2.0",
-    "@angular/core": "^22.2.0",
-    "@angular/forms": "^22.2.0",
-    "@angular/platform-browser": "^22.2.0",
-    "@angular/router": "^22.2.0",
-    "@ng-brutalism/ui": "^0.2.0",
-    "lucide-angular": "^1.0.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n frontend,backend -c cyan,magenta \"npm run start -w frontend\" \"npm run dev -w backend\"",
+    "dev:frontend": "npm run start -w frontend",
+    "dev:backend": "npm run dev -w backend",
+    "build": "npm run build -w backend && npm run build -w frontend",
+    "build:frontend": "npm run build -w frontend",
+    "build:backend": "npm run build -w backend",
+    "start": "npm run start -w backend",
+    "test": "npm run test -w frontend",
+    "seed": "npm run seed -w backend",
+    "docker:mongo": "docker compose up -d mongo"
   },
   "devDependencies": {
-    "@angular-devkit/core": "^22.2.3",
-    "@angular-devkit/schematics": "^22.2.3",
-    "@angular/build": "^22.2.3",
-    "@angular/cli": "^22.2.3",
-    "@angular/compiler-cli": "^22.2.0",
-    "@nx/angular": "23.3.0",
-    "@nx/workspace": "23.3.0",
-    "@schematics/angular": "^22.2.3",
-    "@tailwindcss/postcss": "^4.1.12",
-    "jsdom": "^30.0.0",
-    "nx": "23.3.0",
-    "postcss": "^8.5.3",
-    "prettier": "^3.8.1",
-    "tailwindcss": "^4.1.12",
-    "typescript": "~6.0.2",
-    "vitest": "^5.0.0"
+    "concurrently": "^9.2.1"
   }
 }

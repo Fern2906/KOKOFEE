@@ -1,15 +1,20 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# See https://docs.gitignore.io/ for more about ignoring files.
 
 # Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+dist/
+tmp/
+out-tsc/
+bazel-out/
 
 # Node
-/node_modules
+node_modules/
 npm-debug.log
 yarn-error.log
+
+# Environment
+.env
+.env.*
+!.env.example
 
 # IDEs and editors
 .idea/
@@ -30,8 +35,9 @@ yarn-error.log
 .history/*
 .agents
 skills-lock.json
-# Miscellaneous
-/.angular/cache
+
+# Angular / Nx
+.angular/
 .sass-cache/
 /connect.lock
 /coverage
@@ -39,13 +45,10 @@ skills-lock.json
 testem.log
 /typings
 __screenshots__/
-
-# System files
-.DS_Store
-Thumbs.db
-
-
-
 .nx/cache
 .nx/workspace-data
 .nx/migrate-runs
+
+# Miscellaneous
+.DS_Store
+Thumbs.db

@@ -1,0 +1,81 @@
+import { ProductDocument } from '../modules/products/product.model';
+
+export const productsSeed: ProductDocument[] = [
+  {
+    name: 'Geisha Finca El Paraiso',
+    variety: 'Geisha de Altura',
+    origin: 'Huila, Colombia',
+    altitude: '1,950 msnm',
+    process: 'Lavado',
+    roastLevel: 'Tueste Claro',
+    tastingNotes: ['Jazmin', 'Bergamota', 'Melocoton'],
+    scaScore: 89.5,
+    price: 24.5,
+    originalPrice: 28.0,
+    weight: '250g',
+    imageUrl:
+      'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=800&auto=format&fit=crop',
+    stock: 14,
+    isFeatured: true,
+    badge: 'Microlote Exclusivo',
+    description:
+      'Cosecha seleccionada a mano. Acidez vivaz con postgusto dulce y persistente.',
+  },
+  {
+    name: 'Bourbon Rosado Anaerobico',
+    variety: 'Bourbon Rosado',
+    origin: 'San Agustin, Colombia',
+    altitude: '1,800 msnm',
+    process: 'Maceración Carbónica',
+    roastLevel: 'Tueste Medio',
+    tastingNotes: ['Frambuesa', 'Miel de Maple', 'Cacao Criollo'],
+    scaScore: 88.0,
+    price: 21.0,
+    weight: '250g',
+    imageUrl:
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop',
+    stock: 22,
+    isFeatured: true,
+    badge: 'Favorito Baristas',
+    description:
+      'Fermentacion en cereza durante 72 horas bajo atmosfera controlada.',
+  },
+  {
+    name: 'Yirgacheffe Heirloom Natural',
+    variety: 'Variedades Autoctonas',
+    origin: 'Gedeo, Etiopia',
+    altitude: '2,100 msnm',
+    process: 'Natural',
+    roastLevel: 'Tueste Claro',
+    tastingNotes: ['Arandano Silvestre', 'Chocolate Negro', 'Cardamomo'],
+    scaScore: 88.75,
+    price: 22.5,
+    weight: '250g',
+    imageUrl:
+      'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?q=80&w=800&auto=format&fit=crop',
+    stock: 9,
+    isFeatured: true,
+    badge: 'Cuna del Cafe',
+    description: 'Secado en camas africanas elevadas durante 24 dias.',
+  },
+  {
+    name: 'Pacamara Honey Volcan Baru',
+    variety: 'Pacamara Gigante',
+    origin: 'Boquete, Panama',
+    altitude: '1,750 msnm',
+    process: 'Honey',
+    roastLevel: 'Tueste Medio',
+    tastingNotes: ['Papaya', 'Azucar Mascabado', 'Nuez de Macadamia'],
+    scaScore: 87.5,
+    price: 19.5,
+    originalPrice: 23.0,
+    weight: '250g',
+    imageUrl:
+      'https://images.unsplash.com/photo-1447933601403-0c6688de566e?q=80&w=800&auto=format&fit=crop',
+    stock: 18,
+    isFeatured: true,
+    badge: 'Suelo Volcanico',
+    description:
+      'Suelos ricos en ceniza volcanica que otorgan una dulzura acaramelada natural.',
+  },
+];
