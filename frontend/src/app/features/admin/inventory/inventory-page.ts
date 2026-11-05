@@ -41,8 +41,7 @@ type RoastType = Product['roastLevel'];
     ConfirmDialogComponent,
     LucideAngularModule,
     NbSelect,
-    NbSelectOption,
-    NbInputGroup
+    NbSelectOption
 ],
   templateUrl: './inventory-page.html',
 })

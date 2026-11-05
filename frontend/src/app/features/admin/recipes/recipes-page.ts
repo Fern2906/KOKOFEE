@@ -33,7 +33,6 @@ type FormMode = 'create' | 'edit';
     CommonModule,
     ReactiveFormsModule,
     NbButton,
-    NbInput,
     NbLabel,
     NbSelect,
     NbSelectOption,
@@ -43,8 +42,8 @@ type FormMode = 'create' | 'edit';
     InputComponent,
     SelectComponent,
     ModalComponent,
-    ConfirmDialogComponent,
-  ],
+    ConfirmDialogComponent
+],
   template: `
     <div class="space-y-8 animate-in fade-in duration-200">
 
